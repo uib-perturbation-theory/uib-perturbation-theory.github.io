@@ -596,6 +596,48 @@ a:focus-visible, button:focus-visible {
   .scroll-cue { animation: none; }
 }
 
+/* ---------- Clickable team cards ---------- */
+
+.person-main {
+  display: block;
+  color: inherit;
+  text-decoration: none;
+  border-radius: 12px;
+  transition:
+    transform 0.18s ease,
+    opacity 0.18s ease;
+}
+
+.person-main:hover {
+  text-decoration: none;
+  transform: translateY(-3px);
+}
+
+.person-main:hover h3 {
+  color: var(--accent-2);
+}
+
+.person-main:hover .photo {
+  opacity: 0.94;
+  box-shadow: 0 14px 32px rgba(11, 18, 32, 0.16);
+}
+
+.person-main:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 5px;
+}
+
+.person-main h3 {
+  transition: color 0.18s ease;
+}
+
+.person .mail {
+  margin-top: 0.25rem;
+  overflow-wrap: anywhere;
+}
+
+/* ---------- Personal profile pages ---------- */
+
 .profile-layout {
   display: grid;
   grid-template-columns: 280px 1fr;
@@ -622,6 +664,13 @@ a:focus-visible, button:focus-visible {
   color: var(--muted);
 }
 
+.profile-side .mail {
+  margin-top: 0.35rem;
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  overflow-wrap: anywhere;
+}
+
 .profile-main h2 {
   margin-top: 0;
 }
@@ -632,6 +681,32 @@ a:focus-visible, button:focus-visible {
 
 .profile-main ul {
   margin-left: 1.3rem;
+}
+
+.profile-main li + li {
+  margin-top: 0.35rem;
+}
+
+.profile-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.7rem;
+  margin-top: 1rem;
+}
+
+.profile-links a {
+  display: inline-block;
+  padding: 0.45rem 0.75rem;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: #fff;
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+}
+
+.profile-links a:hover {
+  text-decoration: none;
+  border-color: var(--accent-2);
 }
 
 @media (max-width: 800px) {

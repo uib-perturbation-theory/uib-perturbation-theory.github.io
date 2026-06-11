@@ -80,7 +80,7 @@ function shadow(ctx, x, y, R, ex, ey, ang) {
    1) QNM ringdown: quadrupolar deformation decaying as exp(-t/tau),
       with the true Schwarzschild frequency/damping ratio.
    ===================================================================== */
-function qnmDemo(holder) {
+register('demo-qnm', holder => {
   const c = makeCanvas(holder, 300), ctx = c.getContext('2d');
   const wR = 2 * Math.PI / 1.15, wI = wR / RATIO, CYCLE = 6;
   function tick(t) {
@@ -102,76 +102,6 @@ function qnmDemo(holder) {
       ctx.beginPath(); ctx.arc(w / 2, h / 2, R * 1.2 + tc * 90, 0, 7);
       ctx.strokeStyle = `rgba(255,255,255,${.8 * (1 - tc / .25)})`;
       ctx.lineWidth = 2.5; ctx.stroke();
-    }
-  }
-  return makeLoop(tick);
-}
-register('demo-qnm', qnmDemo);
-register('hero-demo-qnm', qnmDemo);
-
-/* =====================================================================
-   2) Accretion disk with relativistic beaming: a rotating, inclined disk
-      brighter on the approaching side and fainter on the receding side.
-   ===================================================================== */
-register('demo-disk', holder => {
-  const H = 320, c = makeCanvas(holder, H), ctx = c.getContext('2d');
-  function tick(t) {
-    const w = c.clientWidth, cx = w / 2, cy = H / 2 + 4;
-    ctx.fillStyle = '#070d1a'; ctx.fillRect(0, 0, w, H);
-
-    // faint background grid / distant radiation haze
-    const bg = ctx.createRadialGradient(cx, cy, 20, cx, cy, Math.max(w, H) * .55);
-    bg.addColorStop(0, 'rgba(242,118,46,.08)');
-    bg.addColorStop(1, 'rgba(242,118,46,0)');
-    ctx.fillStyle = bg; ctx.fillRect(0, 0, w, H);
-
-    const a0 = Math.min(w * .33, 150), b0 = a0 * .34;
-    drawDisk(false);                       // far side: behind the shadow
-    shadow(ctx, cx, cy, 54, 1, 1, 0);
-    drawDisk(true);                        // near side: in front of the shadow
-
-    // small polar axis cue
-    ctx.beginPath(); ctx.moveTo(cx, cy - 105); ctx.lineTo(cx, cy + 105);
-    ctx.strokeStyle = 'rgba(228,225,218,.08)'; ctx.setLineDash([4, 10]);
-    ctx.stroke(); ctx.setLineDash([]);
-
-    function drawDisk(near) {
-      const rings = [0.78, 0.96, 1.14];
-      for (const rr of rings) {
-        const a = a0 * rr, b = b0 * rr;
-        const segs = 190;
-        for (let i = 0; i < segs; i++) {
-          const th1 = (i / segs) * Math.PI * 2 + t * .78;
-          const th2 = ((i + 1) / segs) * Math.PI * 2 + t * .78;
-          const mid = (th1 + th2) * .5;
-          const isNear = Math.sin(mid) > 0;
-          if (isNear !== near) continue;
-
-          // Doppler-like beaming: strongest where material moves toward us.
-          const beam = Math.max(0, Math.cos(mid - .35));
-          const alpha = .16 + .74 * Math.pow(beam, 1.7);
-          const hot = 190 + 60 * beam;
-          const x1 = cx + a * Math.cos(th1), y1 = cy + b * Math.sin(th1);
-          const x2 = cx + a * Math.cos(th2), y2 = cy + b * Math.sin(th2);
-          ctx.beginPath(); ctx.moveTo(x1, y1); ctx.lineTo(x2, y2);
-          ctx.strokeStyle = `rgba(${hot},${118 + 85 * beam},${46 + 40 * beam},${alpha})`;
-          ctx.lineWidth = near ? 4.2 : 2.7;
-          ctx.stroke();
-        }
-      }
-
-      // unresolved turbulent clumps riding the disk
-      for (let j = 0; j < 28; j++) {
-        const rr = .78 + (j % 7) * .065;
-        const th = t * (1.15 + .035 * j) + j * 2.399;
-        const isNear = Math.sin(th) > 0;
-        if (isNear !== near) continue;
-        const beam = Math.max(0, Math.cos(th - .35));
-        const x = cx + a0 * rr * Math.cos(th), y = cy + b0 * rr * Math.sin(th);
-        ctx.beginPath(); ctx.arc(x, y, 1.3 + beam * 1.8, 0, 7);
-        ctx.fillStyle = `rgba(255,${170 + 50 * beam},${90 + 60 * beam},${.22 + .55 * beam})`;
-        ctx.fill();
-      }
     }
   }
   return makeLoop(tick);
@@ -222,16 +152,141 @@ register('demo-lens', holder => {
 /* =====================================================================
    4) WebGL lens: a fragment shader bends "the page itself"
       (a texture with the site's hero text). Mouse moves the hole.
+
+      Important: this demo must NOT use makeCanvas(), because makeCanvas()
+      requests a 2D context. A canvas cannot later switch from 2D to WebGL.
+      We therefore create a raw canvas here and only ask for WebGL first.
+      If WebGL is genuinely unavailable, we fall back to a Canvas 2D version.
    ===================================================================== */
 register('demo-shader', holder => {
   const H = 340;
-  const cv = makeCanvas(holder, H);
-  const gl = cv.getContext('webgl');
-  let bh = [.5, .5], target = [.5, .5];
-  if (!gl) {
-    holder.innerHTML = '<p class="lab-fallback">Your browser does not support WebGL.</p>';
-    return { start() {}, stop() {}, tick() {} };
+
+  const cv = document.createElement('canvas');
+  holder.appendChild(cv);
+
+  function resize() {
+    const w = holder.clientWidth;
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    cv.width = w * dpr;
+    cv.height = H * dpr;
+    cv.style.width = w + 'px';
+    cv.style.height = H + 'px';
   }
+  resize();
+  addEventListener('resize', resize);
+
+  const gl =
+    cv.getContext('webgl', { antialias: true, alpha: false }) ||
+    cv.getContext('experimental-webgl', { antialias: true, alpha: false });
+
+  let bh = [.5, .5], target = [.5, .5], drift = true;
+
+  cv.addEventListener('pointermove', e => {
+    const r = cv.getBoundingClientRect();
+    target = [(e.clientX - r.left) / r.width, (e.clientY - r.top) / r.height];
+    drift = false;
+  }, { passive: true });
+
+  /* ---------- Canvas 2D fallback: no ugly error message ---------- */
+  function makeFallback() {
+    let c2 = cv;
+    let ctx = c2.getContext('2d');
+
+    // If a WebGL context had already been created before failing, the same
+    // canvas cannot switch to 2D. Replace it cleanly.
+    if (!ctx) {
+      c2 = document.createElement('canvas');
+      holder.replaceChildren(c2);
+      function resize2d() {
+        const w = holder.clientWidth;
+        const dpr = Math.min(window.devicePixelRatio || 1, 2);
+        c2.width = w * dpr;
+        c2.height = H * dpr;
+        c2.style.width = w + 'px';
+        c2.style.height = H + 'px';
+      }
+      resize2d();
+      addEventListener('resize', resize2d);
+      ctx = c2.getContext('2d');
+    }
+
+    function tick(t) {
+      if (drift) target = [.5 + .22 * Math.cos(t * .4), .5 + .18 * Math.sin(t * .6)];
+      bh[0] += (target[0] - bh[0]) * .06;
+      bh[1] += (target[1] - bh[1]) * .06;
+
+      const w = c2.clientWidth, h = H;
+      const dpr = c2.width / Math.max(w, 1);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      ctx.clearRect(0, 0, w, h);
+
+      const grad = ctx.createLinearGradient(0, 0, 0, h);
+      grad.addColorStop(0, '#16233e');
+      grad.addColorStop(1, '#0b1220');
+      ctx.fillStyle = grad;
+      ctx.fillRect(0, 0, w, h);
+
+      ctx.strokeStyle = 'rgba(122,175,222,.10)';
+      ctx.lineWidth = 1;
+      for (let x = -40; x < w + 40; x += 42) {
+        ctx.beginPath();
+        for (let y = 0; y <= h; y += 12) {
+          const px = bh[0] * w, py = bh[1] * h;
+          const dx = x - px, dy = y - py;
+          const r2 = dx * dx + dy * dy + 900;
+          const bend = 1700 / r2;
+          const xx = x + dx * bend * 5.5;
+          y ? ctx.lineTo(xx, y) : ctx.moveTo(xx, y);
+        }
+        ctx.stroke();
+      }
+      for (let y = 26; y < h; y += 42) {
+        ctx.beginPath();
+        for (let x = 0; x <= w; x += 12) {
+          const px = bh[0] * w, py = bh[1] * h;
+          const dx = x - px, dy = y - py;
+          const r2 = dx * dx + dy * dy + 900;
+          const bend = 1700 / r2;
+          const yy = y + dy * bend * 5.5;
+          x ? ctx.lineTo(x, yy) : ctx.moveTo(x, yy);
+        }
+        ctx.stroke();
+      }
+
+      ctx.fillStyle = '#f2762e';
+      ctx.font = '600 13px IBM Plex Mono, monospace';
+      ctx.fillText('UNIVERSITAT DE LES ILLES BALEARS', 34, 78);
+      ctx.fillStyle = '#fff';
+      const titleSize = Math.max(28, Math.min(54, w * .06));
+      ctx.font = `700 ${titleSize}px Space Grotesk, sans-serif`;
+      ctx.fillText('We listen to the', 34, 145);
+      ctx.fillText('ringing of spacetime.', 34, 205);
+      ctx.fillStyle = 'rgba(255,255,255,.58)';
+      ctx.font = '18px Source Sans 3, sans-serif';
+      ctx.fillText('Black holes · gravitational waves · strong-field gravity', 34, 256);
+
+      const px = bh[0] * w, py = bh[1] * h;
+      const R = Math.min(w, h) * .075;
+      const halo = ctx.createRadialGradient(px, py, R * .7, px, py, R * 4.2);
+      halo.addColorStop(0, 'rgba(242,118,46,.42)');
+      halo.addColorStop(.4, 'rgba(242,118,46,.12)');
+      halo.addColorStop(1, 'rgba(242,118,46,0)');
+      ctx.fillStyle = halo;
+      ctx.beginPath(); ctx.arc(px, py, R * 4.2, 0, 7); ctx.fill();
+      ctx.beginPath(); ctx.arc(px, py, R * 1.45, 0, 7);
+      ctx.strokeStyle = 'rgba(255,196,130,.95)';
+      ctx.lineWidth = 2; ctx.shadowColor = ACCENT; ctx.shadowBlur = 16; ctx.stroke();
+      ctx.shadowBlur = 0;
+      ctx.beginPath(); ctx.arc(px, py, R * 1.05, 0, 7);
+      ctx.fillStyle = '#03050a'; ctx.fill();
+
+    }
+
+    return makeLoop(tick);
+  }
+
+  if (!gl) return makeFallback();
+
   const vs = 'attribute vec2 p;varying vec2 v;void main(){v=p*.5+.5;v.y=1.-v.y;gl_Position=vec4(p,0.,1.);}';
   const fs = `precision mediump float;varying vec2 v;uniform sampler2D t;
     uniform vec2 bh;uniform float asp;
@@ -247,17 +302,38 @@ register('demo-shader', holder => {
       col*=smoothstep(rph*.92,rph,r);             // shadow
       gl_FragColor=vec4(col,1.);
     }`;
+
   function sh(type, src) {
-    const s = gl.createShader(type); gl.shaderSource(s, src); gl.compileShader(s); return s;
+    const s = gl.createShader(type);
+    gl.shaderSource(s, src);
+    gl.compileShader(s);
+    if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) {
+      console.warn('Shader compile error:', gl.getShaderInfoLog(s));
+      return null;
+    }
+    return s;
   }
+
+  const vsh = sh(gl.VERTEX_SHADER, vs);
+  const fsh = sh(gl.FRAGMENT_SHADER, fs);
+  if (!vsh || !fsh) return makeFallback();
+
   const pr = gl.createProgram();
-  gl.attachShader(pr, sh(gl.VERTEX_SHADER, vs));
-  gl.attachShader(pr, sh(gl.FRAGMENT_SHADER, fs));
-  gl.linkProgram(pr); gl.useProgram(pr);
+  gl.attachShader(pr, vsh);
+  gl.attachShader(pr, fsh);
+  gl.linkProgram(pr);
+  if (!gl.getProgramParameter(pr, gl.LINK_STATUS)) {
+    console.warn('Shader link error:', gl.getProgramInfoLog(pr));
+    return makeFallback();
+  }
+  gl.useProgram(pr);
+
   gl.bindBuffer(gl.ARRAY_BUFFER, gl.createBuffer());
   gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1, 3,-1, -1,3]), gl.STATIC_DRAW);
   const loc = gl.getAttribLocation(pr, 'p');
-  gl.enableVertexAttribArray(loc); gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
+  gl.enableVertexAttribArray(loc);
+  gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
+
   // --- texture: a fake page with the group's hero text ---
   const tc = document.createElement('canvas'); tc.width = 1024; tc.height = 512;
   const x = tc.getContext('2d');
@@ -274,20 +350,19 @@ register('demo-shader', holder => {
   x.fillText('ringing of spacetime.', 60, 330);
   x.fillStyle = 'rgba(255,255,255,.55)'; x.font = '28px sans-serif';
   x.fillText('Black holes · gravitational waves · strong-field gravity', 60, 410);
+
   const tex = gl.createTexture();
   gl.bindTexture(gl.TEXTURE_2D, tex);
   gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGB, gl.RGB, gl.UNSIGNED_BYTE, tc);
   gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
   gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
   gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+
   const uBh = gl.getUniformLocation(pr, 'bh'), uAsp = gl.getUniformLocation(pr, 'asp');
-  cv.addEventListener('pointermove', e => {
-    const r = cv.getBoundingClientRect();
-    target = [(e.clientX - r.left) / r.width, (e.clientY - r.top) / r.height];
-  });
+
   function tick(t) {
-    if (Math.hypot(target[0]-.5, target[1]-.5) < 1e-6 && t > 0)
-      target = [.5 + .22 * Math.cos(t * .4), .5 + .18 * Math.sin(t * .6)];
+    if (drift) target = [.5 + .22 * Math.cos(t * .4), .5 + .18 * Math.sin(t * .6)];
     bh[0] += (target[0] - bh[0]) * .06;
     bh[1] += (target[1] - bh[1]) * .06;
     gl.viewport(0, 0, cv.width, cv.height);
@@ -295,9 +370,8 @@ register('demo-shader', holder => {
     gl.uniform1f(uAsp, cv.width / cv.height);
     gl.drawArrays(gl.TRIANGLES, 0, 3);
   }
-  let drift = true;
-  cv.addEventListener('pointermove', () => drift = false, { once: true });
-  const base = makeLoop(t => { if (drift) target = [.5 + .22*Math.cos(t*.4), .5 + .18*Math.sin(t*.6)]; tick(t); });
+
+  const base = makeLoop(tick);
   return { start: base.start, stop: base.stop, tick };
 });
 
@@ -422,7 +496,7 @@ register('demo-poke', holder => {
     if (Math.abs(e) < .005 && !mouse) {
       ctx.fillStyle = 'rgba(228,225,218,.45)'; ctx.font = '13px monospace';
       ctx.textAlign = 'center';
-      ctx.fillText('move the cursor nearby · click to perturb it', cx, H - 16);
+      ctx.fillText('mueve el cursor cerca · haz clic para perturbarlo', cx, H - 16);
       ctx.textAlign = 'left';
     }
   }

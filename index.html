@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>UIB Perturbation Theory Group @ UIB</title>
+  <title>Perturbation Thoery Group @ UIB</title>
   <meta name="description" content="Gravity research group at the Universitat de les Illes Balears: black holes, gravitational waves, and strong-field physics.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Source+Sans+3:wght@400;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -13,10 +13,11 @@
 
 <nav class="nav">
   <div class="nav-inner">
-    <a class="brand" href="index.html">Perturbation Theory Group<span class="tilde">~</span> UIB</a>
+    <a class="brand" href="index.html">GRAVITY <span class="tilde">~</span> UIB</a>
     <button class="nav-toggle" aria-label="Open menu" onclick="document.querySelector('.nav-links').classList.toggle('open')">☰</button>
     <ul class="nav-links">
       <li><a href="research.html">Research</a></li>
+      <li><a href="lab.html">Lab</a></li>
       <li><a href="team.html">Team</a></li>
       <li><a href="publications.html">Publications</a></li>
       <li><a href="news.html">News</a></li>
@@ -27,7 +28,6 @@
 
 <header class="hero">
   <div class="hero-inner">
-    <p class="eyebrow">Universitat de les Illes Balears · Palma de Mallorca</p>
     <h1>We listen to the ringing of spacetime.</h1>
     <p class="lede">
       We study black holes, gravitational waves and strong-field gravity —
@@ -79,6 +79,13 @@
         </div>
       </div>
     </div>
+
+    <!-- Option C: physical black-hole QNM deformation, loaded only when selected -->
+    <div class="hero-anim" id="anim-qnm-bh" hidden>
+      <div class="hero-qnm-wrap" role="img"
+           aria-label="A perturbed black hole relaxing through a damped quadrupolar ringdown">
+        <div id="hero-demo-qnm" class="hero-demo-canvas"></div>
+      </div>
   </div>
 </header>
 
@@ -86,9 +93,16 @@
   /* Pick one hero animation at random on each page load.
      With JavaScript disabled, the ringdown sinusoid is shown. */
   (function () {
-    if (Math.random() < 0.5) {
-      document.getElementById('anim-ringdown').hidden = true;
-      document.getElementById('anim-dimoni').hidden = false;
+    const choices = ['anim-ringdown', 'anim-dimoni', 'anim-qnm-bh'];
+    const selected = choices[Math.floor(Math.random() * choices.length)];
+    choices.forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.hidden = (id !== selected);
+    });
+    if (selected === 'anim-qnm-bh') {
+      const s = document.createElement('script');
+      s.src = 'js/lab.js';
+      document.body.appendChild(s);
     }
   })();
 </script>
@@ -107,8 +121,10 @@
       </div>
       <div class="card">
         <span class="kicker">02 · Waveforms</span>
-        <h3>Numerical and machine-learning methods</h3>
-        <p>PLACEHOLDER.</p>
+        <h3>Gravitational-wave modelling</h3>
+        <p>Accurate waveform models for compact binary coalescences, from
+        inspiral through merger and ringdown, ready for use in detection
+        and parameter estimation.</p>
       </div>
       <div class="card">
         <span class="kicker">03 · Data</span>
@@ -144,7 +160,7 @@
     <a class="btn" href="news.html">All news</a>
   </div>
 </section>
-  
+
 <footer class="footer">
   <div class="footer-inner">
     <div>

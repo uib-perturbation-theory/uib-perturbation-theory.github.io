@@ -27,6 +27,7 @@
 
 <header class="hero">
   <div class="hero-inner">
+    <p class="eyebrow">Universitat de les Illes Balears · Palma de Mallorca</p>
     <h1>We listen to the ringing of spacetime.</h1>
     <p class="lede">
       We study black holes, gravitational waves and strong-field gravity —
@@ -34,7 +35,11 @@
       by LIGO, Virgo and the detectors of the next decade.
     </p>
 
-    <!-- Signature element: a damped sinusoid (black hole ringdown) -->
+    <!-- Hero animation: one of the two blocks below is shown at random
+         on each page load (see the script at the end of this file). -->
+
+    <!-- Option A: damped sinusoid (black hole ringdown) -->
+    <div class="hero-anim" id="anim-ringdown">
     <svg class="waveform" viewBox="0 0 1100 220" role="img"
          aria-label="Damped oscillation representing a black hole ringdown signal">
       <path class="ringdown-ghost" d="M0,110
@@ -50,8 +55,43 @@
         S695,130 715,130 S750,91 770,91 S805,124 825,124 S860,97 880,97
         S915,119 935,119 S970,102 990,102 S1025,115 1045,115 S1080,107 1100,109" />
     </svg>
+    </div>
+
+    <!-- Option B: dimoni punching a black hole, emitting gravitational waves -->
+    <div class="hero-anim" id="anim-dimoni" hidden>
+      <div class="dimoni-scene" role="img"
+           aria-label="A Mallorcan dimoni punching a black hole that emits gravitational waves">
+        <div class="dimoni-rig">
+          <img class="d-legs" src="assets/dimoni-legs.png" alt="">
+          <div class="d-upper">
+            <img class="d-torso" src="assets/dimoni-torso.png" alt="">
+            <img class="d-arm-front" src="assets/dimoni-arm-front.png" alt="">
+            <img class="d-arm-rear" src="assets/dimoni-arm-rear.png" alt="">
+            <img class="d-head" src="assets/dimoni-head.png" alt="">
+          </div>
+        </div>
+        <div class="bh-wrap" aria-hidden="true">
+          <span class="gw gw1"></span>
+          <span class="gw gw2"></span>
+          <span class="gw gw3"></span>
+          <span class="impact"></span>
+          <span class="bh"></span>
+        </div>
+      </div>
+    </div>
   </div>
 </header>
+
+<script>
+  /* Pick one hero animation at random on each page load.
+     With JavaScript disabled, the ringdown sinusoid is shown. */
+  (function () {
+    if (Math.random() < 0.5) {
+      document.getElementById('anim-ringdown').hidden = true;
+      document.getElementById('anim-dimoni').hidden = false;
+    }
+  })();
+</script>
 
 <section class="section">
   <div class="section-inner">
@@ -106,7 +146,7 @@
     <a class="btn" href="news.html">All news</a>
   </div>
 </section>
-
+  
 <footer class="footer">
   <div class="footer-inner">
     <div>

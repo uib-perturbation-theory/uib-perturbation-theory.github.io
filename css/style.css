@@ -502,76 +502,96 @@ a:focus-visible, button:focus-visible {
   .nav-links li { padding: .7rem 1.25rem; }
 }
 
-
-/* ---------- Black Hole Lab page ---------- */
-.lab-head {
-  background:
-    radial-gradient(900px 440px at 72% -20%, #1a2a47 0%, transparent 65%),
-    var(--ink);
-}
-.lab-lede {
-  margin-top: 1rem;
-  max-width: 62ch;
-  color: rgba(255,255,255,.82);
-  font-size: 1.12rem;
-}
-.lab-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 1.5rem;
-}
-.lab-card {
-  background: #fff;
-  border: 1px solid var(--line);
-  border-radius: 14px;
+/* ---------- Fullscreen black-hole lens hero (home) ---------- */
+.hero.hero-fullscreen {
+  position: relative;
+  min-height: calc(100vh - 64px);
+  display: flex;
+  align-items: center;
+  padding: clamp(5rem, 10vw, 8rem) 1.25rem;
   overflow: hidden;
-  box-shadow: 0 18px 40px rgba(11, 18, 32, .06);
+  isolation: isolate;
+  background: var(--ink);
 }
-.lab-card-wide { grid-column: 1 / -1; }
-.lab-card-text { padding: 1.45rem 1.45rem 0; }
-.lab-card-text h2 {
-  font-size: clamp(1.35rem, 2.4vw, 1.85rem);
-  margin-bottom: .65rem;
-}
-.lab-card-text p {
-  color: var(--muted);
-  max-width: 72ch;
-}
-.lab-demo {
-  margin-top: 1rem;
-  min-height: 300px;
-  background:
-    radial-gradient(600px 260px at 50% 45%, rgba(62,124,177,.14), transparent 65%),
-    #070d1a;
-  border-top: 1px solid rgba(11, 18, 32, .08);
-  overflow: hidden;
-}
-.lab-demo canvas {
+.hero-lens-canvas {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  width: 100%;
+  height: 100%;
   display: block;
 }
-.lab-fallback {
-  padding: 2rem;
-  color: rgba(255,255,255,.75);
-  font-family: var(--font-mono);
+.hero-lens-content {
+  position: relative;
+  z-index: 2;
+  width: 100%;
 }
-.mono {
-  font-family: var(--font-mono);
-  font-size: .92em;
+.hero-lens-content .eyebrow,
+.hero-lens-content h1,
+.hero-lens-content .lede {
+  text-shadow: 0 2px 20px rgba(0,0,0,.55);
 }
-.hero-qnm-wrap {
-  margin-top: 2.5rem;
-  border: 1px solid rgba(255,255,255,.08);
-  border-radius: 16px;
-  background:
-    radial-gradient(700px 280px at 50% 50%, rgba(62,124,177,.16), transparent 70%),
-    rgba(255,255,255,.03);
-  overflow: hidden;
+.hero-lens-content h1 {
+  max-width: 14ch;
 }
-.hero-demo-canvas {
-  min-height: 300px;
+.hero-lens-content .lede {
+  max-width: 58ch;
 }
-
-@media (max-width: 900px) {
-  .lab-grid { grid-template-columns: 1fr; }
-  .lab-card-wide { grid-column: auto; }
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .9rem;
+  margin-top: 2rem;
+}
+.hero-actions .btn {
+  margin-top: 0;
+}
+.btn.btn-ghost {
+  background: rgba(255,255,255,.08);
+  color: #fff;
+  border: 1px solid rgba(255,255,255,.22);
+  backdrop-filter: blur(8px);
+}
+.btn.btn-ghost:hover {
+  background: rgba(255,255,255,.14);
+}
+.scroll-cue {
+  position: absolute;
+  left: 50%;
+  bottom: 1.35rem;
+  z-index: 3;
+  width: 2.35rem;
+  height: 2.35rem;
+  display: grid;
+  place-items: center;
+  transform: translateX(-50%);
+  border: 1px solid rgba(255,255,255,.26);
+  border-radius: 999px;
+  color: rgba(255,255,255,.78);
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  animation: cue-bob 1.8s ease-in-out infinite;
+}
+.scroll-cue:hover {
+  color: #fff;
+  text-decoration: none;
+  border-color: rgba(255,255,255,.55);
+}
+@keyframes cue-bob {
+  0%, 100% { transform: translate(-50%, 0); }
+  50% { transform: translate(-50%, -7px); }
+}
+@media (max-width: 760px) {
+  .hero.hero-fullscreen {
+    min-height: calc(100vh - 64px);
+    align-items: flex-start;
+    padding-top: 5.5rem;
+  }
+  .hero-actions {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .scroll-cue { animation: none; }
 }

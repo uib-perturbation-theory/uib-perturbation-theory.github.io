@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Black Hole Lab — Gravity Group @ UIB</title>
+  <meta name="description" content="Interactive black-hole animations: ringdown, accretion disks, gravitational lensing, inspiral-merger-ringdown and cursor-driven perturbations.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Source+Sans+3:wght@400;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <script src="js/lab.js" defer></script>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="brand" href="index.html">GRAVITY <span class="tilde">~</span> UIB</a>
+    <button class="nav-toggle" aria-label="Open menu" onclick="document.querySelector('.nav-links').classList.toggle('open')">☰</button>
+    <ul class="nav-links">
+      <li><a href="research.html">Research</a></li>
+      <li><a href="lab.html" aria-current="page">Lab</a></li>
+      <li><a href="team.html">Team</a></li>
+      <li><a href="publications.html">Publications</a></li>
+      <li><a href="news.html">News</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+  </div>
+</nav>
+
+<header class="page-head lab-head">
+  <div class="page-head-inner">
+    <p class="eyebrow">Interactive gravity</p>
+    <h1>Black Hole Lab</h1>
+    <p class="lede lab-lede">
+      Six small animations to explain black-hole physics visually: ringdown,
+      accretion, lensing, spacetime distortion, binary coalescence and
+      interactive perturbations.
+    </p>
+  </div>
+</header>
+
+<section class="section">
+  <div class="section-inner">
+    <div class="lab-grid">
+
+      <article class="lab-card">
+        <div class="lab-card-text">
+          <span class="kicker">01 · Ringdown</span>
+          <h2>Quasinormal-mode ringing</h2>
+          <p>
+            A perturbed black hole relaxes like a struck bell. The shadow is
+            deformed in a quadrupolar pattern and the deformation decays with
+            the Schwarzschild fundamental-mode ratio
+            <span class="mono">ω<sub>R</sub>/ω<sub>I</sub> ≈ 4.2</span>.
+          </p>
+        </div>
+        <div id="demo-qnm" class="lab-demo" aria-label="Animated black-hole ringdown"></div>
+      </article>
+
+      <article class="lab-card">
+        <div class="lab-card-text">
+          <span class="kicker">02 · Accretion</span>
+          <h2>Relativistic beaming</h2>
+          <p>
+            The inclined disk is brighter on the approaching side and dimmer on
+            the receding side. It is not a full ray-traced simulation, but it
+            captures the basic visual idea behind Doppler boosting.
+          </p>
+        </div>
+        <div id="demo-disk" class="lab-demo" aria-label="Animated accretion disk with relativistic beaming"></div>
+      </article>
+
+      <article class="lab-card">
+        <div class="lab-card-text">
+          <span class="kicker">03 · Lensing</span>
+          <h2>Starfield lensing</h2>
+          <p>
+            Background stars are displaced and stretched around the shadow,
+            hinting at primary and secondary images near an Einstein ring.
+          </p>
+        </div>
+        <div id="demo-lens" class="lab-demo" aria-label="Animated gravitational lensing of a starfield"></div>
+      </article>
+
+      <article class="lab-card">
+        <div class="lab-card-text">
+          <span class="kicker">04 · Shader</span>
+          <h2>The page bends around the hole</h2>
+          <p>
+            A WebGL fragment shader bends a texture as if the black hole were
+            distorting the light from the page itself. Move the cursor over the
+            panel to drag the lens.
+          </p>
+        </div>
+        <div id="demo-shader" class="lab-demo" aria-label="Interactive WebGL black-hole lensing shader"></div>
+      </article>
+
+      <article class="lab-card lab-card-wide">
+        <div class="lab-card-text">
+          <span class="kicker">05 · Binary coalescence</span>
+          <h2>Inspiral, merger and ringdown</h2>
+          <p>
+            Two compact objects inspiral, merge and leave behind a ringing
+            remnant. The strain strip below the animation changes from a chirp
+            to a damped sinusoid.
+          </p>
+        </div>
+        <div id="demo-imr" class="lab-demo" aria-label="Animated inspiral-merger-ringdown signal"></div>
+      </article>
+
+      <article class="lab-card lab-card-wide">
+        <div class="lab-card-text">
+          <span class="kicker">06 · Interactive perturbation</span>
+          <h2>Poke the black hole</h2>
+          <p>
+            Use the cursor as a passing star. Moving close to the hole or
+            clicking on the panel excites a damped quadrupolar oscillation and
+            launches gravitational-wave ripples.
+          </p>
+        </div>
+        <div id="demo-poke" class="lab-demo" aria-label="Interactive black-hole perturbation"></div>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div>
+      <strong>Gravity Group @ UIB</strong><br>
+      Departament de Física, Universitat de les Illes Balears<br>
+      Cra. de Valldemossa km 7.5, 07122 Palma, Spain
+    </div>
+    <div>
+      <a href="contact.html">Contact</a><br>
+      <a href="https://www.uib.eu/" rel="noopener">UIB</a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

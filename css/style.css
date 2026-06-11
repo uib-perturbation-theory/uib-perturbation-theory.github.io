@@ -719,3 +719,100 @@ a:focus-visible, button:focus-visible {
     max-width: 320px;
   }
 }
+
+/* ---------- Publication cards and paper pages ---------- */
+
+.pub-clickable {
+  padding: 1.4rem 0;
+}
+
+.pub-clickable .title a {
+  color: inherit;
+  text-decoration: none;
+  transition: color 0.18s ease;
+}
+
+.pub-clickable .title a:hover {
+  color: var(--accent-2);
+  text-decoration: none;
+}
+
+.pub .summary {
+  margin-top: 0.45rem;
+  max-width: 72ch;
+  color: var(--text);
+}
+
+.paper-hero-meta {
+  margin-top: 1rem;
+  max-width: 72ch;
+  color: rgba(255,255,255,.78);
+}
+
+.paper-layout {
+  max-width: 850px;
+}
+
+.paper-layout h2:not(:first-child) {
+  margin-top: 2.7rem;
+}
+
+.paper-layout h3 {
+  margin-top: 2rem;
+}
+
+.paper-lede {
+  font-size: 1.18rem;
+  color: var(--text);
+  max-width: 70ch;
+}
+
+.paper-equation {
+  margin: 1.6rem 0;
+  padding: 1.2rem 1.4rem;
+  overflow-x: auto;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: #fff;
+  font-size: 1.08rem;
+}
+
+.paper-figure {
+  margin: 2rem 0;
+  padding: 1rem;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: #fff;
+}
+
+.paper-figure img {
+  width: 100%;
+  border-radius: 10px;
+}
+
+.paper-figure figcaption {
+  margin-top: 0.8rem;
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
+.paper-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.9rem;
+  margin-top: 2.4rem;
+}
+
+.paper-actions .btn {
+  margin-top: 0;
+}
+
+.paper-actions .btn-secondary {
+  background: #fff;
+  color: var(--accent-2);
+  border: 1px solid var(--line);
+}
+
+.paper-actions .btn-secondary:hover {
+  border-color: var(--accent-2);
+}

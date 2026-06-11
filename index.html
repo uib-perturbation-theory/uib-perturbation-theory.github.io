@@ -3,17 +3,18 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Perturbation Thoery Group @ UIB</title>
+  <title>Perturbation Theory Group @ UIB</title>
   <meta name="description" content="Gravity research group at the Universitat de les Illes Balears: black holes, gravitational waves, and strong-field physics.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Source+Sans+3:wght@400;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
+  <script src="js/home-hero-lens.js" defer></script>
 </head>
 <body>
 
 <nav class="nav">
   <div class="nav-inner">
-    <a class="brand" href="index.html">Perturbation Thoery Group <span class="tilde">~</span> UIB</a>
+    <a class="brand" href="index.html">Perturbation Theory Group <span class="tilde">~</span> UIB</a>
     <button class="nav-toggle" aria-label="Open menu" onclick="document.querySelector('.nav-links').classList.toggle('open')">☰</button>
     <ul class="nav-links">
       <li><a href="research.html">Research</a></li>
@@ -26,88 +27,24 @@
   </div>
 </nav>
 
-<header class="hero">
-  <div class="hero-inner">
+<header class="hero hero-fullscreen hero-lens">
+  <canvas id="home-lens-canvas" class="hero-lens-canvas" aria-hidden="true"></canvas>
+  <div class="hero-inner hero-lens-content">
     <h1>We listen to the ringing of spacetime.</h1>
     <p class="lede">
       We study black holes, gravitational waves and strong-field gravity —
       from the mathematics of perturbed spacetimes to the signals measured
       by LIGO, Virgo and the detectors of the next decade.
     </p>
-
-    <!-- Hero animation: one of the two blocks below is shown at random
-         on each page load (see the script at the end of this file). -->
-
-    <!-- Option A: damped sinusoid (black hole ringdown) -->
-    <div class="hero-anim" id="anim-ringdown">
-    <svg class="waveform" viewBox="0 0 1100 220" role="img"
-         aria-label="Damped oscillation representing a black hole ringdown signal">
-      <path class="ringdown-ghost" d="M0,110
-        C20,108 35,10 55,10 S90,210 110,210 S145,30 165,30 S200,185 220,185
-        S255,48 275,48 S310,168 330,168 S365,62 385,62 S420,155 440,155
-        S475,73 495,73 S530,145 550,145 S585,82 605,82 S640,137 660,137
-        S695,90 715,90 S750,129 770,129 S805,96 825,96 S860,123 880,123
-        S915,101 935,101 S970,118 990,118 S1025,105 1045,105 S1080,113 1100,111" />
-      <path class="ringdown-path" d="M0,110
-        C20,112 35,210 55,210 S90,10 110,10 S145,190 165,190 S200,35 220,35
-        S255,172 275,172 S310,52 330,52 S365,158 385,158 S420,65 440,65
-        S475,147 495,147 S530,75 550,75 S585,138 605,138 S640,84 660,84
-        S695,130 715,130 S750,91 770,91 S805,124 825,124 S860,97 880,97
-        S915,119 935,119 S970,102 990,102 S1025,115 1045,115 S1080,107 1100,109" />
-    </svg>
+    <div class="hero-actions">
+      <a class="btn" href="research.html">Explore our research</a>
+      <a class="btn btn-ghost" href="lab.html">Open the Black Hole Lab</a>
     </div>
-
-    <!-- Option B: dimoni punching a black hole, emitting gravitational waves -->
-    <div class="hero-anim" id="anim-dimoni" hidden>
-      <div class="dimoni-scene" role="img"
-           aria-label="A Mallorcan dimoni punching a black hole that emits gravitational waves">
-        <div class="dimoni-rig">
-          <img class="d-legs" src="assets/dimoni-legs.png" alt="">
-          <div class="d-upper">
-            <img class="d-torso" src="assets/dimoni-torso.png" alt="">
-            <img class="d-arm-front" src="assets/dimoni-arm-front.png" alt="">
-            <img class="d-arm-rear" src="assets/dimoni-arm-rear.png" alt="">
-            <img class="d-head" src="assets/dimoni-head.png" alt="">
-          </div>
-        </div>
-        <div class="bh-wrap" aria-hidden="true">
-          <span class="gw gw1"></span>
-          <span class="gw gw2"></span>
-          <span class="gw gw3"></span>
-          <span class="impact"></span>
-          <span class="bh"></span>
-        </div>
-      </div>
-    </div>
-
-    <!-- Option C: physical black-hole QNM deformation, loaded only when selected -->
-    <div class="hero-anim" id="anim-qnm-bh" hidden>
-      <div class="hero-qnm-wrap" role="img"
-           aria-label="A perturbed black hole relaxing through a damped quadrupolar ringdown">
-        <div id="hero-demo-qnm" class="hero-demo-canvas"></div>
-      </div>
   </div>
+  <a class="scroll-cue" href="#what-we-do" aria-label="Scroll to main content">↓</a>
 </header>
 
-<script>
-  /* Pick one hero animation at random on each page load.
-     With JavaScript disabled, the ringdown sinusoid is shown. */
-  (function () {
-    const choices = ['anim-ringdown', 'anim-dimoni', 'anim-qnm-bh'];
-    const selected = choices[Math.floor(Math.random() * choices.length)];
-    choices.forEach(id => {
-      const el = document.getElementById(id);
-      if (el) el.hidden = (id !== selected);
-    });
-    if (selected === 'anim-qnm-bh') {
-      const s = document.createElement('script');
-      s.src = 'js/lab.js';
-      document.body.appendChild(s);
-    }
-  })();
-</script>
-
-<section class="section">
+<section class="section" id="what-we-do">
   <div class="section-inner">
     <span class="kicker">What we do</span>
     <h2>Black holes as laboratories for fundamental physics</h2>
@@ -164,7 +101,7 @@
 <footer class="footer">
   <div class="footer-inner">
     <div>
-      <strong>UIB Perturbation Theory Group @ UIB</strong><br>
+      <strong>Perturbation Theory Group @ UIB</strong><br>
       Departament de Física, Universitat de les Illes Balears<br>
       Cra. de Valldemossa km 7.5, 07122 Palma, Spain
     </div>

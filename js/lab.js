@@ -150,229 +150,176 @@ register('demo-lens', holder => {
 });
 
 /* =====================================================================
-   4) WebGL lens: a fragment shader bends "the page itself"
-      (a texture with the site's hero text). Mouse moves the hole.
-
-      Important: this demo must NOT use makeCanvas(), because makeCanvas()
-      requests a 2D context. A canvas cannot later switch from 2D to WebGL.
-      We therefore create a raw canvas here and only ask for WebGL first.
-      If WebGL is genuinely unavailable, we fall back to a Canvas 2D version.
+   4) Page lens, Canvas 2D only:
+      a black hole bends a fake page/grid. No WebGL dependency at all.
+      Mouse/touch moves the lens; otherwise it drifts slowly.
    ===================================================================== */
 register('demo-shader', holder => {
   const H = 340;
+  const c = makeCanvas(holder, H);
+  const ctx = c.getContext('2d');
 
-  const cv = document.createElement('canvas');
-  holder.appendChild(cv);
+  let bh = [.5, .5];
+  let target = [.5, .5];
+  let drift = true;
 
-  function resize() {
-    const w = holder.clientWidth;
-    const dpr = Math.min(window.devicePixelRatio || 1, 2);
-    cv.width = w * dpr;
-    cv.height = H * dpr;
-    cv.style.width = w + 'px';
-    cv.style.height = H + 'px';
-  }
-  resize();
-  addEventListener('resize', resize);
-
-  const gl =
-    cv.getContext('webgl', { antialias: true, alpha: false }) ||
-    cv.getContext('experimental-webgl', { antialias: true, alpha: false });
-
-  let bh = [.5, .5], target = [.5, .5], drift = true;
-
-  cv.addEventListener('pointermove', e => {
-    const r = cv.getBoundingClientRect();
+  c.addEventListener('pointermove', e => {
+    const r = c.getBoundingClientRect();
     target = [(e.clientX - r.left) / r.width, (e.clientY - r.top) / r.height];
     drift = false;
   }, { passive: true });
 
-  /* ---------- Canvas 2D fallback: no ugly error message ---------- */
-  function makeFallback() {
-    let c2 = cv;
-    let ctx = c2.getContext('2d');
+  c.addEventListener('pointerleave', () => { drift = true; }, { passive: true });
 
-    // If a WebGL context had already been created before failing, the same
-    // canvas cannot switch to 2D. Replace it cleanly.
-    if (!ctx) {
-      c2 = document.createElement('canvas');
-      holder.replaceChildren(c2);
-      function resize2d() {
-        const w = holder.clientWidth;
-        const dpr = Math.min(window.devicePixelRatio || 1, 2);
-        c2.width = w * dpr;
-        c2.height = H * dpr;
-        c2.style.width = w + 'px';
-        c2.style.height = H + 'px';
-      }
-      resize2d();
-      addEventListener('resize', resize2d);
-      ctx = c2.getContext('2d');
-    }
-
-    function tick(t) {
-      if (drift) target = [.5 + .22 * Math.cos(t * .4), .5 + .18 * Math.sin(t * .6)];
-      bh[0] += (target[0] - bh[0]) * .06;
-      bh[1] += (target[1] - bh[1]) * .06;
-
-      const w = c2.clientWidth, h = H;
-      const dpr = c2.width / Math.max(w, 1);
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      ctx.clearRect(0, 0, w, h);
-
-      const grad = ctx.createLinearGradient(0, 0, 0, h);
-      grad.addColorStop(0, '#16233e');
-      grad.addColorStop(1, '#0b1220');
-      ctx.fillStyle = grad;
-      ctx.fillRect(0, 0, w, h);
-
-      ctx.strokeStyle = 'rgba(122,175,222,.10)';
-      ctx.lineWidth = 1;
-      for (let x = -40; x < w + 40; x += 42) {
-        ctx.beginPath();
-        for (let y = 0; y <= h; y += 12) {
-          const px = bh[0] * w, py = bh[1] * h;
-          const dx = x - px, dy = y - py;
-          const r2 = dx * dx + dy * dy + 900;
-          const bend = 1700 / r2;
-          const xx = x + dx * bend * 5.5;
-          y ? ctx.lineTo(xx, y) : ctx.moveTo(xx, y);
-        }
-        ctx.stroke();
-      }
-      for (let y = 26; y < h; y += 42) {
-        ctx.beginPath();
-        for (let x = 0; x <= w; x += 12) {
-          const px = bh[0] * w, py = bh[1] * h;
-          const dx = x - px, dy = y - py;
-          const r2 = dx * dx + dy * dy + 900;
-          const bend = 1700 / r2;
-          const yy = y + dy * bend * 5.5;
-          x ? ctx.lineTo(x, yy) : ctx.moveTo(x, yy);
-        }
-        ctx.stroke();
-      }
-
-      ctx.fillStyle = '#f2762e';
-      ctx.font = '600 13px IBM Plex Mono, monospace';
-      ctx.fillText('UNIVERSITAT DE LES ILLES BALEARS', 34, 78);
-      ctx.fillStyle = '#fff';
-      const titleSize = Math.max(28, Math.min(54, w * .06));
-      ctx.font = `700 ${titleSize}px Space Grotesk, sans-serif`;
-      ctx.fillText('We listen to the', 34, 145);
-      ctx.fillText('ringing of spacetime.', 34, 205);
-      ctx.fillStyle = 'rgba(255,255,255,.58)';
-      ctx.font = '18px Source Sans 3, sans-serif';
-      ctx.fillText('Black holes · gravitational waves · strong-field gravity', 34, 256);
-
-      const px = bh[0] * w, py = bh[1] * h;
-      const R = Math.min(w, h) * .075;
-      const halo = ctx.createRadialGradient(px, py, R * .7, px, py, R * 4.2);
-      halo.addColorStop(0, 'rgba(242,118,46,.42)');
-      halo.addColorStop(.4, 'rgba(242,118,46,.12)');
-      halo.addColorStop(1, 'rgba(242,118,46,0)');
-      ctx.fillStyle = halo;
-      ctx.beginPath(); ctx.arc(px, py, R * 4.2, 0, 7); ctx.fill();
-      ctx.beginPath(); ctx.arc(px, py, R * 1.45, 0, 7);
-      ctx.strokeStyle = 'rgba(255,196,130,.95)';
-      ctx.lineWidth = 2; ctx.shadowColor = ACCENT; ctx.shadowBlur = 16; ctx.stroke();
-      ctx.shadowBlur = 0;
-      ctx.beginPath(); ctx.arc(px, py, R * 1.05, 0, 7);
-      ctx.fillStyle = '#03050a'; ctx.fill();
-
-    }
-
-    return makeLoop(tick);
+  function drawBentLine(points, px, py) {
+    ctx.beginPath();
+    points.forEach(([x, y], i) => {
+      const dx = x - px;
+      const dy = y - py;
+      const r2 = dx * dx + dy * dy + 650;
+      const bend = Math.min(0.22, 2100 / r2);
+      const xx = x + dx * bend * 3.7;
+      const yy = y + dy * bend * 3.7;
+      i ? ctx.lineTo(xx, yy) : ctx.moveTo(xx, yy);
+    });
+    ctx.stroke();
   }
 
-  if (!gl) return makeFallback();
+  function drawBentText(text, x, y, px, py, font, color, maxWidth) {
+    ctx.save();
+    ctx.font = font;
+    ctx.fillStyle = color;
+    ctx.textBaseline = 'alphabetic';
 
-  const vs = 'attribute vec2 p;varying vec2 v;void main(){v=p*.5+.5;v.y=1.-v.y;gl_Position=vec4(p,0.,1.);}';
-  const fs = `precision mediump float;varying vec2 v;uniform sampler2D t;
-    uniform vec2 bh;uniform float asp;
-    void main(){
-      vec2 d=v-bh; d.x*=asp; float r=length(d); vec2 u=d/max(r,1e-4);
-      float rs=.045, rph=.075;
-      float defl=rs*rs*2.6/max(r,.02);
-      vec2 sp=v-vec2(u.x/asp,u.y)*defl;
-      sp=abs(fract(sp*.5+.5)*2.-1.);              // mirror-wrap
-      vec3 col=texture2D(t,sp).rgb;
-      float ring=smoothstep(.028,.0,abs(r-rph));
-      col+=vec3(1.,.62,.3)*ring*.9;
-      col*=smoothstep(rph*.92,rph,r);             // shadow
-      gl_FragColor=vec4(col,1.);
-    }`;
+    let cursor = x;
+    for (const ch of text) {
+      const m = ctx.measureText(ch);
+      if (maxWidth && cursor - x > maxWidth) break;
 
-  function sh(type, src) {
-    const s = gl.createShader(type);
-    gl.shaderSource(s, src);
-    gl.compileShader(s);
-    if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) {
-      console.warn('Shader compile error:', gl.getShaderInfoLog(s));
-      return null;
+      const gx = cursor + m.width * 0.5;
+      const gy = y - 8;
+      const dx = gx - px;
+      const dy = gy - py;
+      const r = Math.hypot(dx, dy) + 1;
+      const r2 = r * r + 800;
+      const bend = Math.min(0.24, 2600 / r2);
+      const xx = cursor + dx * bend * 3.2;
+      const yy = y + dy * bend * 3.2;
+      const rot = Math.max(-0.18, Math.min(0.18, dx * dy / (r2 * 18)));
+
+      ctx.save();
+      ctx.translate(xx, yy);
+      ctx.rotate(rot);
+      ctx.fillText(ch, 0, 0);
+      ctx.restore();
+
+      cursor += m.width;
     }
-    return s;
+    ctx.restore();
   }
-
-  const vsh = sh(gl.VERTEX_SHADER, vs);
-  const fsh = sh(gl.FRAGMENT_SHADER, fs);
-  if (!vsh || !fsh) return makeFallback();
-
-  const pr = gl.createProgram();
-  gl.attachShader(pr, vsh);
-  gl.attachShader(pr, fsh);
-  gl.linkProgram(pr);
-  if (!gl.getProgramParameter(pr, gl.LINK_STATUS)) {
-    console.warn('Shader link error:', gl.getProgramInfoLog(pr));
-    return makeFallback();
-  }
-  gl.useProgram(pr);
-
-  gl.bindBuffer(gl.ARRAY_BUFFER, gl.createBuffer());
-  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1, 3,-1, -1,3]), gl.STATIC_DRAW);
-  const loc = gl.getAttribLocation(pr, 'p');
-  gl.enableVertexAttribArray(loc);
-  gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
-
-  // --- texture: a fake page with the group's hero text ---
-  const tc = document.createElement('canvas'); tc.width = 1024; tc.height = 512;
-  const x = tc.getContext('2d');
-  const grad = x.createLinearGradient(0, 0, 0, 512);
-  grad.addColorStop(0, '#16233e'); grad.addColorStop(1, '#0b1220');
-  x.fillStyle = grad; x.fillRect(0, 0, 1024, 512);
-  x.strokeStyle = 'rgba(122,175,222,.10)';
-  for (let i = 0; i < 1024; i += 64) { x.beginPath(); x.moveTo(i, 0); x.lineTo(i, 512); x.stroke(); }
-  for (let i = 0; i < 512;  i += 64) { x.beginPath(); x.moveTo(0, i); x.lineTo(1024, i); x.stroke(); }
-  x.fillStyle = '#f2762e'; x.font = '600 22px monospace';
-  x.fillText('UNIVERSITAT DE LES ILLES BALEARS', 60, 120);
-  x.fillStyle = '#fff'; x.font = '700 84px sans-serif';
-  x.fillText('We listen to the', 60, 230);
-  x.fillText('ringing of spacetime.', 60, 330);
-  x.fillStyle = 'rgba(255,255,255,.55)'; x.font = '28px sans-serif';
-  x.fillText('Black holes · gravitational waves · strong-field gravity', 60, 410);
-
-  const tex = gl.createTexture();
-  gl.bindTexture(gl.TEXTURE_2D, tex);
-  gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGB, gl.RGB, gl.UNSIGNED_BYTE, tc);
-  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
-  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
-  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
-  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
-
-  const uBh = gl.getUniformLocation(pr, 'bh'), uAsp = gl.getUniformLocation(pr, 'asp');
 
   function tick(t) {
-    if (drift) target = [.5 + .22 * Math.cos(t * .4), .5 + .18 * Math.sin(t * .6)];
-    bh[0] += (target[0] - bh[0]) * .06;
-    bh[1] += (target[1] - bh[1]) * .06;
-    gl.viewport(0, 0, cv.width, cv.height);
-    gl.uniform2f(uBh, bh[0], bh[1]);
-    gl.uniform1f(uAsp, cv.width / cv.height);
-    gl.drawArrays(gl.TRIANGLES, 0, 3);
+    if (drift) {
+      target = [.5 + .23 * Math.cos(t * .42), .5 + .17 * Math.sin(t * .58)];
+    }
+
+    bh[0] += (target[0] - bh[0]) * .055;
+    bh[1] += (target[1] - bh[1]) * .055;
+
+    const w = c.clientWidth;
+    const h = H;
+    const px = bh[0] * w;
+    const py = bh[1] * h;
+
+    ctx.clearRect(0, 0, w, h);
+
+    const bg = ctx.createLinearGradient(0, 0, 0, h);
+    bg.addColorStop(0, '#16233e');
+    bg.addColorStop(1, '#0b1220');
+    ctx.fillStyle = bg;
+    ctx.fillRect(0, 0, w, h);
+
+    // Bent page grid.
+    ctx.lineWidth = 1;
+    ctx.strokeStyle = 'rgba(122,175,222,.13)';
+    for (let x = -60; x <= w + 60; x += 44) {
+      const pts = [];
+      for (let y = -20; y <= h + 20; y += 8) pts.push([x, y]);
+      drawBentLine(pts, px, py);
+    }
+    for (let y = 22; y <= h + 40; y += 44) {
+      const pts = [];
+      for (let x = -20; x <= w + 20; x += 8) pts.push([x, y]);
+      drawBentLine(pts, px, py);
+    }
+
+    // Soft fake stars / page points.
+    for (let i = 0; i < 75; i++) {
+      const sx = (i * 83 + 37) % Math.max(w, 1);
+      const sy = (i * 47 + 19) % h;
+      const dx = sx - px;
+      const dy = sy - py;
+      const r2 = dx * dx + dy * dy + 700;
+      const bend = Math.min(0.18, 1900 / r2);
+      const bx = sx + dx * bend * 3.1;
+      const by = sy + dy * bend * 3.1;
+      const stretch = Math.min(5.0, 1.0 + 7000 / r2);
+      ctx.save();
+      ctx.translate(bx, by);
+      ctx.rotate(Math.atan2(dy, dx) + Math.PI / 2);
+      ctx.beginPath();
+      ctx.ellipse(0, 0, 1.0 * stretch, .9, 0, 0, 7);
+      ctx.fillStyle = 'rgba(225,235,255,.38)';
+      ctx.fill();
+      ctx.restore();
+    }
+
+    // Distorted page text.
+    const titleSize = Math.max(28, Math.min(54, w * .06));
+    drawBentText('UNIVERSITAT DE LES ILLES BALEARS', 34, 76, px, py,
+      '600 13px IBM Plex Mono, monospace', '#f2762e', w - 68);
+    drawBentText('We listen to the', 34, 145, px, py,
+      `700 ${titleSize}px Space Grotesk, sans-serif`, '#ffffff', w - 68);
+    drawBentText('ringing of spacetime.', 34, 205, px, py,
+      `700 ${titleSize}px Space Grotesk, sans-serif`, '#ffffff', w - 68);
+    drawBentText('Black holes · gravitational waves · strong-field gravity', 34, 256, px, py,
+      '18px Source Sans 3, sans-serif', 'rgba(255,255,255,.62)', w - 68);
+
+    // Einstein-ring hint and shadow.
+    const R = Math.min(w, h) * .075;
+    const halo = ctx.createRadialGradient(px, py, R * .7, px, py, R * 4.5);
+    halo.addColorStop(0, 'rgba(242,118,46,.42)');
+    halo.addColorStop(.45, 'rgba(242,118,46,.12)');
+    halo.addColorStop(1, 'rgba(242,118,46,0)');
+    ctx.fillStyle = halo;
+    ctx.beginPath();
+    ctx.arc(px, py, R * 4.5, 0, 7);
+    ctx.fill();
+
+    ctx.beginPath();
+    ctx.arc(px, py, R * 1.72, 0, 7);
+    ctx.strokeStyle = 'rgba(122,175,222,.25)';
+    ctx.lineWidth = 1.1;
+    ctx.setLineDash([5, 8]);
+    ctx.stroke();
+    ctx.setLineDash([]);
+
+    ctx.beginPath();
+    ctx.arc(px, py, R * 1.42, 0, 7);
+    ctx.strokeStyle = 'rgba(255,196,130,.95)';
+    ctx.lineWidth = 2;
+    ctx.shadowColor = ACCENT;
+    ctx.shadowBlur = 16;
+    ctx.stroke();
+    ctx.shadowBlur = 0;
+
+    ctx.beginPath();
+    ctx.arc(px, py, R * 1.05, 0, 7);
+    ctx.fillStyle = '#03050a';
+    ctx.fill();
   }
 
-  const base = makeLoop(tick);
-  return { start: base.start, stop: base.stop, tick };
+  return makeLoop(tick);
 });
 
 /* =====================================================================

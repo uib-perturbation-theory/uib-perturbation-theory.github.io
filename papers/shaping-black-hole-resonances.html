@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>
+    Shaping black hole resonances — Perturbation Theory Group @ UIB
+  </title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Source+Sans+3:wght@400;600&family=IBM+Plex+Mono:wght@400;500&display=swap"
+    rel="stylesheet"
+  >
+  <link rel="stylesheet" href="../css/style.css">
+
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']]
+      },
+      svg: {
+        fontCache: 'global'
+      }
+    };
+  </script>
+  <script
+    defer
+    src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"
+  ></script>
+</head>
+
+<body>
+
+  <nav class="nav">
+    <div class="nav-inner">
+      <a class="brand" href="../index.html">
+        Perturbation Theory Group <span class="tilde">~</span> UIB
+      </a>
+
+      <button
+        class="nav-toggle"
+        aria-label="Open menu"
+        onclick="document.querySelector('.nav-links').classList.toggle('open')"
+      >
+        ☰
+      </button>
+
+      <ul class="nav-links">
+        <li><a href="../research.html">Research</a></li>
+        <li><a href="../lab.html">Lab</a></li>
+        <li><a href="../team.html">Team</a></li>
+        <li><a href="../publications.html" aria-current="page">Publications</a></li>
+        <li><a href="../news.html">News</a></li>
+        <li><a href="../contact.html">Contact</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <header class="page-head">
+    <div class="page-head-inner">
+      <p class="eyebrow">Paper overview</p>
+
+      <h1>
+        Shaping black hole resonances I. Black hole ringdown as a spectral
+        filtering process
+      </h1>
+
+      <p class="paper-hero-meta">
+        Alejandro Svyatkovskyy Kholyavka, Jose Antonio León Vega,
+        Samuel Gómez Gómez, Xisco Jiménez Forteza, Sayak Datta · 2026
+      </p>
+    </div>
+  </header>
+
+  <section class="section">
+    <div class="section-inner paper-layout">
+
+      <p class="paper-lede">
+        This paper studies how a black hole responds when it is perturbed.
+        The central idea is that black hole ringdown can be understood as a
+        spectral filtering process: the final signal depends not only on the
+        black hole, but also on the frequency content of the perturbation that
+        excites it.
+      </p>
+
+      <h2>Main idea</h2>
+
+      <p>
+        After a black hole is disturbed, it emits a characteristic signal
+        known as the ringdown. This signal is made of damped oscillations called
+        quasinormal modes. Each mode has a complex frequency, whose real part
+        controls the oscillation and whose imaginary part controls the damping.
+      </p>
+
+      <p>
+        The paper shows that the excitation of these modes is controlled by
+        the overlap between the initial perturbation and the black hole's
+        resonant response. In simple terms, the black hole reacts more strongly
+        when the perturbation contains frequencies close to its natural
+        quasinormal-mode frequencies.
+      </p>
+
+      <div class="paper-equation">
+        $$
+        \Psi(t) \simeq
+        \sum_n C_n e^{-i \omega_n t}
+        +
+        \Psi_{\mathrm{tail}}(t)
+        $$
+      </div>
+
+      <p>
+        Here, $\omega_n$ are the quasinormal-mode frequencies and $C_n$ are the
+        excitation amplitudes. The main question is how the initial data shape
+        the coefficients $C_n$.
+      </p>
+
+      <h2>Spectral filtering picture</h2>
+
+      <p>
+        A useful way to interpret the result is to think of the black hole as a
+        filter. The perturbation provides an input spectrum, and the black hole
+        selects the parts of that spectrum that match its resonances.
+      </p>
+
+      <div class="paper-equation">
+        $$
+        C_n \sim B_n \, T_n
+        $$
+      </div>
+
+      <p>
+        In this schematic expression, $B_n$ represents the black hole response
+        and $T_n$ represents the spectral content of the initial perturbation.
+        A mode is strongly excited when both factors overlap efficiently.
+      </p>
+
+      <figure class="paper-figure">
+        <img
+          src="../assets/papers/resonances-main-plot.png"
+          alt="Illustration of black hole resonance excitation"
+        >
+        <figcaption>
+          Placeholder figure. Replace this image with one of the main plots
+          from the paper, for example the frequency-domain overlap or the
+          numerical excitation amplitude as a function of the input frequency.
+        </figcaption>
+      </figure>
+
+      <h2>Why it matters</h2>
+
+      <p>
+        This result clarifies how ringdown signals are produced. It shows that
+        the observed strength of a quasinormal mode is not determined by the
+        black hole alone: it also carries information about the perturbation
+        that excited the black hole.
+      </p>
+
+      <p>
+        This is relevant for gravitational-wave astronomy, where ringdown
+        signals are used to test general relativity and to probe the nature of
+        astrophysical black holes.
+      </p>
+
+      <div class="paper-actions">
+        <a class="btn" href="https://arxiv.org/abs/2605.24704" rel="noopener">
+          Read on arXiv
+        </a>
+
+        <a class="btn btn-secondary" href="../publications.html">
+          Back to publications
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      <div>
+        <strong>Perturbation Theory Group @ UIB</strong><br>
+        Departament de Física, Universitat de les Illes Balears<br>
+        Cra. de Valldemossa km 7.5, 07122 Palma, Spain
+      </div>
+
+      <div>
+        <a href="../contact.html">Contact</a><br>
+        <a href="https://www.uib.eu/" rel="noopener">UIB</a>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>

@@ -79,88 +79,318 @@
     <div class="section-inner paper-layout">
 
       <p class="paper-lede">
-        This paper studies how a black hole responds when it is perturbed.
-        The central idea is that black hole ringdown can be understood as a
-        spectral filtering process: the final signal depends not only on the
-        black hole, but also on the frequency content of the perturbation that
-        excites it.
+        This paper studies the excitation of black-hole quasinormal modes from
+        a spectral point of view. The central result is that the ringdown
+        amplitude of each mode is controlled by the frequency content of the
+        perturbation that excites the black hole. In this sense, the black hole
+        behaves as a resonant spectral filter: it selects the part of the input
+        perturbation that overlaps with its own quasinormal-mode spectrum.
       </p>
 
-      <h2>Main idea</h2>
+      <h2>Ringdown as a filtering problem</h2>
 
       <p>
-        After a black hole is disturbed, it emits a characteristic signal
-        known as the ringdown. This signal is made of damped oscillations called
-        quasinormal modes. Each mode has a complex frequency, whose real part
-        controls the oscillation and whose imaginary part controls the damping.
-      </p>
-
-      <p>
-        The paper shows that the excitation of these modes is controlled by
-        the overlap between the initial perturbation and the black hole's
-        resonant response. In simple terms, the black hole reacts more strongly
-        when the perturbation contains frequencies close to its natural
-        quasinormal-mode frequencies.
+        In linear perturbation theory, the late-time response of a black hole
+        can be decomposed into a sum of damped oscillations, the quasinormal
+        modes, plus a non-oscillatory late-time tail. Schematically,
       </p>
 
       <div class="paper-equation">
         $$
-        \Psi(t) \simeq
-        \sum_n C_n e^{-i \omega_n t}
+        \Psi(t)
+        \simeq
+        \mathrm{Re}
+        \left[
+          \sum_n C_n e^{-i\omega_n t}
+        \right]
         +
-        \Psi_{\mathrm{tail}}(t)
+        \Psi_{\mathrm{tail}}(t).
         $$
       </div>
 
       <p>
-        Here, $\omega_n$ are the quasinormal-mode frequencies and $C_n$ are the
-        excitation amplitudes. The main question is how the initial data shape
-        the coefficients $C_n$.
+        The complex frequencies $\omega_n$ are fixed by the background
+        black-hole geometry. By contrast, the excitation amplitudes $C_n$ depend
+        on the perturbation that initially drives the system. The aim of the
+        paper is to make this dependence explicit and controllable.
       </p>
 
-      <h2>Spectral filtering picture</h2>
-
       <p>
-        A useful way to interpret the result is to think of the black hole as a
-        filter. The perturbation provides an input spectrum, and the black hole
-        selects the parts of that spectrum that match its resonances.
+        For perturbations governed by the Regge--Wheeler equation,
       </p>
 
       <div class="paper-equation">
         $$
-        C_n \sim B_n \, T_n
+        \frac{\partial^2 \Psi}{\partial r_*^2}
+        -
+        \frac{\partial^2 \Psi}{\partial t^2}
+        -
+        V_\ell(r)\Psi
+        =
+        S(r_*,t),
         $$
       </div>
 
       <p>
-        In this schematic expression, $B_n$ represents the black hole response
-        and $T_n$ represents the spectral content of the initial perturbation.
-        A mode is strongly excited when both factors overlap efficiently.
+        the quasinormal modes appear as poles of the frequency-domain Green's
+        function. Near each pole, the excitation coefficient factorizes into a
+        part associated with the black-hole response and a part associated with
+        the initial perturbation:
+      </p>
+
+      <div class="paper-equation">
+        $$
+        C_n \sim B_n\,T_n .
+        $$
+      </div>
+
+      <p>
+        Here, $B_n$ contains the intrinsic black-hole response, while $T_n$
+        measures the overlap between the initial perturbation and the $n$-th
+        quasinormal mode. The main result is that, in the asymptotic regime,
+        this overlap is essentially a weighted Fourier transform of the initial
+        data evaluated at the QNM wavenumber,
+      </p>
+
+      <div class="paper-equation">
+        $$
+        T_n
+        =
+        \int_{-\infty}^{+\infty}
+        I(\omega_n,r_*)\,e^{i\omega_n r_*}\,dr_* .
+        $$
+      </div>
+
+      <p>
+        This equation is the basis of the spectral-filtering interpretation:
+        a mode is efficiently excited when the perturbation has significant
+        spectral support near $k\simeq\omega_n$.
+      </p>
+
+      <h2>Tunable perturbations</h2>
+
+      <p>
+        To test this idea, the paper considers localized Gaussian perturbations
+        with independently tunable width and carrier frequency,
+      </p>
+
+      <div class="paper-equation">
+        $$
+        \Psi(r_*,0)
+        =
+        A
+        \exp\left[
+          -\frac{(r_*-r_0)^2}{2\sigma^2}
+        \right]
+        \cos\left[
+          \nu(r_*-r_0)
+        \right].
+        $$
+      </div>
+
+      <p>
+        The parameter $\sigma$ controls the spectral bandwidth,
+        $\Delta\omega\sim1/\sigma$, while $\nu$ shifts the spectral support
+        toward $\omega\simeq\pm\nu$. A useful dimensionless control parameter is
+      </p>
+
+      <div class="paper-equation">
+        $$
+        \alpha = \sigma\nu .
+        $$
+      </div>
+
+      <p>
+        For $\alpha < 1$, the perturbation is broadband and has substantial
+        support close to zero frequency. For $\alpha > 1$, the perturbation
+        becomes frequency-selective, with spectral peaks centred near
+        $\omega\simeq\pm\nu$. This transition allows one to tune the black-hole
+        response from a broadband excitation to a resonant, QNM-dominated
+        response.
+      </p>
+
+      <h2>Analytical excitation rule</h2>
+
+      <p>
+        For this family of initial data, the overlap can be evaluated
+        analytically. The result has the form
+      </p>
+
+      <div class="paper-equation">
+        $$
+        T_n
+        =
+        i\sqrt{8\pi}\,\sigma\omega_n
+        \left[
+          e^{-\frac{\sigma^2}{2}(\omega_n+\nu)^2}
+          +
+          e^{-\frac{\sigma^2}{2}(\omega_n-\nu)^2}
+        \right].
+        $$
+      </div>
+
+      <p>
+        This expression makes the resonance mechanism explicit. The excitation
+        is enhanced when one of the Gaussian peaks in frequency space overlaps
+        with the real part of the quasinormal-mode frequency,
+      </p>
+
+      <div class="paper-equation">
+        $$
+        \nu \simeq \omega_n^{\mathrm{Re}} .
+        $$
+      </div>
+
+      <p>
+        Conversely, modes whose frequencies lie outside the spectral support of
+        the perturbation are exponentially suppressed.
+      </p>
+
+      <h2>Optimal Gaussian width</h2>
+
+      <p>
+        The same formula also predicts an optimal width for a non-oscillatory
+        Gaussian perturbation, $\nu=0$. In this case the excitation behaves
+        approximately as
+      </p>
+
+      <div class="paper-equation">
+        $$
+        |T_n|
+        \propto
+        \sigma |\omega_n|
+        \exp\left[
+          -\frac{\sigma^2}{2}
+          \left(
+            (\omega_n^{\mathrm{Re}})^2
+            -
+            (\omega_n^{\mathrm{Im}})^2
+          \right)
+        \right].
+        $$
+      </div>
+
+      <p>
+        Defining
+      </p>
+
+      <div class="paper-equation">
+        $$
+        P_n
+        =
+        (\omega_n^{\mathrm{Re}})^2
+        -
+        (\omega_n^{\mathrm{Im}})^2 ,
+        $$
+      </div>
+
+      <p>
+        the maximum occurs at
+      </p>
+
+      <div class="paper-equation">
+        $$
+        \sigma_n^\ast = \frac{1}{\sqrt{P_n}} .
+        $$
+      </div>
+
+      <p>
+        For the fundamental Schwarzschild $\ell=2$ mode, this gives an optimal
+        width of order $\sigma_0^\ast\simeq2.75M$, in agreement with the
+        numerical time-domain extraction performed in the paper.
       </p>
 
       <figure class="paper-figure">
         <img
-          src="../assets/papers/QNEC_l=2_n=0_NU.pdf"
-          alt="Illustration of black hole resonance excitation"
+          src="../assets/papers/QNEC_l=2_n=0_NU.png"
+          alt="Fundamental quasinormal-mode excitation as a function of the carrier frequency"
         >
         <figcaption>
-          Placeholder figure.
+          Fundamental $\ell=2$, $n=0$ excitation as the spectral content of the
+          initial perturbation is varied. The response peaks when the carrier
+          frequency is tuned close to the real part of the fundamental
+          Schwarzschild QNM frequency.
         </figcaption>
       </figure>
 
-      <h2>Why it matters</h2>
+      <h2>Numerical validation</h2>
 
       <p>
-        This result clarifies how ringdown signals are produced. It shows that
-        the observed strength of a quasinormal mode is not determined by the
-        black hole alone: it also carries information about the perturbation
-        that excited the black hole.
+        The analytical picture is tested with time-domain evolutions of the
+        Regge--Wheeler equation. The ringdown amplitudes are extracted using
+        QNMToolkit, a sliding-window fitting method that performs large
+        ensembles of time-domain fits and quantifies the variability associated
+        with the choice of fitting window.
       </p>
 
       <p>
-        This is relevant for gravitational-wave astronomy, where ringdown
-        signals are used to test general relativity and to probe the nature of
-        astrophysical black holes.
+        The numerical results support the spectral-filtering picture in two
+        complementary ways. First, for $\nu=0$, the measured excitation has a
+        well-defined maximum near the analytical prediction for
+        $\sigma_0^\ast$. Second, at fixed $\sigma$, scanning the carrier
+        frequency $\nu$ produces a resonance curve whose maximum lies close to
+        the real part of the fundamental QNM frequency,
+      </p>
+
+      <div class="paper-equation">
+        $$
+        \nu_{\mathrm{max}}
+        \simeq
+        \omega_{20}^{\mathrm{Re}}
+        \simeq
+        0.3736/M .
+        $$
+      </div>
+
+      <p>
+        This provides a direct numerical demonstration that the black hole
+        responds most strongly when the perturbation is spectrally aligned with
+        one of its resonances.
+      </p>
+
+      <h2>Physical interpretation</h2>
+
+      <p>
+        The main physical conclusion is that quasinormal-mode amplitudes are not
+        determined by the black hole alone. The geometry fixes the allowed
+        resonant frequencies, but the perturbation determines which of those
+        resonances are populated. The ringdown signal therefore carries
+        information both about the final black hole and about the spectral
+        structure of the process that perturbed it.
+      </p>
+
+      <p>
+        This perspective is useful for connecting controlled perturbative
+        calculations with more realistic binary-black-hole mergers. In a merger,
+        the nonlinear dynamics before ringdown can be interpreted as preparing
+        an effective perturbation of the remnant. The subsequent ringdown then
+        filters this perturbation through the QNM spectrum of the final black
+        hole.
+      </p>
+
+      <h2>Takeaway</h2>
+
+      <p>
+        The paper provides a compact and quantitative interpretation of
+        black-hole ringdown excitation:
+      </p>
+
+      <div class="paper-equation">
+        $$
+        \boxed{
+        \text{ringdown amplitude}
+        =
+        \text{black-hole response}
+        \times
+        \text{spectral overlap with the perturbation}
+        }
+        $$
+      </div>
+
+      <p>
+        This turns QNM excitation into a controlled spectral-overlap problem and
+        gives a simple way to understand why some perturbations produce strong
+        ringdown signals while others suppress particular modes.
       </p>
 
       <div class="paper-actions">

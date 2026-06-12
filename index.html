@@ -9,6 +9,8 @@
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Source+Sans+3:wght@400;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
   <script src="js/home-hero-lens.js" defer></script>
+  <script src="js/home-bbh-merger.js" defer></script>
+  <script src="js/home-hero-switcher.js" defer></script>
 </head>
 <body>
 
@@ -27,8 +29,18 @@
   </div>
 </nav>
 
-<header class="hero hero-fullscreen hero-lens">
-  <canvas id="home-lens-canvas" class="hero-lens-canvas" aria-hidden="true"></canvas>
+<header class="hero hero-fullscreen hero-lens" id="home-hero" data-visualisation="lens">
+  <canvas
+    id="home-lens-canvas"
+    class="hero-canvas hero-lens-canvas is-active"
+    aria-hidden="true"
+  ></canvas>
+  <canvas
+    id="home-bbh-canvas"
+    class="hero-canvas hero-bbh-canvas"
+    aria-hidden="true"
+    hidden
+  ></canvas>
   <div class="hero-inner hero-lens-content">
     <h1>We listen to the ringing of spacetime.</h1>
     <p class="lede">
@@ -41,6 +53,14 @@
       <a class="btn btn-ghost" href="lab.html">Open the Black Hole Lab</a>
     </div>
   </div>
+  <button
+    class="hero-viz-toggle"
+    id="hero-viz-toggle"
+    type="button"
+    aria-label="Switch hero visualisation to binary black hole merger"
+  >
+    Show binary merger
+  </button>
   <a class="scroll-cue" href="#what-we-do" aria-label="Scroll to main content">↓</a>
 </header>
 

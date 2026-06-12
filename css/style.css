@@ -867,3 +867,28 @@ a:focus-visible, button:focus-visible {
 .paper-actions .btn-secondary:hover {
   border-color: var(--accent-2);
 }
+/* ---------- Two-panel figures in paper pages ---------- */
+
+.paper-figure-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.2rem;
+  align-items: start;
+}
+
+.paper-panel img {
+  width: 100%;
+  border-radius: 10px;
+}
+
+.paper-panel figcaption {
+  margin-top: 0.75rem;
+  color: var(--muted);
+  font-size: 0.92rem;
+}
+
+@media (max-width: 760px) {
+  .paper-figure-grid {
+    grid-template-columns: 1fr;
+  }
+}

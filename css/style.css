@@ -1,5 +1,5 @@
 /* ==========================================================
-   Gravity Group @ UIB — site stylesheet
+   Gravity Group @ UIB â€” site stylesheet
    Palette
    --ink      deep space navy (hero, nav, footer)
    --paper    warm off-white (content pages)
@@ -594,6 +594,57 @@ a:focus-visible, button:focus-visible {
 }
 @media (prefers-reduced-motion: reduce) {
   .scroll-cue { animation: none; }
+}
+
+
+
+/* ---------- Alternating fullscreen hero visualisations ---------- */
+
+.hero-canvas {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.hero-canvas[hidden] {
+  display: none;
+}
+
+.hero-viz-toggle {
+  position: absolute;
+  right: clamp(1rem, 3vw, 2rem);
+  bottom: clamp(1rem, 3vw, 2rem);
+  z-index: 4;
+  padding: 0.7rem 1rem;
+  border: 1px solid rgba(255,255,255,.24);
+  border-radius: 999px;
+  background: rgba(255,255,255,.08);
+  color: #fff;
+  font-family: var(--font-display);
+  font-weight: 600;
+  letter-spacing: .02em;
+  cursor: pointer;
+  backdrop-filter: blur(8px);
+}
+
+.hero-viz-toggle:hover {
+  background: rgba(255,255,255,.15);
+}
+
+.hero-viz-toggle:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 4px;
+}
+
+@media (max-width: 760px) {
+  .hero-viz-toggle {
+    left: 1.25rem;
+    right: auto;
+    bottom: 1.1rem;
+  }
 }
 
 /* ---------- Clickable team cards ---------- */

@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Resources — Perturbation Theory Group @ UIB</title>
+  <meta name="description" content="Open-source codes, research software, and student theses from the Perturbation Theory Group at the Universitat de les Illes Balears.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Source+Sans+3:wght@400;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="brand" href="index.html">Perturbation Theory Group <span class="tilde">~</span> UIB</a>
+    <button class="nav-toggle" aria-label="Open menu" onclick="document.querySelector('.nav-links').classList.toggle('open')">☰</button>
+    <ul class="nav-links">
+      <li><a href="research.html">Research</a></li>
+      <li><a href="lab.html">Lab</a></li>
+      <li><a href="team.html">Team</a></li>
+      <li><a href="publications.html">Publications</a></li>
+      <li><a href="resources.html" aria-current="page">Resources</a></li>
+      <li><a href="news.html">News</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+  </div>
+</nav>
+
+<header class="resources-head">
+  <div class="resources-head-inner">
+    <div>
+      <p class="eyebrow">Open science · Student work</p>
+      <h1>Resources</h1>
+      <p class="lede">
+        Open-source research software developed or maintained by members of the
+        group, together with bachelor's, master's and doctoral theses completed
+        within the Perturbation Theory Group at UIB.
+      </p>
+    </div>
+
+    <div class="resources-orbit" aria-hidden="true">
+      <div class="orbit-core">
+        <span>&Psi;(t, r*)</span>
+      </div>
+      <div class="orbit-node code">
+        <strong>Code</strong>
+        <span>Open source</span>
+      </div>
+      <div class="orbit-node theses">
+        <strong>Theses</strong>
+        <span>Student work</span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="resources-nav">
+  <div class="resources-nav-inner">
+    <nav class="resources-nav-list" aria-label="Resources sections">
+      <a href="#codes">
+        <span class="resources-nav-number">01</span>
+        <span class="resources-nav-title">Codes &amp; Software</span>
+        <span class="resources-nav-arrow" aria-hidden="true">↓</span>
+      </a>
+      <a href="#theses">
+        <span class="resources-nav-number">02</span>
+        <span class="resources-nav-title">Theses &amp; Dissertations</span>
+        <span class="resources-nav-arrow" aria-hidden="true">↓</span>
+      </a>
+    </nav>
+  </div>
+</div>
+
+<main>
+  <section class="section resource-section" id="codes">
+    <div class="section-inner">
+      <div class="section-heading">
+        <div>
+          <span class="kicker">01 · Open source</span>
+          <h2>Codes &amp; Software</h2>
+        </div>
+        <p>
+          Numerical solvers, analysis pipelines and reusable research tools for
+          black-hole perturbation theory, gravitational waves and strong-field
+          gravity.
+        </p>
+      </div>
+
+      <div class="resource-grid">
+        <article class="resource-card">
+          <div class="resource-card-top">
+            <span class="resource-card-index">GitHub organisation</span>
+            <div class="terminal-lines" aria-hidden="true">
+              <div><span class="prompt">$</span> git clone repository</div>
+              <div><span class="prompt">$</span> inspect documentation</div>
+              <div><span class="prompt">$</span> reproduce results</div>
+            </div>
+          </div>
+          <div class="resource-card-body">
+            <h3>Perturbation Theory Group @ UIB</h3>
+            <p>
+              Browse the group's public repositories, numerical tools, examples
+              and research software.
+            </p>
+            <div class="resource-tags" aria-label="Repository tags">
+              <span class="resource-tag">GitHub</span>
+              <span class="resource-tag">Open source</span>
+              <span class="resource-tag">Research software</span>
+            </div>
+            <div class="resource-links">
+              <a href="https://github.com/uib-perturbation-theory" target="_blank" rel="noopener noreferrer">
+                Browse repositories
+              </a>
+            </div>
+          </div>
+        </article>
+
+        <article class="resource-card resource-card-placeholder">
+          <div class="resource-card-top">
+            <span class="resource-card-index">Next release</span>
+            <div class="terminal-lines" aria-hidden="true">
+              <div><span class="prompt">&gt;</span> code name</div>
+              <div><span class="prompt">&gt;</span> short description</div>
+              <div><span class="prompt">&gt;</span> repository link</div>
+            </div>
+          </div>
+          <div class="resource-card-body">
+            <h3>More software coming soon</h3>
+            <p>
+              Individual codes, documentation and reproducibility packages will
+              be listed here as they become public.
+            </p>
+            <div class="resource-tags">
+              <span class="resource-tag">Python</span>
+              <span class="resource-tag">Documentation</span>
+            </div>
+            <div class="resource-links">
+              <a href="https://github.com/uib-perturbation-theory" target="_blank" rel="noopener noreferrer">
+                Group GitHub
+              </a>
+            </div>
+          </div>
+        </article>
+
+        <!--
+        Code card template:
+
+        <article class="resource-card">
+          <div class="resource-card-top">
+            <span class="resource-card-index">Numerical code</span>
+            <div class="terminal-lines" aria-hidden="true">
+              <div><span class="prompt">$</span> pip install project-name</div>
+              <div><span class="prompt">$</span> project-name --help</div>
+              <div><span class="prompt">$</span> project-name run</div>
+            </div>
+          </div>
+          <div class="resource-card-body">
+            <h3>Project name</h3>
+            <p>A concise description of what the code computes and the scientific problem it addresses.</p>
+            <div class="resource-tags">
+              <span class="resource-tag">Python</span>
+              <span class="resource-tag">Black holes</span>
+              <span class="resource-tag">Open source</span>
+            </div>
+            <div class="resource-links">
+              <a href="https://github.com/ORGANISATION/REPOSITORY" target="_blank" rel="noopener noreferrer">GitHub</a>
+              <a href="https://DOCUMENTATION-URL" target="_blank" rel="noopener noreferrer">Documentation</a>
+              <a href="https://arxiv.org/abs/ARXIV-ID" target="_blank" rel="noopener noreferrer">Related paper</a>
+            </div>
+          </div>
+        </article>
+        -->
+      </div>
+    </div>
+  </section>
+
+  <section class="section alt resource-section" id="theses">
+    <div class="section-inner">
+      <div class="section-heading">
+        <div>
+          <span class="kicker">02 · Student work</span>
+          <h2>Theses &amp; Dissertations</h2>
+        </div>
+        <p>
+          Bachelor's, master's and doctoral research carried out within the
+          group, with links to the thesis, associated software and related
+          publications whenever available.
+        </p>
+      </div>
+
+      <div class="thesis-directory">
+        <section class="thesis-group" aria-labelledby="phd-theses-title">
+          <header class="thesis-group-head">
+            <span class="thesis-group-number">01</span>
+            <h3 id="phd-theses-title">PhD theses</h3>
+            <span class="thesis-level">Doctoral dissertations</span>
+          </header>
+          <ul class="thesis-list">
+            <li class="thesis-item empty-thesis">
+              <span class="thesis-year">Archive</span>
+              <div>
+                <p class="thesis-title">Entries will be added here</p>
+                <p class="thesis-meta">
+                  Completed doctoral dissertations from the group will appear in
+                  this directory.
+                </p>
+              </div>
+            </li>
+          </ul>
+        </section>
+
+        <section class="thesis-group" aria-labelledby="master-theses-title">
+          <header class="thesis-group-head">
+            <span class="thesis-group-number">02</span>
+            <h3 id="master-theses-title">Master's theses</h3>
+            <span class="thesis-level">TFM · MSc theses</span>
+          </header>
+          <ul class="thesis-list">
+            <li class="thesis-item empty-thesis">
+              <span class="thesis-year">Archive</span>
+              <div>
+                <p class="thesis-title">Entries will be added here</p>
+                <p class="thesis-meta">
+                  Completed master's theses from the group will appear in this
+                  directory.
+                </p>
+              </div>
+            </li>
+          </ul>
+        </section>
+
+        <section class="thesis-group" aria-labelledby="bachelor-theses-title">
+          <header class="thesis-group-head">
+            <span class="thesis-group-number">03</span>
+            <h3 id="bachelor-theses-title">Bachelor's theses</h3>
+            <span class="thesis-level">TFG · BSc theses</span>
+          </header>
+          <ul class="thesis-list">
+            <li class="thesis-item empty-thesis">
+              <span class="thesis-year">Archive</span>
+              <div>
+                <p class="thesis-title">Entries will be added here</p>
+                <p class="thesis-meta">
+                  Completed bachelor's theses from the group will appear in this
+                  directory.
+                </p>
+              </div>
+            </li>
+          </ul>
+        </section>
+
+        <!--
+        Thesis entry template:
+
+        <li class="thesis-item">
+          <span class="thesis-year">2026</span>
+          <div>
+            <p class="thesis-title">Full title of the thesis</p>
+            <p class="thesis-meta">Student Name · Supervisor: Supervisor Name</p>
+            <p class="thesis-description">Optional one-sentence description of the thesis topic and its main scientific objective.</p>
+          </div>
+          <div class="thesis-actions">
+            <a class="thesis-link" href="PATH-OR-URL-TO-THESIS" target="_blank" rel="noopener noreferrer">Thesis PDF ↗</a>
+            <a class="thesis-link" href="https://github.com/ORGANISATION/REPOSITORY" target="_blank" rel="noopener noreferrer">Code ↗</a>
+            <a class="thesis-link" href="https://arxiv.org/abs/ARXIV-ID" target="_blank" rel="noopener noreferrer">Publication ↗</a>
+          </div>
+        </li>
+        -->
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-inner">
+      <div class="resource-cta">
+        <div class="resource-cta-content">
+          <span class="kicker">Reuse · Reproduce · Extend</span>
+          <h2>Research built to be used</h2>
+          <p>
+            Our public resources support reproducible calculations, facilitate
+            collaboration and provide a starting point for new projects in
+            gravitational physics.
+          </p>
+          <a class="btn" href="https://github.com/uib-perturbation-theory" target="_blank" rel="noopener noreferrer">
+            Visit our GitHub
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div>
+      <strong>Perturbation Theory Group @ UIB</strong><br>
+      Departament de Física, Universitat de les Illes Balears<br>
+      Cra. de Valldemossa km 7.5, 07122 Palma, Spain
+    </div>
+    <div>
+      <a href="contact.html">Contact</a><br>
+      <a href="https://www.uib.eu/" rel="noopener">UIB</a><br>
+      <a href="https://github.com/uib-perturbation-theory" target="_blank" rel="noopener noreferrer">GitHub</a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

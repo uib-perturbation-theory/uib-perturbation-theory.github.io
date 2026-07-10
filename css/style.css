@@ -1363,6 +1363,11 @@ a:focus-visible, button:focus-visible {
   text-decoration: none;
 }
 
+.thesis-link-muted {
+  color: var(--muted);
+  cursor: default;
+}
+
 .empty-thesis {
   grid-template-columns: 76px minmax(0, 1fr);
   color: var(--muted);

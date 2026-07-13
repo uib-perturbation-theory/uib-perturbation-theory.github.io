@@ -11,6 +11,7 @@
   <script src="js/home-hero-lens.js" defer></script>
   <script src="js/home-bbh-merger.js" defer></script>
   <script src="js/home-hero-switcher.js" defer></script>
+  <script src="js/latest-news.js" defer></script>
 </head>
 <body>
 
@@ -100,21 +101,22 @@
   <div class="section-inner">
     <span class="kicker">Latest</span>
     <h2>Recent news</h2>
-    <!-- PLACEHOLDER: keep the 3 most recent items here, full list in news.html -->
-    <div class="news-item">
-      <div class="date">2026-06-01</div>
-      <div>
-        <h3>New preprint on arXiv</h3>
-        <p>PLACEHOLDER — short description of the result and a link to the paper.</p>
-      </div>
+
+    <div
+      id="latest-news"
+      aria-live="polite"
+      aria-busy="true"
+    >
+      <p class="latest-news-status">Loading recent news…</p>
     </div>
-    <div class="news-item">
-      <div class="date">2026-05-15</div>
-      <div>
-        <h3>Talk at an international conference</h3>
-        <p>PLACEHOLDER — who spoke, where, and about what.</p>
-      </div>
-    </div>
+
+    <noscript>
+      <p>
+        JavaScript is disabled.
+        <a href="news.html">View the latest news.</a>
+      </p>
+    </noscript>
+
     <a class="btn" href="news.html">All news</a>
   </div>
 </section>

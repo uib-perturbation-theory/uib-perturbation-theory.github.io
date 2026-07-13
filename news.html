@@ -113,6 +113,54 @@
       font-weight: 700;
     }
 
+
+    .news-card-publication {
+      position: relative;
+      grid-template-columns: 1fr;
+      min-height: 220px;
+      background:
+        radial-gradient(
+          420px 220px at 100% 0%,
+          rgba(62, 124, 177, 0.09),
+          transparent 72%
+        ),
+        #fff;
+    }
+
+    .news-card-publication::before {
+      content: "";
+      position: absolute;
+      inset: 0 auto 0 0;
+      width: 4px;
+      background: var(--accent);
+    }
+
+    .news-card-publication .news-card-content {
+      position: relative;
+      min-height: 220px;
+      padding-left: clamp(1.7rem, 4vw, 2.6rem);
+    }
+
+    .news-card-publication h2 {
+      max-width: 33ch;
+      padding-right: clamp(0rem, 11vw, 8rem);
+    }
+
+    .news-card-arxiv {
+      position: absolute;
+      top: 1.55rem;
+      right: clamp(1.5rem, 4vw, 2.35rem);
+      padding: 0.35rem 0.65rem;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.78);
+      font-family: var(--font-mono);
+      color: var(--muted);
+      font-size: 0.7rem;
+      letter-spacing: 0.04em;
+      white-space: nowrap;
+    }
+
     @media (max-width: 760px) {
       .news-card {
         grid-template-columns: 1fr;
@@ -120,6 +168,18 @@
 
       .news-card-image {
         min-height: 230px;
+      }
+
+
+      .news-card-publication h2 {
+        padding-right: 0;
+      }
+
+      .news-card-arxiv {
+        position: static;
+        align-self: flex-start;
+        margin-bottom: 1rem;
+        order: -1;
       }
     }
 
@@ -190,7 +250,144 @@
 
         <div class="news-list">
 
-          <!-- Newest news item first -->
+
+          <!-- ==================================================
+               arXiv publications
+               Newest entries first
+               ================================================== -->
+
+          <a
+            class="news-card news-card-publication"
+            href="publications.html#spectral-suppression-ringdown-tails"
+            aria-label="View publication: Spectral suppression of black hole ringdown tails"
+          >
+            <div class="news-card-content">
+
+              <span class="news-card-arxiv">arXiv:2606.02146</span>
+
+              <div class="news-card-meta">
+                <span>Publication</span>
+                <time datetime="2026-06-02">2 June 2026</time>
+              </div>
+
+              <h2>
+                Spectral suppression of black hole ringdown tails
+              </h2>
+
+              <p>
+                A new preprint led by Jose Antonio León Vega shows how the
+                spectral structure of oscillatory perturbations can suppress
+                the late-time power-law tails of black-hole ringdown signals.
+              </p>
+
+              <span class="news-card-read">
+                View publication <span aria-hidden="true">→</span>
+              </span>
+
+            </div>
+          </a>
+
+
+          <a
+            class="news-card news-card-publication"
+            href="publications.html#shaping-black-hole-resonances"
+            aria-label="View publication: Shaping black hole resonances I"
+          >
+            <div class="news-card-content">
+
+              <span class="news-card-arxiv">arXiv:2605.24704</span>
+
+              <div class="news-card-meta">
+                <span>Publication</span>
+                <time datetime="2026-05-26">26 May 2026</time>
+              </div>
+
+              <h2>
+                Shaping black hole resonances I. Black hole ringdown as a
+                spectral filtering process
+              </h2>
+
+              <p>
+                A new preprint led by Alejandro Svyatkovskyy Kholyavka
+                develops a spectral-filtering description of quasinormal-mode
+                excitation in black-hole ringdown.
+              </p>
+
+              <span class="news-card-read">
+                View publication <span aria-hidden="true">→</span>
+              </span>
+
+            </div>
+          </a>
+
+
+          <a
+            class="news-card news-card-publication"
+            href="publications.html#gravitational-atoms-lisa"
+            aria-label="View publication: Impact of the axion-like self-interactions in gravitational atoms for LISA"
+          >
+            <div class="news-card-content">
+
+              <span class="news-card-arxiv">arXiv:2605.17589</span>
+
+              <div class="news-card-meta">
+                <span>Publication</span>
+                <time datetime="2026-05-19">19 May 2026</time>
+              </div>
+
+              <h2>
+                Impact of the axion-like self-interactions in gravitational
+                atoms for LISA
+              </h2>
+
+              <p>
+                A new preprint led by Samuel Gómez Gómez explores how
+                axion-like self-interactions in gravitational atoms could be
+                constrained through gravitational-wave observations with
+                LISA.
+              </p>
+
+              <span class="news-card-read">
+                View publication <span aria-hidden="true">→</span>
+              </span>
+
+            </div>
+          </a>
+
+
+          <a
+            class="news-card news-card-publication"
+            href="publications.html#axial-oscillations-viscous-neutron-stars"
+            aria-label="View publication: Axial Oscillations of Viscous Neutron Stars"
+          >
+            <div class="news-card-content">
+
+              <span class="news-card-arxiv">arXiv:2604.13208</span>
+
+              <div class="news-card-meta">
+                <span>Publication</span>
+                <time datetime="2026-04-16">16 April 2026</time>
+              </div>
+
+              <h2>
+                Axial Oscillations of Viscous Neutron Stars
+              </h2>
+
+              <p>
+                A new preprint led by Sofía Bussières López studies the axial
+                oscillation spectrum of viscous neutron stars and identifies
+                new families of viscosity-driven modes.
+              </p>
+
+              <span class="news-card-read">
+                View publication <span aria-hidden="true">→</span>
+              </span>
+
+            </div>
+          </a>
+
+
+          <!-- Conference news -->
           <a
             class="news-card"
             href="news/xviii-black-holes-workshop-lisbon.html"

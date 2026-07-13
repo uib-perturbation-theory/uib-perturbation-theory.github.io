@@ -1,30 +1,88 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+
   <title>Publications — Perturbation Theory Group @ UIB</title>
+
+  <meta
+    name="description"
+    content="Research publications from the Perturbation Theory Group at the Universitat de les Illes Balears."
+  >
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link
     href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Source+Sans+3:wght@400;600&family=IBM+Plex+Mono:wght@400;500&display=swap"
     rel="stylesheet"
   >
+
   <link rel="stylesheet" href="css/style.css">
+
+  <style>
+    .pub {
+      scroll-margin-top: 100px;
+      transition:
+        border-color 0.25s ease,
+        background-color 0.25s ease,
+        box-shadow 0.25s ease,
+        transform 0.25s ease;
+    }
+
+    .pub:target {
+      border-color: var(--accent);
+      background:
+        linear-gradient(
+          90deg,
+          rgba(242, 118, 46, 0.1),
+          transparent 48%
+        ),
+        #fff;
+      box-shadow: 0 18px 42px rgba(11, 18, 32, 0.13);
+      transform: translateY(-2px);
+    }
+
+    .pub:target::before {
+      background: var(--accent);
+    }
+
+    .pub .arxiv-only {
+      font-family: var(--font-mono);
+      font-size: 0.82rem;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .pub {
+        transition: none;
+      }
+
+      .pub:target {
+        transform: none;
+      }
+    }
+  </style>
 </head>
 
 <body>
 
   <nav class="nav">
     <div class="nav-inner">
+
       <a class="brand" href="index.html">
         Perturbation Theory Group <span class="tilde">~</span> UIB
       </a>
 
       <button
         class="nav-toggle"
+        type="button"
         aria-label="Open menu"
-        onclick="document.querySelector('.nav-links').classList.toggle('open')"
+        aria-expanded="false"
+        onclick="
+          const menu = document.querySelector('.nav-links');
+          const isOpen = menu.classList.toggle('open');
+          this.setAttribute('aria-expanded', isOpen);
+        "
       >
         ☰
       </button>
@@ -33,108 +91,194 @@
         <li><a href="research.html">Research</a></li>
         <li><a href="lab.html">Lab</a></li>
         <li><a href="team.html">Team</a></li>
-        <li><a href="publications.html" aria-current="page">Publications</a></li>
+        <li>
+          <a href="publications.html" aria-current="page">Publications</a>
+        </li>
         <li><a href="resources.html">Resources</a></li>
         <li><a href="news.html">News</a></li>
         <li><a href="contact.html">Contact</a></li>
       </ul>
+
     </div>
   </nav>
 
+
   <header class="page-head">
     <div class="page-head-inner">
+
       <p class="eyebrow">Papers</p>
       <h1>Publications</h1>
+
     </div>
   </header>
 
-  <section class="section">
-    <div class="section-inner">
 
-      <h2>2026</h2>
+  <main>
+    <section class="section">
+      <div class="section-inner">
 
-      <div class="pub pub-clickable">
-        <p class="title">
-          <a href="papers/spectral-suppression-tails.html">
-            Spectral suppression of black hole ringdown tails
-          </a>
+        <h2>2026</h2>
+
+
+        <div
+          class="pub pub-clickable"
+          id="spectral-suppression-ringdown-tails"
+        >
+          <p class="title">
+            <a href="papers/spectral-suppression-tails.html">
+              Spectral suppression of black hole ringdown tails
+            </a>
+          </p>
+
+          <p class="meta">
+            Jose Antonio León Vega, Alejandro Svyatkovskyy Kholyavka,
+            Sayak Datta, Xisco Jiménez Forteza
+          </p>
+
+          <p class="summary">
+            A short overview of how the frequency content of the initial
+            perturbation can suppress late-time power-law tails in black-hole
+            ringdown signals.
+          </p>
+
+          <p class="links">
+            <a href="papers/spectral-suppression-tails.html">overview</a> ·
+            <a
+              href="https://arxiv.org/abs/2606.02146"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              arXiv
+            </a>
+          </p>
+        </div>
+
+
+        <div
+          class="pub pub-clickable"
+          id="shaping-black-hole-resonances"
+        >
+          <p class="title">
+            <a href="papers/shaping-black-hole-resonances.html">
+              Shaping black hole resonances I. Black hole ringdown as a
+              spectral filtering process
+            </a>
+          </p>
+
+          <p class="meta">
+            Alejandro Svyatkovskyy Kholyavka, Jose Antonio León Vega,
+            Samuel Gómez Gómez, Xisco Jiménez Forteza, Sayak Datta
+          </p>
+
+          <p class="summary">
+            A study of black-hole ringdown as a spectral filtering process,
+            showing how the initial perturbation controls the excitation of
+            quasinormal modes.
+          </p>
+
+          <p class="links">
+            <a href="papers/shaping-black-hole-resonances.html">overview</a> ·
+            <a
+              href="https://arxiv.org/abs/2605.24704"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              arXiv
+            </a>
+          </p>
+        </div>
+
+
+        <div
+          class="pub pub-clickable"
+          id="gravitational-atoms-lisa"
+        >
+          <p class="title">
+            <a href="papers/gravitational-atoms-lisa.html">
+              Impact of the axion-like self-interactions in gravitational
+              atoms for LISA
+            </a>
+          </p>
+
+          <p class="meta">
+            Samuel Gómez Gómez, Xisco Jiménez Forteza, Carlos Palenzuela Luque
+          </p>
+
+          <p class="summary">
+            A study of how axion-like self-interactions affect gravitational
+            atoms and their possible observational signatures for LISA.
+          </p>
+
+          <p class="links">
+            <a href="papers/gravitational-atoms-lisa.html">overview</a> ·
+            <a
+              href="https://arxiv.org/abs/2605.17589"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              arXiv
+            </a>
+          </p>
+        </div>
+
+
+        <!-- New publication entry.
+             No internal overview page is linked yet. -->
+        <div
+          class="pub pub-clickable"
+          id="axial-oscillations-viscous-neutron-stars"
+        >
+          <p class="title">
+            <a
+              href="https://arxiv.org/abs/2604.13208"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Axial Oscillations of Viscous Neutron Stars
+            </a>
+          </p>
+
+          <p class="meta">
+            Sofía Bussières, Jaime Redondo-Yuste, José Javier Ortega Gómez,
+            Vitor Cardoso
+          </p>
+
+          <p class="summary">
+            A study of axial oscillations of viscous neutron stars within a
+            causal and stable framework for relativistic hydrodynamics.
+          </p>
+
+          <p class="links arxiv-only">
+            <a
+              href="https://arxiv.org/abs/2604.13208"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              arXiv
+            </a>
+          </p>
+        </div>
+
+
+        <p style="margin-top: 2.5rem;">
+          Full list on
+          <a
+            href="https://inspirehep.net/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            INSPIRE-HEP
+          </a>.
         </p>
 
-        <p class="meta">
-          Jose Antonio León Vega, Alejandro Svyatkovskyy Kholyavka,
-          Sayak Datta, Xisco Jiménez Forteza
-        </p>
-
-        <p class="summary">
-          A short overview of how the frequency content of the initial
-          perturbation can suppress late-time power-law tails in black hole
-          ringdown signals.
-        </p>
-
-        <p class="links">
-          <a href="papers/spectral-suppression-tails.html">overview</a> ·
-          <a href="https://arxiv.org/abs/2606.02146" rel="noopener">arXiv</a>
-        </p>
       </div>
+    </section>
+  </main>
 
-      <div class="pub pub-clickable">
-        <p class="title">
-          <a href="papers/shaping-black-hole-resonances.html">
-            Shaping black hole resonances I. Black hole ringdown as a spectral
-            filtering process
-          </a>
-        </p>
-
-        <p class="meta">
-          Alejandro Svyatkovskyy Kholyavka, Jose Antonio León Vega,
-          Samuel Gómez Gómez, Xisco Jiménez Forteza, Sayak Datta
-        </p>
-
-        <p class="summary">
-          A study of black hole ringdown as a spectral filtering process,
-          showing how the initial perturbation controls the excitation of
-          quasinormal modes.
-        </p>
-
-        <p class="links">
-          <a href="papers/shaping-black-hole-resonances.html">overview</a> ·
-          <a href="https://arxiv.org/abs/2605.24704" rel="noopener">arXiv</a>
-        </p>
-      </div>
-
-      <div class="pub pub-clickable">
-        <p class="title">
-          <a href="papers/gravitational-atoms-lisa.html">
-            Impact of the axion-like self-interactions in gravitational atoms
-            for LISA
-          </a>
-        </p>
-
-        <p class="meta">
-          Samuel Gómez Gómez, Xisco Jiménez Forteza, Carlos Palenzuela Luque
-        </p>
-
-        <p class="summary">
-          A study of how axion-like self-interactions affect gravitational
-          atoms and their possible observational signatures for LISA.
-        </p>
-
-        <p class="links">
-          <a href="papers/gravitational-atoms-lisa.html">overview</a> ·
-          <a href="https://arxiv.org/abs/2605.17589" rel="noopener">arXiv</a>
-        </p>
-      </div>
-
-      <p style="margin-top:2.5rem">
-        Full list on
-        <a href="https://inspirehep.net/" rel="noopener">INSPIRE-HEP</a>.
-      </p>
-
-    </div>
-  </section>
 
   <footer class="footer">
     <div class="footer-inner">
+
       <div>
         <strong>Perturbation Theory Group @ UIB</strong><br>
         Departament de Física, Universitat de les Illes Balears<br>
@@ -145,6 +289,7 @@
         <a href="contact.html">Contact</a><br>
         <a href="https://www.uib.eu/" rel="noopener">UIB</a>
       </div>
+
     </div>
   </footer>
 

@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>
+    Group members at the XVIII Black Holes Workshop
+    — Perturbation Theory Group @ UIB
+  </title>
+
+  <meta
+    name="description"
+    content="Xisco Jiménez Forteza and Alejandro Svyatkovskyy Kholyavka presented research on black-hole ringdown at the XVIII Black Holes Workshop in Lisbon."
+  >
+
+  <meta property="og:type" content="article">
+  <meta
+    property="og:title"
+    content="Group members present ringdown research at the XVIII Black Holes Workshop"
+  >
+  <meta
+    property="og:description"
+    content="Two members of the Perturbation Theory Group presented talks on black-hole ringdown at the XVIII Black Holes Workshop in Lisbon."
+  >
+  <meta
+    property="og:image"
+    content="https://uib-perturbation-theory.github.io/assets/news/xviii-black-holes-workshop-lisbon/bhw-xviii-group-photo.jpg"
+  >
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Source+Sans+3:wght@400;600&family=IBM+Plex+Mono:wght@400;500&display=swap"
+    rel="stylesheet"
+  >
+
+  <link rel="stylesheet" href="../css/style.css">
+
+  <style>
+    .news-article {
+      max-width: 900px;
+    }
+
+    .news-article > * + * {
+      margin-top: 1.35rem;
+    }
+
+    .news-article h2 {
+      margin-top: 3.5rem;
+    }
+
+    .news-lede {
+      max-width: 760px;
+      font-size: clamp(1.18rem, 2.4vw, 1.42rem);
+      line-height: 1.55;
+      color: var(--text);
+    }
+
+    .article-meta {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1px;
+      overflow: hidden;
+      margin: 2.2rem 0 2.8rem;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: var(--line);
+    }
+
+    .article-meta-item {
+      padding: 1rem 1.1rem;
+      background: #fff;
+    }
+
+    .article-meta-label {
+      display: block;
+      margin-bottom: 0.25rem;
+      font-family: var(--font-mono);
+      color: var(--accent);
+      font-size: 0.72rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    .article-meta-value {
+      display: block;
+      font-family: var(--font-display);
+      font-weight: 700;
+      line-height: 1.35;
+    }
+
+    .news-figure {
+      margin: 2.5rem 0;
+    }
+
+    .news-figure img {
+      width: 100%;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: #fff;
+    }
+
+    .news-figure-portrait {
+      max-width: 680px;
+      margin-right: auto;
+      margin-left: auto;
+    }
+
+    .news-figure figcaption {
+      max-width: 78ch;
+      margin-top: 0.8rem;
+      color: var(--muted);
+      font-size: 0.9rem;
+      line-height: 1.5;
+    }
+
+    .talk-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 1.25rem;
+      margin: 1.8rem 0 2.4rem;
+    }
+
+    .talk-card {
+      position: relative;
+      overflow: hidden;
+      padding: 1.5rem;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: #fff;
+    }
+
+    .talk-card::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      width: 4px;
+      background: var(--accent);
+    }
+
+    .talk-time {
+      display: block;
+      margin-bottom: 0.55rem;
+      font-family: var(--font-mono);
+      color: var(--accent-2);
+      font-size: 0.76rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .talk-speaker {
+      margin-bottom: 0.45rem;
+      font-family: var(--font-display);
+      font-size: 1.15rem;
+      font-weight: 700;
+    }
+
+    .talk-title {
+      color: var(--muted);
+      font-style: italic;
+      line-height: 1.5;
+    }
+
+    .article-note {
+      margin: 2.2rem 0;
+      padding: 1.25rem 1.35rem;
+      border-left: 4px solid var(--accent-2);
+      background: rgba(62, 124, 177, 0.07);
+    }
+
+    .article-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.8rem;
+      margin-top: 3rem;
+      padding-top: 2rem;
+      border-top: 1px solid var(--line);
+    }
+
+    .text-link-button {
+      display: inline-flex;
+      align-items: center;
+      min-height: 44px;
+      padding: 0.55rem 0.95rem;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: #fff;
+      font-family: var(--font-display);
+      font-size: 0.9rem;
+      font-weight: 700;
+    }
+
+    .text-link-button:hover {
+      border-color: var(--accent-2);
+      text-decoration: none;
+    }
+
+    @media (max-width: 720px) {
+      .article-meta,
+      .talk-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <nav class="nav">
+    <div class="nav-inner">
+
+      <a class="brand" href="../index.html">
+        Perturbation Theory Group <span class="tilde">~</span> UIB
+      </a>
+
+      <button
+        class="nav-toggle"
+        type="button"
+        aria-label="Open menu"
+        aria-expanded="false"
+        onclick="
+          const menu = document.querySelector('.nav-links');
+          const isOpen = menu.classList.toggle('open');
+          this.setAttribute('aria-expanded', isOpen);
+        "
+      >
+        ☰
+      </button>
+
+      <ul class="nav-links">
+        <li><a href="../research.html">Research</a></li>
+        <li><a href="../lab.html">Lab</a></li>
+        <li><a href="../team.html">Team</a></li>
+        <li><a href="../publications.html">Publications</a></li>
+        <li><a href="../resources.html">Resources</a></li>
+        <li><a href="../news.html" aria-current="page">News</a></li>
+        <li><a href="../contact.html">Contact</a></li>
+      </ul>
+
+    </div>
+  </nav>
+
+
+  <header class="page-head">
+    <div class="page-head-inner">
+
+      <p class="eyebrow">Conference · 20 December 2025</p>
+
+      <h1>
+        Group members present ringdown research at the
+        XVIII Black Holes Workshop
+      </h1>
+
+      <p class="paper-hero-meta">
+        Instituto Superior Técnico · Lisbon, Portugal · 18–19 December 2025
+      </p>
+
+    </div>
+  </header>
+
+
+  <main>
+    <section class="section">
+      <article class="section-inner paper-layout news-article">
+
+        <p class="news-lede">
+          Xisco Jiménez Forteza and Alejandro Svyatkovskyy Kholyavka
+          represented the Perturbation Theory Group at the XVIII Black Holes
+          Workshop, where they presented recent results on black-hole
+          ringdown using numerical relativity and numerical linear
+          perturbation theory.
+        </p>
+
+        <div class="article-meta" aria-label="Event information">
+
+          <div class="article-meta-item">
+            <span class="article-meta-label">Event</span>
+            <span class="article-meta-value">
+              XVIII Black Holes Workshop
+            </span>
+          </div>
+
+          <div class="article-meta-item">
+            <span class="article-meta-label">Dates</span>
+            <span class="article-meta-value">
+              18–19 December 2025
+            </span>
+          </div>
+
+          <div class="article-meta-item">
+            <span class="article-meta-label">Venue</span>
+            <span class="article-meta-value">
+              Instituto Superior Técnico, Lisbon
+            </span>
+          </div>
+
+        </div>
+
+
+        <figure class="news-figure">
+          <img
+            src="../assets/news/xviii-black-holes-workshop-lisbon/bhw-xviii-group-photo.jpg"
+            alt="Participants of the XVIII Black Holes Workshop gathered at Instituto Superior Técnico in Lisbon"
+            width="880"
+            height="660"
+          >
+
+          <figcaption>
+            Participants of the XVIII Black Holes Workshop at Instituto
+            Superior Técnico, Lisbon. Photograph courtesy of the workshop
+            organisers and the Departamento de Física at Instituto Superior
+            Técnico.
+            <a
+              href="https://fisica.tecnico.ulisboa.pt/en/bhw-xviii/photos/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Original source ↗
+            </a>
+          </figcaption>
+        </figure>
+
+
+        <p>
+          The workshop was held on 18 and 19 December 2025 at the
+          Anfiteatro Abreu Faro of Instituto Superior Técnico. Its eighteenth
+          edition brought together 106 registered participants working across
+          the physical and mathematical aspects of black holes, including
+          general relativity, gravitational-wave physics, astrophysics,
+          semiclassical gravity and quantum gravity.
+        </p>
+
+        <p>
+          The meeting also marked ten years since the first direct detection
+          of gravitational waves by the LIGO detectors, providing a timely
+          setting for discussions on the current status and future prospects
+          of black-hole physics.
+        </p>
+
+
+        <h2>Two talks on black-hole ringdown</h2>
+
+        <p>
+          Both group members contributed to the ringdown session held on
+          Friday, 19 December. Their talks addressed complementary approaches
+          to understanding the post-merger response of black holes.
+        </p>
+
+        <div class="talk-grid">
+
+          <article class="talk-card">
+            <span class="talk-time">09:00–09:10 · 19 December</span>
+
+            <p class="talk-speaker">
+              Xisco Jiménez Forteza
+            </p>
+
+            <p class="talk-title">
+              “Understanding the black hole ring-down using numerical
+              relativity”
+            </p>
+          </article>
+
+          <article class="talk-card">
+            <span class="talk-time">09:50–10:00 · 19 December</span>
+
+            <p class="talk-speaker">
+              Alejandro Svyatkovskyy Kholyavka
+            </p>
+
+            <p class="talk-title">
+              “Exploring Amplitude and Tail Properties in the Ringdown Using
+              Numerical Linear Perturbation Theory”
+            </p>
+          </article>
+
+        </div>
+
+        <p>
+          Xisco Jiménez Forteza discussed how numerical-relativity
+          simulations can be used to investigate the post-merger dynamics of
+          binary black holes and the ringdown emitted by the remnant.
+          Alejandro Svyatkovskyy Kholyavka presented work on quasinormal-mode
+          excitation amplitudes and late-time tails, showing how numerical
+          linear perturbation theory can be used to isolate and characterise
+          the different components of the black-hole response.
+        </p>
+
+
+        <figure class="news-figure news-figure-portrait">
+          <img
+            src="../assets/news/xviii-black-holes-workshop-lisbon/xisco-jimenez-forteza-talk.jpg"
+            alt="Xisco Jiménez Forteza presenting his talk at the XVIII Black Holes Workshop"
+            width="1350"
+            height="1800"
+          >
+
+          <figcaption>
+            Xisco Jiménez Forteza presenting
+            <em>
+              “Understanding the black hole ring-down using numerical
+              relativity”
+            </em>
+            at the XVIII Black Holes Workshop. Photograph provided by the
+            Perturbation Theory Group at UIB.
+          </figcaption>
+        </figure>
+
+
+        <h2>A meeting across the different aspects of black-hole physics</h2>
+
+        <p>
+          The Black Holes Workshop series is designed to stimulate exchange
+          between researchers approaching black holes from classical,
+          quantum, mathematical and observational perspectives. The Lisbon
+          meeting provided the group with an opportunity to present its
+          current work, discuss methodological developments with specialists
+          in the field and explore possible directions for future
+          collaborations.
+        </p>
+
+        <div class="article-note">
+          The event programme and the registered-participant list are
+          available through the official workshop website.
+        </div>
+
+
+        <div class="article-actions">
+
+          <a
+            class="btn"
+            href="https://fisica.tecnico.ulisboa.pt/en/bhw-xviii/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Workshop website
+          </a>
+
+          <a
+            class="text-link-button"
+            href="https://fisica.tecnico.ulisboa.pt/en/bhw-xviii/program/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            View programme ↗
+          </a>
+
+          <a
+            class="text-link-button"
+            href="../news.html"
+          >
+            ← Back to news
+          </a>
+
+        </div>
+
+      </article>
+    </section>
+  </main>
+
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+      <div>
+        <strong>Perturbation Theory Group @ UIB</strong><br>
+        Departament de Física, Universitat de les Illes Balears<br>
+        Cra. de Valldemossa km 7.5, 07122 Palma, Spain
+      </div>
+
+      <div>
+        <a href="../contact.html">Contact</a><br>
+        <a href="https://www.uib.eu/" rel="noopener">UIB</a>
+      </div>
+
+    </div>
+  </footer>
+
+</body>
+</html>

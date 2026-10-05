@@ -410,6 +410,70 @@
         ringdown signals while others suppress particular modes.
       </p>
 
+      <h2>Explore the excitation landscape</h2>
+
+      <p>
+        The stationary structure of the QNM excitation can also be explored
+        interactively. Rotate the three-dimensional surface, zoom into different
+        regions of parameter space, and compare the stationary branches of
+        \(\ln |T_n|^2\) for the first four \(\ell=2\) quasinormal modes.
+      </p>
+      
+      <div class="interactive-landscape">
+      
+        <div class="landscape-controls">
+          <button
+            class="landscape-btn active"
+            onclick="showLandscape(0, this)">
+            n = 0
+          </button>
+      
+          <button
+            class="landscape-btn"
+            onclick="showLandscape(1, this)">
+            n = 1
+          </button>
+      
+          <button
+            class="landscape-btn"
+            onclick="showLandscape(2, this)">
+            n = 2
+          </button>
+      
+          <button
+            class="landscape-btn"
+            onclick="showLandscape(3, this)">
+            n = 3
+          </button>
+        </div>
+      
+      
+        <iframe
+          id="landscape-frame"
+          src="../assets/interactive/T0_landscape_3D.html"
+          title="Interactive QNM excitation landscape"
+          loading="lazy">
+        </iframe>
+      
+      </div>
+      
+      
+      <script>
+        function showLandscape(n, button) {
+      
+          const frame = document.getElementById("landscape-frame");
+      
+          frame.src =
+            `../assets/interactive/T${n}_landscape_3D.html`;
+      
+          document
+            .querySelectorAll(".landscape-btn")
+            .forEach(btn => btn.classList.remove("active"));
+      
+          button.classList.add("active");
+        }
+</script>
+      
       <div class="paper-actions">
         <a class="btn" href="https://arxiv.org/abs/2605.24704" rel="noopener">
           Read on arXiv

@@ -13,6 +13,7 @@
     href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Source+Sans+3:wght@400;600&family=IBM+Plex+Mono:wght@400;500&display=swap"
     rel="stylesheet"
   >
+
   <link rel="stylesheet" href="../css/style.css">
 
   <script>
@@ -26,6 +27,7 @@
       }
     };
   </script>
+
   <script
     defer
     src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"
@@ -36,6 +38,7 @@
 
   <nav class="nav">
     <div class="nav-inner">
+
       <a class="brand" href="../index.html">
         Perturbation Theory Group <span class="tilde">~</span> UIB
       </a>
@@ -57,12 +60,18 @@
         <li><a href="../news.html">News</a></li>
         <li><a href="../contact.html">Contact</a></li>
       </ul>
+
     </div>
   </nav>
 
+
   <header class="page-head">
+
     <div class="page-head-inner">
-      <p class="eyebrow">Paper overview</p>
+
+      <p class="eyebrow">
+        Paper overview
+      </p>
 
       <h1>
         Shaping black hole resonances I. Black hole ringdown as a spectral
@@ -73,31 +82,47 @@
         Alejandro Svyatkovskyy Kholyavka, Jose Antonio León Vega,
         Samuel Gómez Gómez, Xisco Jiménez Forteza, Sayak Datta · 2026
       </p>
+
     </div>
+
   </header>
 
+
   <section class="section">
+
     <div class="section-inner paper-layout">
 
+
       <p class="paper-lede">
+
         This paper studies the excitation of black-hole quasinormal modes from
         a spectral point of view. The central result is that the ringdown
         amplitude of each mode is controlled by the frequency content of the
         perturbation that excites the black hole. In this sense, the black hole
         behaves as a resonant spectral filter: it selects the part of the input
         perturbation that overlaps with its own quasinormal-mode spectrum.
+
       </p>
 
-      <h2>Ringdown as a filtering problem</h2>
+
+      <h2>
+        Ringdown as a filtering problem
+      </h2>
+
 
       <p>
+
         In linear perturbation theory, the late-time response of a black hole
         can be decomposed into a sum of damped oscillations, the quasinormal
         modes, plus a non-oscillatory late-time tail. Schematically,
+
       </p>
 
+
       <div class="paper-equation">
+
         $$
+
         \Psi(t)
         \simeq
         \mathrm{Re}
@@ -106,22 +131,33 @@
         \right]
         +
         \Psi_{\mathrm{tail}}(t).
+
         $$
+
       </div>
 
+
       <p>
+
         The complex frequencies $\omega_n$ are fixed by the background
         black-hole geometry. By contrast, the excitation amplitudes $C_n$ depend
         on the perturbation that initially drives the system. The aim of the
         paper is to make this dependence explicit and controllable.
+
       </p>
+
 
       <p>
+
         For perturbations governed by the Regge--Wheeler equation,
+
       </p>
 
+
       <div class="paper-equation">
+
         $$
+
         \frac{\partial^2 \Psi}{\partial r_*^2}
         -
         \frac{\partial^2 \Psi}{\partial t^2}
@@ -129,54 +165,84 @@
         V_\ell(r)\Psi
         =
         S(r_*,t),
+
         $$
+
       </div>
 
+
       <p>
+
         the quasinormal modes appear as poles of the frequency-domain Green's
         function. Near each pole, the excitation coefficient factorizes into a
         part associated with the black-hole response and a part associated with
         the initial perturbation:
+
       </p>
 
+
       <div class="paper-equation">
+
         $$
+
         C_n \sim B_n\,T_n .
+
         $$
+
       </div>
 
+
       <p>
+
         Here, $B_n$ contains the intrinsic black-hole response, while $T_n$
         measures the overlap between the initial perturbation and the $n$-th
         quasinormal mode. The main result is that, in the asymptotic regime,
         this overlap is essentially a weighted Fourier transform of the initial
         data evaluated at the QNM wavenumber,
+
       </p>
 
+
       <div class="paper-equation">
+
         $$
+
         T_n
         =
         \int_{-\infty}^{+\infty}
         I(\omega_n,r_*)\,e^{i\omega_n r_*}\,dr_* .
+
         $$
+
       </div>
 
+
       <p>
+
         This equation is the basis of the spectral-filtering interpretation:
         a mode is efficiently excited when the perturbation has significant
         spectral support near $k\simeq\omega_n$.
+
       </p>
 
-      <h2>Tunable perturbations</h2>
+
+      <h2>
+        Tunable perturbations
+      </h2>
+
 
       <p>
+
         To test this idea, the paper considers localized Gaussian perturbations
         with independently tunable width and carrier frequency,
+
       </p>
 
+
       <div class="paper-equation">
+
         $$
+
         \Psi(r_*,0)
         =
         A
@@ -186,39 +252,61 @@
         \cos\left[
           \nu(r_*-r_0)
         \right].
+
         $$
+
       </div>
 
+
       <p>
+
         The parameter $\sigma$ controls the spectral bandwidth,
         $\Delta\omega\sim1/\sigma$, while $\nu$ shifts the spectral support
         toward $\omega\simeq\pm\nu$. A useful dimensionless control parameter is
+
       </p>
 
+
       <div class="paper-equation">
+
         $$
+
         \alpha = \sigma\nu .
+
         $$
+
       </div>
 
+
       <p>
+
         For $\alpha < 1$, the perturbation is broadband and has substantial
         support close to zero frequency. For $\alpha > 1$, the perturbation
         becomes frequency-selective, with spectral peaks centred near
         $\omega\simeq\pm\nu$. This transition allows one to tune the black-hole
         response from a broadband excitation to a resonant, QNM-dominated
         response.
+
       </p>
 
-      <h2>Analytical excitation rule</h2>
+
+      <h2>
+        Analytical excitation rule
+      </h2>
+
 
       <p>
+
         For this family of initial data, the overlap can be evaluated
         analytically. The result has the form
+
       </p>
 
+
       <div class="paper-equation">
+
         $$
+
         T_n
         =
         i\sqrt{8\pi}\,\sigma\omega_n
@@ -227,36 +315,58 @@
           +
           e^{-\frac{\sigma^2}{2}(\omega_n-\nu)^2}
         \right].
+
         $$
+
       </div>
 
+
       <p>
+
         This expression makes the resonance mechanism explicit. The excitation
         is enhanced when one of the Gaussian peaks in frequency space overlaps
         with the real part of the quasinormal-mode frequency,
+
       </p>
+
 
       <div class="paper-equation">
+
         $$
+
         \nu \simeq \omega_n^{\mathrm{Re}} .
+
         $$
+
       </div>
 
+
       <p>
+
         Conversely, modes whose frequencies lie outside the spectral support of
         the perturbation are exponentially suppressed.
+
       </p>
 
-      <h2>Optimal Gaussian width</h2>
+
+      <h2>
+        Optimal Gaussian width
+      </h2>
+
 
       <p>
+
         The same formula also predicts an optimal width for a non-oscillatory
         Gaussian perturbation, $\nu=0$. In this case the excitation behaves
         approximately as
+
       </p>
 
+
       <div class="paper-equation">
+
         $$
+
         |T_n|
         \propto
         \sigma |\omega_n|
@@ -268,132 +378,198 @@
             (\omega_n^{\mathrm{Im}})^2
           \right)
         \right].
+
         $$
+
       </div>
+
 
       <p>
         Defining
       </p>
 
+
       <div class="paper-equation">
+
         $$
+
         P_n
         =
         (\omega_n^{\mathrm{Re}})^2
         -
         (\omega_n^{\mathrm{Im}})^2 ,
+
         $$
+
       </div>
+
 
       <p>
         the maximum occurs at
       </p>
 
+
       <div class="paper-equation">
+
         $$
+
         \sigma_n^\ast = \frac{1}{\sqrt{P_n}} .
+
         $$
+
       </div>
 
+
       <p>
+
         For the fundamental Schwarzschild $\ell=2$ mode, this gives an optimal
         width of order $\sigma_0^\ast\simeq2.75M$, in agreement with the
         numerical time-domain extraction performed in the paper.
+
       </p>
 
+
       <figure class="paper-figure paper-figure-grid">
+
         <div class="paper-panel">
+
           <img
             src="../assets/papers/QNEC_l=2_n=0_SIGMA.png"
             alt="Fundamental quasinormal-mode excitation as a function of Gaussian width"
           >
+
           <figcaption>
+
             <strong>Figure 6.</strong>
             Excitation of the fundamental $\ell=2$, $n=0$ quasinormal mode as a
             function of the Gaussian width $\sigma$ for non-oscillatory initial data.
             The maximum appears close to the analytical prediction for the optimal
             spectral width.
+
           </figcaption>
+
         </div>
-      
+
+
         <div class="paper-panel">
+
           <img
             src="../assets/papers/QNEC_l=2_n=0_NU.png"
             alt="Fundamental quasinormal-mode excitation as a function of carrier frequency"
           >
+
           <figcaption>
+
             <strong>Figure 7.</strong>
             Excitation of the same mode as a function of the carrier frequency $\nu$
             at fixed width. The response peaks when the perturbation is spectrally
             aligned with the real part of the fundamental Schwarzschild QNM frequency.
+
           </figcaption>
+
         </div>
+
       </figure>
 
-      <h2>Numerical validation</h2>
+
+      <h2>
+        Numerical validation
+      </h2>
+
 
       <p>
+
         The analytical picture is tested with time-domain evolutions of the
         Regge--Wheeler equation. The ringdown amplitudes are extracted using
         QNMToolkit, a sliding-window fitting method that performs large
         ensembles of time-domain fits and quantifies the variability associated
         with the choice of fitting window.
+
       </p>
 
+
       <p>
+
         The numerical results support the spectral-filtering picture in two
         complementary ways. First, for $\nu=0$, the measured excitation has a
         well-defined maximum near the analytical prediction for
         $\sigma_0^\ast$. Second, at fixed $\sigma$, scanning the carrier
         frequency $\nu$ produces a resonance curve whose maximum lies close to
         the real part of the fundamental QNM frequency,
+
       </p>
 
+
       <div class="paper-equation">
+
         $$
+
         \nu_{\mathrm{max}}
         \simeq
         \omega_{20}^{\mathrm{Re}}
         \simeq
         0.3736/M .
+
         $$
+
       </div>
 
+
       <p>
+
         This provides a direct numerical demonstration that the black hole
         responds most strongly when the perturbation is spectrally aligned with
         one of its resonances.
+
       </p>
 
-      <h2>Physical interpretation</h2>
+
+      <h2>
+        Physical interpretation
+      </h2>
+
 
       <p>
+
         The main physical conclusion is that quasinormal-mode amplitudes are not
         determined by the black hole alone. The geometry fixes the allowed
         resonant frequencies, but the perturbation determines which of those
         resonances are populated. The ringdown signal therefore carries
         information both about the final black hole and about the spectral
         structure of the process that perturbed it.
+
       </p>
 
+
       <p>
+
         This perspective is useful for connecting controlled perturbative
         calculations with more realistic binary-black-hole mergers. In a merger,
         the nonlinear dynamics before ringdown can be interpreted as preparing
         an effective perturbation of the remnant. The subsequent ringdown then
         filters this perturbation through the QNM spectrum of the final black
         hole.
+
       </p>
 
-      <h2>Takeaway</h2>
+
+      <h2>
+        Takeaway
+      </h2>
+
 
       <p>
+
         The paper provides a compact and quantitative interpretation of
         black-hole ringdown excitation:
+
       </p>
 
+
       <div class="paper-equation">
+
         $$
+
         \boxed{
         \text{ringdown amplitude}
         =
@@ -401,106 +577,283 @@
         \times
         \text{spectral overlap with the perturbation}
         }
+
         $$
+
       </div>
 
+
       <p>
+
         This turns QNM excitation into a controlled spectral-overlap problem and
         gives a simple way to understand why some perturbations produce strong
         ringdown signals while others suppress particular modes.
+
       </p>
 
-      <h2>Explore the excitation landscape</h2>
+
+      <!-- ================================================== -->
+      <!-- Interactive excitation landscape -->
+      <!-- ================================================== -->
+
+      <h2>
+        Explore the excitation landscape
+      </h2>
+
 
       <p>
-        The stationary structure of the QNM excitation can also be explored
-        interactively. Rotate the three-dimensional surface, zoom into different
-        regions of parameter space, and compare the stationary branches of
-        \(\ln |T_n|^2\) for the first four \(\ell=2\) quasinormal modes.
+
+        Explore the amplitude and phase structure of the QNM excitation overlap
+        $T_n$ in the $(\sigma,\nu)$ parameter space. The amplitude view shows
+        $\ln|T_n|^2$, while the phase can be displayed either modulo $2\pi$ or
+        as a continuous unwrapped surface. The stationary curves are obtained
+        directly from the corresponding numerical landscapes. Select the
+        quantity and overtone below, then rotate, zoom, and inspect the
+        three-dimensional surface.
+
       </p>
-      
+
+
       <div class="interactive-landscape">
-      
-        <div class="landscape-controls">
-          <button
-            class="landscape-btn active"
-            onclick="showLandscape(0, this)">
-            n = 0
-          </button>
-      
-          <button
-            class="landscape-btn"
-            onclick="showLandscape(1, this)">
-            n = 1
-          </button>
-      
-          <button
-            class="landscape-btn"
-            onclick="showLandscape(2, this)">
-            n = 2
-          </button>
-      
-          <button
-            class="landscape-btn"
-            onclick="showLandscape(3, this)">
-            n = 3
-          </button>
+
+
+        <!-- ================================================ -->
+        <!-- Quantity selector -->
+        <!-- ================================================ -->
+
+        <div class="landscape-selector-group">
+
+          <span class="landscape-selector-label">
+            Quantity
+          </span>
+
+          <div class="landscape-controls">
+
+            <button
+              class="landscape-btn quantity-btn active"
+              onclick="selectQuantity('amplitude', this)"
+            >
+              Amplitude
+            </button>
+
+            <button
+              class="landscape-btn quantity-btn"
+              onclick="selectQuantity('phase', this)"
+            >
+              Phase
+            </button>
+
+            <button
+              class="landscape-btn quantity-btn"
+              onclick="selectQuantity('phase_unwrapped', this)"
+            >
+              Unwrapped phase
+            </button>
+
+          </div>
+
         </div>
-      
-      
+
+
+        <!-- ================================================ -->
+        <!-- Overtone selector -->
+        <!-- ================================================ -->
+
+        <div class="landscape-selector-group">
+
+          <span class="landscape-selector-label">
+            Overtone
+          </span>
+
+          <div class="landscape-controls">
+
+            <button
+              class="landscape-btn overtone-btn active"
+              onclick="selectOvertone(0, this)"
+            >
+              n = 0
+            </button>
+
+            <button
+              class="landscape-btn overtone-btn"
+              onclick="selectOvertone(1, this)"
+            >
+              n = 1
+            </button>
+
+            <button
+              class="landscape-btn overtone-btn"
+              onclick="selectOvertone(2, this)"
+            >
+              n = 2
+            </button>
+
+            <button
+              class="landscape-btn overtone-btn"
+              onclick="selectOvertone(3, this)"
+            >
+              n = 3
+            </button>
+
+          </div>
+
+        </div>
+
+
+        <!-- ================================================ -->
+        <!-- Interactive Plotly iframe -->
+        <!-- ================================================ -->
+
         <iframe
           id="landscape-frame"
-          src="../assets/interactive/T0_landscape_3D.html"
+          src="../assets/interactive/T0_amplitude_numeric_3D.html"
           title="Interactive QNM excitation landscape"
           loading="lazy">
         </iframe>
-      
+
+
       </div>
-      
-      
+
+
+      <!-- ================================================== -->
+      <!-- Interactive landscape logic -->
+      <!-- ================================================== -->
+
       <script>
-        function showLandscape(n, button) {
-      
-          const frame = document.getElementById("landscape-frame");
-      
+
+        let currentQuantity = "amplitude";
+        let currentOvertone = 0;
+
+
+        const landscapeFiles = {
+
+          amplitude: n =>
+            `../assets/interactive/T${n}_amplitude_numeric_3D.html`,
+
+          phase: n =>
+            `../assets/interactive/T${n}_phase_numeric_3D.html`,
+
+          phase_unwrapped: n =>
+            `../assets/interactive/T${n}_phase_unwrapped_3D.html`
+
+        };
+
+
+        function updateLandscape() {
+
+          const frame =
+            document.getElementById("landscape-frame");
+
           frame.src =
-            `../assets/interactive/T${n}_landscape_3D.html`;
-      
-          document
-            .querySelectorAll(".landscape-btn")
-            .forEach(btn => btn.classList.remove("active"));
-      
-          button.classList.add("active");
+            landscapeFiles[currentQuantity](currentOvertone);
+
         }
-</script>
-      
+
+
+        function selectQuantity(quantity, button) {
+
+          currentQuantity = quantity;
+
+          document
+            .querySelectorAll(".quantity-btn")
+            .forEach(
+              btn => btn.classList.remove("active")
+            );
+
+          button.classList.add("active");
+
+          updateLandscape();
+
+        }
+
+
+        function selectOvertone(n, button) {
+
+          currentOvertone = n;
+
+          document
+            .querySelectorAll(".overtone-btn")
+            .forEach(
+              btn => btn.classList.remove("active")
+            );
+
+          button.classList.add("active");
+
+          updateLandscape();
+
+        }
+
+      </script>
+
+
+      <!-- ================================================== -->
+      <!-- Paper links -->
+      <!-- ================================================== -->
+
       <div class="paper-actions">
-        <a class="btn" href="https://arxiv.org/abs/2605.24704" rel="noopener">
+
+        <a
+          class="btn"
+          href="https://arxiv.org/abs/2605.24704"
+          rel="noopener"
+        >
           Read on arXiv
         </a>
 
-        <a class="btn btn-secondary" href="../publications.html">
+        <a
+          class="btn btn-secondary"
+          href="../publications.html"
+        >
           Back to publications
         </a>
+
       </div>
 
+
     </div>
+
   </section>
 
+
   <footer class="footer">
+
     <div class="footer-inner">
-      <div>
-        <strong>Perturbation Theory Group @ UIB</strong><br>
-        Departament de Física, Universitat de les Illes Balears<br>
-        Cra. de Valldemossa km 7.5, 07122 Palma, Spain
-      </div>
 
       <div>
-        <a href="../contact.html">Contact</a><br>
-        <a href="https://www.uib.eu/" rel="noopener">UIB</a>
+
+        <strong>
+          Perturbation Theory Group @ UIB
+        </strong>
+        <br>
+
+        Departament de Física, Universitat de les Illes Balears
+        <br>
+
+        Cra. de Valldemossa km 7.5, 07122 Palma, Spain
+
       </div>
+
+
+      <div>
+
+        <a href="../contact.html">
+          Contact
+        </a>
+        <br>
+
+        <a
+          href="https://www.uib.eu/"
+          rel="noopener"
+        >
+          UIB
+        </a>
+
+      </div>
+
     </div>
+
   </footer>
+
 
 </body>
 </html>

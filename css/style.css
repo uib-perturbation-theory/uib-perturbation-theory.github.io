@@ -790,7 +790,7 @@ a:focus-visible, button:focus-visible {
 
 .pub .summary {
   margin-top: 0.45rem;
-  max-width: 72ch;
+  max-width: 100ch;
   color: var(--text);
 }
 
@@ -801,7 +801,7 @@ a:focus-visible, button:focus-visible {
 }
 
 .paper-layout {
-  max-width: 850px;
+  max-width: 980px;
 }
 
 .paper-layout h2:not(:first-child) {
@@ -815,7 +815,6 @@ a:focus-visible, button:focus-visible {
 .paper-lede {
   font-size: 1.18rem;
   color: var(--text);
-  max-width: 70ch;
 }
 
 .paper-equation {
@@ -1661,4 +1660,52 @@ a:focus-visible, button:focus-visible {
     height: 460px;
   }
 
+}
+
+/* ---------- Long-form text ---------- */
+
+@media (min-width: 700px) {
+  .paper-layout > p,
+  .paper-figure > figcaption,
+  .profile-main p,
+  .research-intro,
+  .research-block p:not(.research-related),
+  .pub .summary {
+    text-align: justify;
+    -webkit-hyphens: auto;
+    hyphens: auto;
+  }
+}
+
+/* ---------- Research page ---------- */
+
+.research-layout {
+  max-width: 980px;
+}
+
+.research-intro {
+  margin-bottom: 3.5rem;
+}
+
+.research-block + .research-block {
+  margin-top: 3.5rem;
+  padding-top: 3.5rem;
+  border-top: 1px solid var(--line);
+}
+
+.research-block h2 {
+  margin-bottom: 1.2rem;
+}
+
+.research-related {
+  margin-top: 1.4rem;
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  color: var(--muted);
+}
+
+.research-related a + a::before {
+  content: "·";
+  margin: 0 0.55rem;
+  color: var(--muted);
 }

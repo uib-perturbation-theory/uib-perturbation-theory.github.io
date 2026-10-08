@@ -34,27 +34,97 @@
 </header>
 
 <section class="section">
-  <div class="section-inner">
+  <div class="section-inner research-layout">
 
-    <span class="kicker">Ringdown</span>
-    <h2>Black hole spectroscopy</h2>
-    <p>When two black holes merge, the remnant settles down by emitting
-    gravitational waves at a discrete set of complex frequencies — its
-    quasinormal modes. These frequencies depend only on the mass and spin
-    of the final black hole, making ringdown a clean test of the Kerr
-    hypothesis. We study how these modes are excited, how their amplitudes
-    encode the initial data, and how to extract them reliably from
-    numerical and observed signals.</p>
+    <p class="paper-lede research-intro">We study black holes, gravitational
+    waves and strong-field gravity. Our work combines black-hole perturbation
+    theory, numerical relativity and gravitational-wave data analysis, and is
+    organised around four connected lines: the ringdown of black holes, the
+    imprint of astrophysical environments on gravitational-wave sources, the
+    oscillations of neutron stars, and the numerical methods that underpin
+    them.</p>
 
-    <span class="kicker" style="margin-top:2.5rem">Beyond GR</span>
-    <h2>Tests of general relativity and exotic compact objects</h2>
-    <p>PLACEHOLDER — describe work on tests of GR, modified gravity,
-    wormholes or other exotic compact objects.</p>
+    <div class="research-block">
+      <span class="kicker">Ringdown</span>
+      <h2>Black hole spectroscopy</h2>
+      <p>When two black holes merge, the remnant settles down by emitting
+      gravitational waves at a discrete set of complex frequencies, its
+      quasinormal modes. These frequencies depend only on the mass and spin of
+      the final black hole, which makes the ringdown a clean test of the Kerr
+      hypothesis. Which modes are excited, and how strongly, depends instead on
+      the perturbation that drives the black hole.</p>
+      <p>We describe the ringdown as a spectral filtering process: the black
+      hole selects the part of the perturbation that overlaps with its own
+      quasinormal-mode spectrum, so the amplitude of each mode is set by the
+      frequency content of the source. The same spectral picture explains why
+      the late-time power-law tails predicted by Price's law are strongly
+      suppressed for the oscillatory perturbations produced in quasi-circular
+      mergers. We also use ringdown amplitudes and phases to build consistency
+      tests of general relativity and searches for additional,
+      non-gravitational modes in the signal.</p>
+      <p class="research-related">
+        <a href="papers/shaping-black-hole-resonances.html">Shaping black hole resonances I</a><a href="papers/spectral-suppression-tails.html">Spectral suppression of ringdown tails</a>
+      </p>
+    </div>
 
-    <span class="kicker" style="margin-top:2.5rem">Methods</span>
-    <h2>Numerical and machine-learning methods</h2>
-    <p>PLACEHOLDER — describe numerical infrastructure: perturbation-theory
-    solvers, spectral methods, physics-informed neural networks, etc.</p>
+    <div class="research-block">
+      <span class="kicker">Environments</span>
+      <h2>Gravitational waves from black holes in astrophysical environments</h2>
+      <p>Massive black holes are rarely isolated: they can be surrounded by
+      dense gas or by dark-matter overdensities. A stellar-mass compact object
+      spiralling through such an environment feels dynamical friction,
+      accretion and the gravity of the enclosed matter, and accumulates a phase
+      shift with respect to an inspiral in vacuum. For extreme- and
+      intermediate-mass-ratio inspirals observed by LISA, this dephasing can be
+      measurable.</p>
+      <p>We model these environmental effects and determine when they are
+      detectable and distinguishable, using mismatch criteria and Bayesian
+      parameter estimation. Applications include clouds of ultralight,
+      self-interacting axion-like particles formed around massive black holes,
+      which would allow LISA to constrain the particle mass and self-coupling
+      through gravity alone, and the dense gaseous interiors of the Little Red
+      Dots discovered by JWST.</p>
+      <p class="research-related">
+        <a href="papers/little-red-dots-lisa.html">Can LISA see inside the Little Red Dots?</a><a href="papers/gravitational-atoms-lisa.html">Axion-like self-interactions in gravitational atoms</a>
+      </p>
+    </div>
+
+    <div class="research-block">
+      <span class="kicker">Neutron stars</span>
+      <h2>Neutron stars and relativistic fluids</h2>
+      <p>Neutron stars probe matter at supranuclear densities, and their
+      oscillation spectrum will become accessible to next-generation detectors
+      through the post-merger signal of binary neutron-star coalescences.
+      Mergers drive matter far from equilibrium, so dissipation can no longer be
+      neglected.</p>
+      <p>We use a causal and stable formulation of relativistic viscous
+      hydrodynamics to compute the oscillation modes of viscous stars. Shear
+      viscosity shifts the spacetime modes of the star, gives rise to a new
+      family of viscosity-driven modes with no perfect-fluid counterpart, and
+      damps the long-lived trapped modes of ultracompact objects. This work
+      complements numerical simulations of magnetised neutron-star and
+      black-hole–neutron-star mergers.</p>
+      <p class="research-related">
+        <a href="papers/axial-oscillations-viscous-neutron-stars.html">Axial oscillations of viscous neutron stars</a>
+      </p>
+    </div>
+
+    <div class="research-block">
+      <span class="kicker">Methods</span>
+      <h2>Numerical and computational methods</h2>
+      <p>Our results rely on a range of numerical tools: time-domain solvers
+      for the equations of black-hole perturbation theory, frequency-domain
+      methods such as Leaver's continued fractions to compute quasinormal modes,
+      numerical-relativity and relativistic magnetohydrodynamics codes, and
+      data-analysis pipelines for mismatch, signal-to-noise and parameter
+      estimation. We are also exploring physics-informed neural networks as a
+      new way to solve Einstein's equations.</p>
+      <p>Where possible, we release our codes as open source, so that the
+      results in our papers can be reproduced.</p>
+      <p class="research-related">
+        <a href="resources.html#codes">Codes &amp; software</a><a href="https://github.com/uib-perturbation-theory/QNMToolkit" target="_blank" rel="noopener noreferrer">QNMToolkit</a>
+      </p>
+    </div>
 
   </div>
 </section>

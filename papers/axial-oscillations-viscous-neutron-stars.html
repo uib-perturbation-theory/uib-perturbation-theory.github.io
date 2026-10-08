@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>
+    Axial Oscillations of Viscous Neutron Stars — Strong Gravity Group @ UIB
+  </title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Source+Sans+3:wght@400;600&family=IBM+Plex+Mono:wght@400;500&display=swap"
+    rel="stylesheet"
+  >
+  <link rel="stylesheet" href="../css/style.css">
+
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']]
+      },
+      svg: {
+        fontCache: 'global'
+      }
+    };
+  </script>
+  <script
+    defer
+    src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"
+  ></script>
+</head>
+
+<body>
+
+  <nav class="nav">
+    <div class="nav-inner">
+      <a class="brand" href="../index.html">
+        Strong Gravity Group <span class="tilde">~</span> UIB
+      </a>
+
+      <button
+        class="nav-toggle"
+        aria-label="Open menu"
+        onclick="document.querySelector('.nav-links').classList.toggle('open')"
+      >
+        ☰
+      </button>
+
+      <ul class="nav-links">
+        <li><a href="../research.html">Research</a></li>
+        <li><a href="../lab.html">Lab</a></li>
+        <li><a href="../team.html">Team</a></li>
+        <li><a href="../publications.html" aria-current="page">Publications</a></li>
+        <li><a href="../resources.html">Resources</a></li>
+        <li><a href="../news.html">News</a></li>
+        <li><a href="../contact.html">Contact</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <header class="page-head">
+    <div class="page-head-inner">
+      <p class="eyebrow">Paper overview</p>
+
+      <h1>
+        Axial Oscillations of Viscous Neutron Stars
+      </h1>
+
+      <p class="paper-hero-meta">
+        Sofía Bussières, Jaime Redondo-Yuste, José Javier Ortega Gómez,
+        Vitor Cardoso · 2026
+      </p>
+    </div>
+  </header>
+
+  <section class="section">
+    <div class="section-inner paper-layout">
+
+      <p class="paper-lede">
+        The oscillation modes of neutron stars are a window into matter at
+        supranuclear densities, but the role of viscosity in these modes has
+        so far been understood only loosely, for lack of a well-posed
+        framework. This work uses a causal and stable formulation of
+        relativistic viscous hydrodynamics to compute the axial oscillation
+        spectrum of viscous neutron stars. It quantifies how shear viscosity
+        modifies the familiar spacetime modes and uncovers a new family of
+        viscosity-driven modes with no perfect-fluid counterpart.
+      </p>
+
+      <h2>Why viscosity matters</h2>
+
+      <p>
+        Neutron stars are one of the few systems where all four fundamental
+        interactions play a major role. Electromagnetic observations and
+        gravitational-wave measurements of tidal deformability already
+        constrain their equation of state, and third-generation detectors such
+        as the Einstein Telescope and Cosmic Explorer are expected to resolve
+        their oscillation spectrum in the post-merger signal of binary
+        neutron-star coalescences.
+      </p>
+
+      <p>
+        Most models neglect out-of-equilibrium effects such as viscosity. This
+        is reasonable for stars close to equilibrium, but a merger strongly
+        perturbs that equilibrium. If hyperons or strange quarks are present in
+        the remnant, weak-interaction processes can dramatically enhance the
+        viscosity. High-precision gravitational-wave asteroseismology must
+        therefore account for dissipation and, conversely, could one day
+        measure the transport coefficients of dense matter.
+      </p>
+
+      <h2>A causal theory of viscous fluids</h2>
+
+      <p>
+        The naive relativistic extension of Navier–Stokes, due to Landau and
+        Lifshitz, propagates perturbations acausally and makes equilibrium
+        states unstable. The paper instead adopts the
+        Bemfica–Disconzi–Noronha–Kovtun (BDNK) framework, in which a suitable
+        choice of hydrodynamic frame leads to well-posed equations while
+        keeping only first gradients of the fluid variables. The stress-energy
+        tensor reads
+      </p>
+
+      <div class="paper-equation">
+        $$
+        T_{ab}
+        =
+        \rho\, u_a u_b + p\, \Delta_{ab}
+        +
+        \mathcal{A}\, u_a u_b
+        + \Pi\, \Delta_{ab}
+        + 2 u_{(a}\mathcal{Q}_{b)}
+        - 2\eta\, \sigma_{ab},
+        $$
+      </div>
+
+      <p>
+        where $\eta$ is the shear viscosity, $\sigma_{ab}$ the shear tensor,
+        and the terms $\mathcal{A}$, $\Pi$ and $\mathcal{Q}_a$ involve two
+        additional transport coefficients, $\tau$ and $\theta$, that regulate
+        causality. The paper tests four different hydrodynamic frames, built
+        from two parametrizations of the transport coefficients, to check that
+        its physical conclusions do not depend on this choice.
+      </p>
+
+      <p>
+        The shear viscosities considered are large,
+        $\eta_c\sim10^{29}$–$10^{32}\,{\rm g\,cm^{-1}\,s^{-1}}$ at the centre of
+        the star. Smaller values leave no observable effect, while bulk
+        viscosities of order $10^{30}\,{\rm g\,cm^{-1}\,s^{-1}}$ are possible
+        in cores containing strange matter, so the results serve as an
+        estimate of the effect of a large transport coefficient.
+      </p>
+
+      <h2>Axial perturbations of viscous stars</h2>
+
+      <p>
+        The analysis focuses on axial, or odd-parity, perturbations of
+        spherically symmetric stars. For a perfect fluid, the fluid velocity
+        perturbation can be eliminated and the problem reduces to a single wave
+        equation for the metric perturbation $\psi$. With viscosity, $\psi$
+        couples to the axial fluid velocity $Z$ through two coupled equations,
+      </p>
+
+      <div class="paper-equation">
+        $$
+        \begin{aligned}
+          f\big(f\psi'\big)' + \big(\omega^2 - V\big)\psi
+          &=
+          -16\pi e^{\nu/2}\, i\omega\eta\, \psi + C_1 Z, \\
+          f\big(f Z'\big)' + \big(c_\eta^{-2}\omega^2 - U\big) Z
+          &=
+          C_2 Z' + C_3 Z + C_4 \psi' + C_5 \psi,
+        \end{aligned}
+        $$
+      </div>
+
+      <p>
+        where $V$ is the Regge–Wheeler potential inside the star and the
+        viscous "second sound" propagates at
+      </p>
+
+      <div class="paper-equation">
+        $$
+        c_\eta^2
+        =
+        \frac{\eta}{\tau\,(p+\rho)} .
+        $$
+      </div>
+
+      <p>
+        Quasinormal modes are the complex frequencies for which a solution
+        regular inside the star matches an outgoing solution outside it. The
+        interior solution is integrated from the centre with a regularity
+        condition at the surface, the exterior solution is built from a
+        continued-fraction expansion, and the modes are found as the roots of
+        their Wronskian. In the low-viscosity limit, the code reproduces known
+        perfect-fluid results with sub-percent accuracy.
+      </p>
+
+      <h2>Viscous $w$-modes</h2>
+
+      <p>
+        The first family studied are the $w$-modes, spacetime oscillations
+        that exist already for a perfect fluid. Across all four hydrodynamic
+        frames, their frequencies and damping times agree to better than one
+        percent, strong evidence that the results are robust to the frame
+        choice.
+      </p>
+
+      <p>
+        Viscosity lowers the oscillation frequency of the fundamental
+        quadrupolar $w$-mode and lengthens its damping time. The shifts are at
+        the percent level for $\eta_c\gtrsim10^{30}\,{\rm g\,cm^{-1}\,s^{-1}}$
+        and grow to $\sim10\%$ for the largest viscosities considered.
+        Remarkably, the effect is larger for <em>less</em> compact stars, with
+        the same slope for both equations of state,
+      </p>
+
+      <div class="paper-equation">
+        $$
+        \frac{\Delta f}{f_0}
+        \sim
+        C_f - 1.8\,\frac{M}{R},
+        \qquad
+        \frac{\Delta \tau}{\tau_0}
+        \sim
+        C_\tau - 5.0\,\frac{M}{R},
+        $$
+      </div>
+
+      <p>
+        where the constants $C_{f,\tau}$ depend on the equation of state. This
+        is consistent with $w$-modes being spacetime oscillations, which are
+        most sensitive to the compactness of the star.
+      </p>
+
+      <figure class="paper-figure">
+        <img
+          src="../assets/papers/axial-oscillations-viscous-neutron-stars/w-mode-shifts.png"
+          alt="Relative frequency and damping-time shifts of w-modes as a function of central viscosity and compactness"
+        >
+        <figcaption>
+          <strong>Figure 1.</strong>
+          Left: relative frequency (circles) and damping-time (triangles)
+          shifts of the quadrupolar $w$-modes as a function of the central
+          shear viscosity, for two polytropic equations of state. Right: the
+          same shifts as a function of compactness for
+          $\eta_c=5\times10^{29}\,{\rm g\,cm^{-1}\,s^{-1}}$. Less compact
+          stars are more affected by viscosity.
+        </figcaption>
+      </figure>
+
+      <h2>A new family: $\eta$-modes</h2>
+
+      <p>
+        In BDNK hydrodynamics, a new family of modes appears whose restoring
+        force is provided by the viscous transport coefficients themselves.
+        These $\eta$-modes have no analogue for a perfect fluid and, unlike the
+        $w$-modes, depend on the choice of hydrodynamic frame. They oscillate
+        at kHz frequencies with damping times comparable to those of the
+        $w$-modes, and they appear to become undamped,
+        ${\rm Im}\,\omega\to0$, as the viscosity vanishes.
+      </p>
+
+      <p>
+        As the viscosity increases, the $w$- and $\eta$-mode families approach
+        each other in the complex plane but never cross, repelling each other
+        instead. This <em>mode avoidance</em>, first described by von Neumann
+        and Wigner and well known in asteroseismology and black-hole spectra,
+        makes the spacetime modes very sensitive to the viscous transport
+        coefficients in a small region of parameter space.
+      </p>
+
+      <figure class="paper-figure">
+        <img
+          src="../assets/papers/axial-oscillations-viscous-neutron-stars/mode-avoidance.png"
+          alt="Frequencies and damping times of w-modes and eta-modes in the complex plane for increasing viscosity"
+        >
+        <figcaption>
+          <strong>Figure 2.</strong>
+          Frequencies and damping times of the quadrupolar modes as the central
+          viscosity increases (colour scale), for two hydrodynamic frames (blue
+          and red). Circles are $w$-modes, which tend to the perfect-fluid
+          value (star) as $\eta_c\to0$; triangles are the new $\eta$-modes,
+          which approach and then avoid the $w$-mode family.
+        </figcaption>
+      </figure>
+
+      <h2>Ultracompact stars and trapped modes</h2>
+
+      <p>
+        Finally, the paper turns to ultracompact constant-density stars, whose
+        surface lies inside their own light ring. These objects have a stable
+        light ring where gravitational waves can be trapped, giving rise to
+        very long-lived modes that would produce echoes in the
+        gravitational-wave signal and have been conjectured to trigger
+        nonlinear instabilities. For a perfect fluid, these modes follow
+      </p>
+
+      <div class="paper-equation">
+        $$
+        \omega_\ell
+        \simeq
+        \left(\ell + \frac{1}{2}\right)\Omega_{\rm LR}
+        -
+        i\, e^{-\gamma \ell},
+        $$
+      </div>
+
+      <p>
+        so their damping decreases exponentially with $\ell$. With viscosity,
+        the oscillation frequencies are essentially unchanged, but the damping
+        no longer becomes exponentially small: it levels off at a rate set by
+        the transport coefficients, regardless of $\ell$ and of the
+        compactness. Shear viscosity therefore damps the long-lived trapped
+        modes, and plays a crucial role in any putative nonlinear instability
+        of ultracompact objects.
+      </p>
+
+      <figure class="paper-figure">
+        <img
+          src="../assets/papers/axial-oscillations-viscous-neutron-stars/ultracompact-modes.png"
+          alt="Real and imaginary parts of the trapped modes of ultracompact stars with and without viscosity"
+        >
+        <figcaption>
+          <strong>Figure 3.</strong>
+          Real (top) and imaginary (bottom) parts of the fundamental trapped
+          mode of ultracompact constant-density stars as a function of $\ell$,
+          for several compactnesses. Solid lines show inviscid stars and dashed
+          lines viscous stars with
+          $\eta_c=10^{31}\,{\rm g\,cm^{-1}\,s^{-1}}$. Viscosity leaves the
+          frequencies unchanged but prevents the damping rate from becoming
+          exponentially small at large $\ell$.
+        </figcaption>
+      </figure>
+
+      <h2>Takeaway</h2>
+
+      <p>
+        The paper provides the first systematic study of the axial spectrum of
+        viscous neutron stars within a causal and stable relativistic
+        framework:
+      </p>
+
+      <div class="paper-equation">
+        $$
+        \boxed{
+        \text{shear viscosity}
+        \quad\Longrightarrow\quad
+        \text{shifted } w\text{-modes}
+        \;+\;
+        \text{new } \eta\text{-modes}
+        \;+\;
+        \text{damped trapped modes}
+        }
+        $$
+      </div>
+
+      <p>
+        Spacetime $w$-modes are only mildly affected, with frame-independent
+        shifts that reach the ten-percent level only for very large
+        viscosities. The new $\eta$-modes, with kHz frequencies and no
+        perfect-fluid counterpart, can interact with the $w$-modes through
+        avoided crossings. Understanding whether these modes are excited in
+        realistic dynamical processes, and extending the analysis to the polar
+        sector and to rotating stars, are natural next steps.
+      </p>
+
+      <div class="paper-actions">
+        <a class="btn" href="https://arxiv.org/abs/2604.13208" rel="noopener">
+          Read on arXiv
+        </a>
+
+        <a class="btn btn-secondary" href="../publications.html">
+          Back to publications
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      <div>
+        <strong>Strong Gravity Group @ UIB</strong><br>
+        Departament de Física, Universitat de les Illes Balears<br>
+        Cra. de Valldemossa km 7.5, 07122 Palma, Spain
+      </div>
+
+      <div>
+        <a href="../contact.html">Contact</a><br>
+        <a href="https://www.uib.eu/" rel="noopener">UIB</a>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>

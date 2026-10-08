@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>
+    Can LISA See Inside the Little Red Dots? — Perturbation Theory Group @ UIB
+  </title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Source+Sans+3:wght@400;600&family=IBM+Plex+Mono:wght@400;500&display=swap"
+    rel="stylesheet"
+  >
+  <link rel="stylesheet" href="../css/style.css">
+
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']]
+      },
+      svg: {
+        fontCache: 'global'
+      }
+    };
+  </script>
+  <script
+    defer
+    src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"
+  ></script>
+</head>
+
+<body>
+
+  <nav class="nav">
+    <div class="nav-inner">
+      <a class="brand" href="../index.html">
+        Perturbation Theory Group <span class="tilde">~</span> UIB
+      </a>
+
+      <button
+        class="nav-toggle"
+        aria-label="Open menu"
+        onclick="document.querySelector('.nav-links').classList.toggle('open')"
+      >
+        ☰
+      </button>
+
+      <ul class="nav-links">
+        <li><a href="../research.html">Research</a></li>
+        <li><a href="../lab.html">Lab</a></li>
+        <li><a href="../team.html">Team</a></li>
+        <li><a href="../publications.html" aria-current="page">Publications</a></li>
+        <li><a href="../resources.html">Resources</a></li>
+        <li><a href="../news.html">News</a></li>
+        <li><a href="../contact.html">Contact</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <header class="page-head">
+    <div class="page-head-inner">
+      <p class="eyebrow">Paper overview</p>
+
+      <h1>
+        Can LISA See Inside the Little Red Dots?
+      </h1>
+
+      <p class="paper-hero-meta">
+        Samuel Gómez Gómez, Xisco Jiménez Forteza, Carlos Palenzuela Luque,
+        Rosalba Perna · 2026
+      </p>
+    </div>
+  </header>
+
+  <section class="section">
+    <div class="section-inner paper-layout">
+
+      <p class="paper-lede">
+        The Little Red Dots discovered by JWST appear to host accreting black
+        holes buried in very dense gas, but the structure of that gas is still
+        an open question. Competing models predict densities that differ by
+        many orders of magnitude close to the black hole, precisely where a
+        stellar-mass compact object spends the last years of an
+        extreme-mass-ratio inspiral. This Letter asks whether LISA could use
+        such an inspiral to tell these interiors apart.
+      </p>
+
+      <h2>The puzzle</h2>
+
+      <p>
+        JWST has revealed a population of compact, red sources with broad
+        Balmer lines at $z\sim4$–$9$, known as the Little Red Dots (LRDs).
+        Their spectra combine a blue UV continuum with a red optical continuum,
+        show little hot dust and weak X-ray emission, and often display strong
+        Balmer breaks and absorption features that require very dense gas near
+        the nucleus. Analogous sources have now been identified down to
+        $z\simeq0.1$.
+      </p>
+
+      <p>
+        Most interpretations invoke an accreting black hole, but its mass is
+        uncertain. If the broad lines are virialized, the inferred masses are
+        $M_{\rm BH}\sim10^6$–$10^8\,M_\odot$. If instead the line widths come
+        from electron scattering in a dense cocoon, the masses are roughly
+        $100$ times lower. The models proposed for the surrounding gas are
+        designed to reproduce similar spectra, yet they predict densities that
+        differ enormously at $r\sim10^{10}$–$10^{13}\,{\rm cm}$.
+      </p>
+
+      <p>
+        These are exactly the radii probed during the final years of an
+        extreme-mass-ratio inspiral (EMRI) of a stellar-mass object into a
+        $10^4$–$10^6\,M_\odot$ black hole, which is a primary LISA source. Gas
+        around the black hole modifies the inspiral, and the accumulated phase
+        shift can be measurable.
+      </p>
+
+      <h2>Four candidate interiors</h2>
+
+      <p>
+        The paper considers three proposed models for the central environment
+        of an LRD, together with a Bondi-like free-fall solution as a dense
+        reference case. In a <strong>quasi-star</strong>, the black hole grows
+        inside a massive, radiation-supported envelope of mass $M_*$. Requiring
+        saturated convection to carry the Eddington luminosity of the envelope
+        gives a universal interior profile,
+      </p>
+
+      <div class="paper-equation">
+        $$
+        \rho_{\rm QS}(r)
+        =
+        \frac{9}{16\sqrt{2}\,\pi}\,
+        \frac{L}{\eta\,(G M_{\rm BH})^{3/2}}\,
+        r^{-1/2},
+        \qquad
+        L = \frac{4\pi G M_* c}{\kappa},
+        $$
+      </div>
+
+      <p>
+        with convective efficiency $\eta=0.1$. The fiducial stage is
+        $M_{\rm BH}/M_*=0.1$, bracketed by a gas-rich early stage
+        ($0.01$) and a gas-poor late stage ($0.33$).
+      </p>
+
+      <p>
+        In a <strong>radiative envelope</strong>, an Eddington-limited black
+        hole sits inside an envelope much lighter than itself, and the
+        luminosity diffuses outward radiatively,
+      </p>
+
+      <div class="paper-equation">
+        $$
+        \rho_{\rm RE}(r)
+        =
+        \frac{M_{\rm env}}{4\pi\Lambda r^3},
+        \qquad
+        \Lambda
+        =
+        \ln\frac{r_{\rm ph}}{r_{\rm bnd}} - 1.8 .
+        $$
+      </div>
+
+      <p>
+        The <strong>free-fall cavity</strong>,
+        $\rho_{\rm B}=\rho_i\,(r/R_i)^{-3/2}$, is $10^4$–$10^5$ times denser
+        than the quasi-star near the innermost stable circular orbit. Finally,
+        a <strong>super-Eddington disc</strong> is modelled as an
+        $\alpha$-disc with accretion rates $\dot m=1$ and $10$ in Eddington
+        units, with a slim inner zone where the disc becomes geometrically
+        thick.
+      </p>
+
+      <figure class="paper-figure">
+        <img
+          src="../assets/papers/little-red-dots-lisa/density-profiles.png"
+          alt="Gas density profiles of the Little Red Dot interior models around a 10^5 solar-mass black hole"
+        >
+        <figcaption>
+          <strong>Figure 1.</strong>
+          Gas density profiles of the interior models for
+          $M_{\rm BH}=10^5\,M_\odot$: quasi-stars at three stages (blue), the
+          free-fall cavity (black), radiative envelopes at the two ends of the
+          envelope-mass range (green) and the $\alpha$-disc midplane density
+          (red). The shaded band marks the orbital radii covered during the
+          last four years before the ISCO for a $10\,M_\odot$ companion. Over
+          this window the predicted densities span nine orders of magnitude.
+        </figcaption>
+      </figure>
+
+      <h2>Inspirals in gas</h2>
+
+      <p>
+        The companion, of mass $m=10$ or $30\,M_\odot$, follows a circular
+        orbit in the potential of the black hole and the enclosed gas. Besides
+        gravitational-wave emission, the inspiral is driven by gaseous
+        dynamical friction, Bondi–Hoyle–Lyttleton accretion onto the companion
+        and the gravitational pull of the enclosed gas mass. For the
+        co-rotating disc, only the enclosed mass is retained, since there is
+        no relative motion between the companion and the gas.
+      </p>
+
+      <p>
+        Two inspirals of the same system are integrated, one including the
+        environment and one in vacuum, over the last $T_{\rm obs}=4\,{\rm yr}$
+        of observation. Aligning them at the ISCO, the accumulated
+        gravitational-wave dephasing is
+      </p>
+
+      <div class="paper-equation">
+        $$
+        \Delta\phi
+        =
+        2\pi
+        \int_{f_0}^{f_{\rm ISCO}}
+        f\left(
+          \frac{1}{\dot f_{\rm env}}
+          -
+          \frac{1}{\dot f_{\rm vac}}
+        \right)
+        df .
+        $$
+      </div>
+
+      <h2>From dephasing to resolvability</h2>
+
+      <p>
+        A dephasing of $\sim0.1\,{\rm rad}$ is often quoted as the threshold
+        for a measurable effect. However, part of a smooth environmental phase
+        can be absorbed into the coalescence time and phase of a vacuum
+        template. The paper therefore computes the mismatch $\mathcal{M}$
+        between the environment-dressed and vacuum waveforms, after
+        maximising over $t_c$ and $\phi_c$, and requires
+      </p>
+
+      <div class="paper-equation">
+        $$
+        {\rm SNR}
+        >
+        {\rm SNR}_{\rm thr}
+        \equiv
+        \frac{2}{\sqrt{2\,\mathcal{M}}} .
+        $$
+      </div>
+
+      <p>
+        An interior is counted as <em>resolvable</em> when the event is
+        detectable (${\rm SNR}>10$), satisfies this criterion and remains
+        perturbative, meaning that the gas does not dominate the inspiral.
+        For a $10\,M_\odot$ companion, the detection horizon reaches
+        $z\simeq2.2$ at $M_{\rm BH}=10^5\,M_\odot$; a $30\,M_\odot$ companion
+        extends it to $z\simeq5$.
+      </p>
+
+      <h2>Which interiors can LISA resolve?</h2>
+
+      <p>
+        The answer depends strongly on the density of the interior. The
+        <strong>dense models</strong>, the free-fall cavity and the radiative
+        envelope, dephase by $\Delta\phi\sim10^2$–$10^6\,{\rm rad}$ whenever
+        they remain perturbative. The environment-dressed and vacuum waveforms
+        are then completely different, the mismatch approaches unity and
+        ${\rm SNR}_{\rm thr}\simeq1.5$: these interiors are resolvable in every
+        detectable event.
+      </p>
+
+      <p>
+        <strong>Quasi-stars</strong> are more subtle. Nearby, the dephasing
+        ranges from $\simeq0.15\,{\rm rad}$ to $\simeq200\,{\rm rad}$
+        depending on the black-hole mass and the evolutionary stage, but the
+        mismatch criterion demands a much higher SNR than the simple
+        $0.1\,{\rm rad}$ rule. Their imprint is resolvable only for
+        $M_{\rm BH}\lesssim10^5\,M_\odot$ and $z\lesssim0.6$, and is favoured
+        by lighter hosts and earlier, gas-richer stages.
+      </p>
+
+      <p>
+        The <strong>disc</strong> behaves very differently. Because its gas
+        co-rotates with the companion, there is no dynamical friction or
+        accretion drag, and a thin disc holds very little mass inside the
+        orbit. The dephasing is only $\Delta\phi\sim10^{-7}$–$10^{-5}\,{\rm
+        rad}$, so the disc leaves no resolvable imprint through its enclosed
+        mass.
+      </p>
+
+      <figure class="paper-figure">
+        <img
+          src="../assets/papers/little-red-dots-lisa/dephasing-redshift-scan.png"
+          alt="Environmental dephasing and resolvability of each interior model as a function of redshift"
+        >
+        <figcaption>
+          <strong>Figure 2.</strong>
+          Top: environmental dephasing accumulated over the last four observed
+          years as a function of redshift, for $M_{\rm BH}=10^4\,M_\odot$
+          (left) and $10^5\,M_\odot$ (right) with a $10\,M_\odot$ companion.
+          Bottom: ${\rm SNR}/{\rm SNR}_{\rm thr}$ for the spherical models. An
+          interior is resolvable above the horizontal line and outside the
+          grey ${\rm SNR}<10$ region; crosses mark non-perturbative cases in
+          which the gas drives the inspiral.
+        </figcaption>
+      </figure>
+
+      <p>
+        The same criterion can be applied to two environment-dressed
+        waveforms. The free-fall cavity and the radiative envelope can be
+        distinguished from every other model wherever they are detectable and
+        perturbative, while different quasi-star stages can be told apart only
+        for nearby sources.
+      </p>
+
+      <h2>The observed Little Red Dots</h2>
+
+      <p>
+        The calculation is then applied to two spectroscopic samples: 14 JWST
+        LRDs at $z=3.9$–$6.2$ and 31 confirmed LRDs at $z=0.10$–$0.88$ from
+        SDSS, DESI and other surveys. Each object is evaluated both at its
+        virial mass and at the scattering-corrected mass $M_{\rm vir}/100$.
+      </p>
+
+      <p>
+        With a $10\,M_\odot$ companion, none of the JWST objects is
+        detectable. The local sample is far more promising: at the corrected
+        masses, 30 of the 31 objects lie within the LISA horizon, with
+        ${\rm SNR}=13$–$85$. A free-fall cavity would be resolvable in all 30,
+        and a quasi-star interior in 5–20 of them, depending on the stage.
+      </p>
+
+      <figure class="paper-figure">
+        <img
+          src="../assets/papers/little-red-dots-lisa/observed-lrds.png"
+          alt="Observed Little Red Dots in the redshift–black-hole-mass plane with the LISA detection horizon"
+        >
+        <figcaption>
+          <strong>Figure 3.</strong>
+          Observed LRDs in the $(z, M_{\rm BH})$ plane: SDSS (blue), DESI
+          (green) and JWST (red), at the scattering-corrected (circles) and
+          virial (squares) masses. Filled symbols are detectable with a
+          $10\,M_\odot$ companion, and plus signs mark a resolvable quasi-star
+          interior at $M_{\rm BH}/M_*=0.01$. Black curves show the
+          ${\rm SNR}=10$ horizon for $m=10\,M_\odot$ (solid) and
+          $m=30\,M_\odot$ (dashed).
+        </figcaption>
+      </figure>
+
+      <h2>How many events?</h2>
+
+      <p>
+        The main limitation is the event rate. For a per-nucleus rate
+        $\Gamma$, the expected number of events in a mission of duration
+        $T_{\rm obs}$ is
+      </p>
+
+      <div class="paper-equation">
+        $$
+        N
+        =
+        T_{\rm obs}
+        \int_0^6
+        n_{\rm LRD}(z)\,
+        \frac{\Gamma}{1+z}\,
+        \chi(M_{\rm BH}, z)\,
+        \frac{dV_c}{dz}\,
+        dz ,
+        $$
+      </div>
+
+      <p>
+        where $\chi$ selects detectable or resolvable events. Adopting the
+        EMRI rate of ordinary galactic nuclei,
+        $\Gamma=10^{-7}$–$10^{-6}\,{\rm yr^{-1}}$, a four-year LISA mission
+        would yield $0.08$–$0.8$ detectable events for $10^5\,M_\odot$ hosts
+        with $10\,M_\odot$ companions, and $1.5$–$15$ with $30\,M_\odot$
+        companions. Every one of them would resolve a free-fall cavity. A
+        quasi-star imprint is much rarer, since it requires light hosts at low
+        redshift, where LRDs are scarce. If instead LRD nuclei are dense star
+        clusters, where captures are mostly direct plunges, the number of
+        multi-year inspirals drops to $\lesssim10^{-4}$.
+      </p>
+
+      <h2>Physical interpretation</h2>
+
+      <p>
+        A single such event would be valuable well beyond these models. The
+        waveform alone measures the redshifted masses, the black-hole spin,
+        the luminosity distance and an approximate sky position, and, if the
+        gas imprint is resolvable, the gas density and its slope within a few
+        tens of Schwarzschild radii. Identifying the host galaxy would provide
+        the source-frame mass, directly testing whether the broad lines are
+        virial or broadened by electron scattering. Combined with the dense gas
+        inferred from Balmer absorption further out, it would constrain the gas
+        distribution over several orders of magnitude in radius, a region
+        inaccessible to either messenger alone.
+      </p>
+
+      <h2>Takeaway</h2>
+
+      <p>
+        The paper shows that gravitational-wave dephasing can discriminate
+        between the proposed interiors of the Little Red Dots:
+      </p>
+
+      <div class="paper-equation">
+        $$
+        \boxed{
+        \text{denser interior}
+        \quad\Longrightarrow\quad
+        \text{larger dephasing}
+        \quad\Longrightarrow\quad
+        \text{lower } {\rm SNR}_{\rm thr}
+        }
+        $$
+      </div>
+
+      <p>
+        Free-fall cavities and radiative envelopes would be resolvable in any
+        detected, perturbative event; convective quasi-stars only for light,
+        nearby hosts; and a co-rotating disc not at all. The limiting factor is
+        not sensitivity but the rate of multi-year inspirals in LRD nuclei. If
+        LRDs host such inspirals at ordinary galactic-nucleus rates, LISA has
+        the potential to probe their interiors, preferably with companions of a
+        few tens of solar masses.
+      </p>
+
+      <div class="paper-actions">
+        <a class="btn" href="https://arxiv.org/abs/2610.08964" rel="noopener">
+          Read on arXiv
+        </a>
+
+        <a class="btn btn-secondary" href="../publications.html">
+          Back to publications
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      <div>
+        <strong>Perturbation Theory Group @ UIB</strong><br>
+        Departament de Física, Universitat de les Illes Balears<br>
+        Cra. de Valldemossa km 7.5, 07122 Palma, Spain
+      </div>
+
+      <div>
+        <a href="../contact.html">Contact</a><br>
+        <a href="https://www.uib.eu/" rel="noopener">UIB</a>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>

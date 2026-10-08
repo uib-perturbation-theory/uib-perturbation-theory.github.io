@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>
+    Axion-like self-interactions in gravitational atoms for LISA — Perturbation Theory Group @ UIB
+  </title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Source+Sans+3:wght@400;600&family=IBM+Plex+Mono:wght@400;500&display=swap"
+    rel="stylesheet"
+  >
+  <link rel="stylesheet" href="../css/style.css">
+
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']]
+      },
+      svg: {
+        fontCache: 'global'
+      }
+    };
+  </script>
+  <script
+    defer
+    src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"
+  ></script>
+</head>
+
+<body>
+
+  <nav class="nav">
+    <div class="nav-inner">
+      <a class="brand" href="../index.html">
+        Perturbation Theory Group <span class="tilde">~</span> UIB
+      </a>
+
+      <button
+        class="nav-toggle"
+        aria-label="Open menu"
+        onclick="document.querySelector('.nav-links').classList.toggle('open')"
+      >
+        ☰
+      </button>
+
+      <ul class="nav-links">
+        <li><a href="../research.html">Research</a></li>
+        <li><a href="../lab.html">Lab</a></li>
+        <li><a href="../team.html">Team</a></li>
+        <li><a href="../publications.html" aria-current="page">Publications</a></li>
+        <li><a href="../resources.html">Resources</a></li>
+        <li><a href="../news.html">News</a></li>
+        <li><a href="../contact.html">Contact</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <header class="page-head">
+    <div class="page-head-inner">
+      <p class="eyebrow">Paper overview</p>
+
+      <h1>
+        Impact of the axion-like self-interactions in gravitational atoms for
+        LISA
+      </h1>
+
+      <p class="paper-hero-meta">
+        Samuel Gómez Gómez, Xisco Jiménez Forteza, Carlos Palenzuela Luque ·
+        2026
+      </p>
+    </div>
+  </header>
+
+  <section class="section">
+    <div class="section-inner paper-layout">
+
+      <p class="paper-lede">
+        Ultralight bosons with self-interactions, such as axion-like
+        particles, can be captured around a massive black hole and build up a
+        dense cloud known as a gravitational atom. This work follows a
+        dynamical formation mechanism for these clouds, driven by the
+        self-interactions themselves, and asks whether a small black hole
+        spiralling through the cloud would leave an imprint that LISA can
+        detect. The answer is yes, and the imprint can be used to measure the
+        mass and self-coupling of the particle through gravity alone.
+      </p>
+
+      <h2>Axion-like particles and gravitational atoms</h2>
+
+      <p>
+        Axion-like particles (ALPs) are a generic prediction of many extensions
+        of the Standard Model and of string compactifications, and are a
+        well-motivated dark-matter candidate. If the ALP mass arises from
+        weakly coupled instantons, the field has a periodic potential that,
+        once expanded, contains a quartic self-interaction,
+      </p>
+
+      <div class="paper-equation">
+        $$
+        V(\phi)
+        =
+        -m_{\rm dm}^2 f_a^2 \cos\left(\frac{\phi}{f_a}\right)
+        =
+        \frac{1}{2} m_{\rm dm}^2 \phi^2
+        +
+        \frac{\lambda}{4!}\phi^4
+        + \ldots,
+        \qquad
+        |\lambda| = \left(\frac{m_{\rm dm}}{f_a}\right)^2 .
+        $$
+      </div>
+
+      <p>
+        Here $m_{\rm dm}$ is the particle mass and $f_a$ the decay constant,
+        which sets the strength of the self-interactions. No coupling to
+        Standard Model fields is assumed: the boson interacts only through
+        gravity and its own potential.
+      </p>
+
+      <p>
+        In the non-relativistic limit and in the potential of a black hole of
+        mass $M_{\rm BH}$, the field obeys a Gross–Pitaevskii equation with
+        a $1/r$ potential. Without self-interactions, its bound states are
+        exactly those of the hydrogen atom, with the gravitational coupling
+        $\alpha = M_{\rm BH} m_{\rm dm}$ playing the role of the fine-structure
+        constant. The cloud size is set by the gravitational Bohr radius,
+      </p>
+
+      <div class="paper-equation">
+        $$
+        a_0
+        =
+        \frac{1}{M_{\rm BH}\, m_{\rm dm}^2},
+        \qquad
+        \rho \propto e^{-2r/a_0}
+        \quad \text{(ground state)} .
+        $$
+      </div>
+
+      <h2>A dynamical formation mechanism</h2>
+
+      <p>
+        Unlike previous studies, which assume a phenomenological cloud profile,
+        this work adopts a capture mechanism driven by the self-interactions.
+        Ambient dark-matter waves scattering off the black hole are captured
+        into the bound state, and once particles are present, Bose enhancement
+        stimulates further capture. The cloud mass then evolves as
+        $\dot M_{\rm GA} = C + \Gamma M_{\rm GA}$, and in the dense regime it
+        grows exponentially with rate
+      </p>
+
+      <div class="paper-equation">
+        $$
+        \Gamma
+        =
+        \frac{10\,\rho_{\rm dm}^2}{192\, f_a^4\, m_{\rm dm}^3\, v_{\rm dm}^2},
+        $$
+      </div>
+
+      <p>
+        where $\rho_{\rm dm}$ and $v_{\rm dm}$ are the local background density
+        and velocity dispersion of dark matter. The resulting density profile
+        of the cloud in its fundamental state is
+      </p>
+
+      <div class="paper-equation">
+        $$
+        \rho(r,t)
+        =
+        \frac{C_0}{\pi a_0^3}\,
+        e^{\Gamma t}\,
+        e^{-2r/a_0},
+        \qquad
+        C_0
+        =
+        \frac{8\pi^{3/2}\rho_{\rm dm}}{m_{\rm dm}^3 v_{\rm dm}^3} .
+        $$
+      </div>
+
+      <p>
+        Growth stops once the cloud reaches a critical density,
+        $\rho_{\rm crit} = 16 f_a^2 m_{\rm dm}^4 M_{\rm BH}^2$, at which it
+        saturates. Two features distinguish these clouds from those produced by
+        superradiance: no black-hole spin is required, and the cloud grows in
+        the spherically symmetric $n=1$, $\ell=0$ state rather than the
+        $\ell=1$ superradiant mode. Because the cloud is seeded by a realistic
+        ambient density, its mass remains small, $\sim10^{-6}M_{\rm BH}$, so
+        its self-gravity can be neglected.
+      </p>
+
+      <h2>Inspirals inside the cloud</h2>
+
+      <p>
+        The paper considers extreme- and intermediate-mass-ratio inspirals in
+        which a $10\,M_\odot$ black hole orbits a central black hole with
+        $M_{\rm BH}=10^4$–$10^7\,M_\odot$ surrounded by a gravitational atom.
+        As the companion moves through the cloud it loses energy through
+        dynamical friction and accretion, in addition to gravitational-wave
+        emission,
+      </p>
+
+      <div class="paper-equation">
+        $$
+        \dot E
+        =
+        -\dot E_{\rm GW}
+        -\dot E_{\rm DF}
+        -\dot E_{\rm ACC},
+        \qquad
+        \dot E_{\rm DF}
+        =
+        \frac{4\pi m^2 \rho(r_2,t)}{v}\,
+        \mathcal{I}(2 m_{\rm dm} r v),
+        $$
+      </div>
+
+      <p>
+        where the Coulomb factor
+        $\mathcal{I}(x)={\rm Cin}(x)+{\rm sinc}(x)-1$ accounts for the wave
+        nature of ultralight dark matter. The environmental term enters the
+        phase evolution as a $-5.5$PN correction. Since its frequency
+        dependence differs from that of the leading vacuum term, it cannot be
+        absorbed into a redefinition of the chirp mass.
+      </p>
+
+      <h2>A window in parameter space</h2>
+
+      <p>
+        Measurable dephasing appears only in an intermediate range of particle
+        masses. For small $m_{\rm dm}$, the cloud is large and diffuse, since
+        $\rho\propto a_0^{-3}$ and $a_0\propto m_{\rm dm}^{-2}$. For large
+        $m_{\rm dm}$, the cloud becomes more compact than the orbit, and the
+        factor $e^{-2r/a_0}$ suppresses the density seen by the companion. The
+        decay constant $f_a$ then sets the formation timescale: the cloud must
+        grow to high densities within cosmological times. Together, these
+        effects produce a characteristic triangular region in the
+        $(m_{\rm dm}, f_a)$ plane.
+      </p>
+
+      <figure class="paper-figure paper-figure-grid">
+        <div class="paper-panel">
+          <img
+            src="../assets/papers/gravitational-atoms-lisa/dephasing-map.png"
+            alt="Maximum accumulated dephasing across the ALP mass and decay constant parameter space"
+          >
+          <figcaption>
+            <strong>Figure 1.</strong>
+            Maximum accumulated dephasing between an inspiral inside the
+            gravitational atom and one in the dark-matter background, for
+            $M_{\rm BH}=10^4\,M_\odot$ and
+            $\rho_{\rm dm}=10^4\,{\rm GeV\,cm^{-3}}$. White lines show
+            $\log_{10}(\tau_{\rm crit}/t_0)$, the time needed for the cloud to
+            saturate relative to its formation time.
+          </figcaption>
+        </div>
+
+        <div class="paper-panel">
+          <img
+            src="../assets/papers/gravitational-atoms-lisa/distinguishability-map.png"
+            alt="Minimum SNR needed to distinguish the gravitational atom signal from the background inspiral"
+          >
+          <figcaption>
+            <strong>Figure 2.</strong>
+            Minimum SNR required to distinguish the signal from its
+            background counterpart, $D/\sqrt{2\mathcal{M}}$, for the same
+            configuration. Dark regions are distinguishable at
+            ${\rm SNR}\sim10$; values above $100$ are capped. The region
+            follows the same triangular shape as the dephasing.
+          </figcaption>
+        </div>
+      </figure>
+
+      <h2>Detectability with LISA</h2>
+
+      <p>
+        To decide whether LISA can tell the two signals apart, the paper uses
+        the mismatch $\mathcal{M}$ between the waveform inside the cloud and
+        the waveform in the dark-matter background. Two waveforms are
+        distinguishable when
+      </p>
+
+      <div class="paper-equation">
+        $$
+        {\rm SNR}
+        \gtrsim
+        \frac{D}{\sqrt{2\mathcal{M}}},
+        $$
+      </div>
+
+      <p>
+        where $D$ is the dimension of the parameter space. Across all binary
+        configurations considered, the environmental imprint of the cloud is
+        distinguishable from the background evolution at signal-to-noise
+        ratios between $10$ and $100$, the range expected for EMRIs and IMRIs
+        observed by LISA.
+      </p>
+
+      <p>
+        For conservative background densities,
+        $\rho_{\rm dm}\sim10^3$–$10^4\,{\rm GeV\,cm^{-3}}$, consistent with
+        Navarro–Frenk–White profiles near a galactic centre, and central masses
+        $M_{\rm BH}\sim10^4$–$10^5\,M_\odot$, LISA can probe
+        $m_{\rm dm}\sim10^{-17}$–$10^{-15}\,{\rm eV}$ and
+        $f_a\sim3\times10^{10}$–$6\times10^{12}\,{\rm GeV}$. Heavier black holes
+        require denser environments, and allowing for higher densities extends
+        the accessible range down to $m_{\rm dm}\sim10^{-19}\,{\rm eV}$ and up
+        to $f_a\sim10^{16}\,{\rm GeV}$.
+      </p>
+
+      <figure class="paper-figure">
+        <img
+          src="../assets/papers/gravitational-atoms-lisa/parameter-ranges.png"
+          alt="Ranges of ALP mass and decay constant that LISA can constrain for different black-hole masses and dark-matter densities"
+        >
+        <figcaption>
+          <strong>Figure 3.</strong>
+          Ranges of $m_{\rm dm}$ (top) and $f_a$ (bottom) that produce a
+          dephasing detectable with ${\rm SNR}\leq100$, for different central
+          black-hole masses and background densities. The two lightest
+          configurations correspond to conservative densities; the heavier ones
+          require more speculative environments.
+        </figcaption>
+      </figure>
+
+      <h2>Measuring the particle</h2>
+
+      <p>
+        Beyond detection, the paper asks how well the particle parameters can
+        be recovered. A Bayesian analysis is performed with a likelihood built
+        from the mismatch between a waveform at the injected values and a
+        template evaluated at $(f_a, m_{\rm dm})$,
+      </p>
+
+      <div class="paper-equation">
+        $$
+        \log\mathcal{L}
+        =
+        -{\rm SNR}^2\,
+        \mathcal{M}\!\left[
+          h_{\rm GA}(f_a^{\rm fid}, m_{\rm dm}^{\rm fid})
+          \,\big|\,
+          h_{\rm GA}(f_a, m_{\rm dm})
+        \right].
+        $$
+      </div>
+
+      <p>
+        For injections near the region of maximum dephasing, the posteriors
+        peak at the injected values, with a mild degeneracy between the two
+        parameters inherited from the structure of $\Gamma$ and
+        $\rho_{\rm crit}$. At ${\rm SNR}=20$, the uncertainties are of order
+        tens of percent. They shrink approximately as ${\rm SNR}^{-1}$,
+        reaching $\sim2$–$3\%$ at ${\rm SNR}\sim80$.
+      </p>
+
+      <figure class="paper-figure">
+        <img
+          src="../assets/papers/gravitational-atoms-lisa/posterior.png"
+          alt="Posterior distribution of the ALP decay constant and mass for an injected signal with SNR 20"
+        >
+        <figcaption>
+          <strong>Figure 4.</strong>
+          Posterior distributions of $f_a$ and $m_{\rm dm}$ for an injected
+          signal with ${\rm SNR}=20$, $M_{\rm BH}=10^4\,M_\odot$ and
+          $\rho_{\rm dm}=10^4\,{\rm GeV\,cm^{-3}}$. The joint posterior shows
+          the 68% and 95% credible regions, and the dashed lines in the
+          marginal distributions mark the 16th, 50th and 84th percentiles.
+        </figcaption>
+      </figure>
+
+      <h2>Physical interpretation</h2>
+
+      <p>
+        The particle masses and couplings probed here lie far beyond the reach
+        of laboratory searches, and point to ALPs arising from high-energy
+        symmetry breaking or compactification, as in the broader axiverse.
+        Because no coupling to the Standard Model is assumed, the constraints
+        rely only on the gravitational influence of the particle, the one
+        interaction for which dark matter currently has direct evidence. They
+        can also be phrased in a model-independent way by trading $f_a$ for
+        the quartic coupling $\lambda$.
+      </p>
+
+      <p>
+        Equilibrium and self-gravitating configurations studied elsewhere can
+        reach much larger central densities and therefore predict larger
+        environmental effects. Here, the cloud is generated dynamically from a
+        realistic ambient density, so the dephasing is more modest, but it
+        remains detectable by LISA in a well-defined region of parameter space.
+      </p>
+
+      <h2>Takeaway</h2>
+
+      <p>
+        The paper connects the microphysics of ultralight bosons to an
+        observable gravitational-wave signature:
+      </p>
+
+      <div class="paper-equation">
+        $$
+        \boxed{
+        (m_{\rm dm}, f_a)
+        \quad\Longrightarrow\quad
+        \text{cloud growth } (\Gamma, \rho_{\rm crit})
+        \quad\Longrightarrow\quad
+        \text{dephasing in the LISA band}
+        }
+        $$
+      </div>
+
+      <p>
+        Gravitational atoms formed through self-interactions around
+        $10^4$–$10^5\,M_\odot$ black holes leave a distinguishable imprint on
+        extreme- and intermediate-mass-ratio inspirals at the signal-to-noise
+        ratios expected for LISA. This allows LISA to constrain both the mass
+        and the self-coupling of axion-like particles without requiring any
+        additional coupling to Standard Model fields.
+      </p>
+
+      <div class="paper-actions">
+        <a class="btn" href="https://arxiv.org/abs/2605.17589" rel="noopener">
+          Read on arXiv
+        </a>
+
+        <a class="btn btn-secondary" href="../publications.html">
+          Back to publications
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      <div>
+        <strong>Perturbation Theory Group @ UIB</strong><br>
+        Departament de Física, Universitat de les Illes Balears<br>
+        Cra. de Valldemossa km 7.5, 07122 Palma, Spain
+      </div>
+
+      <div>
+        <a href="../contact.html">Contact</a><br>
+        <a href="https://www.uib.eu/" rel="noopener">UIB</a>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>

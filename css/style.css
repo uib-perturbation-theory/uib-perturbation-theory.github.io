@@ -1709,3 +1709,128 @@ a:focus-visible, button:focus-visible {
   margin: 0 0.55rem;
   color: var(--muted);
 }
+
+/* ---------- Footer: funding and credit ---------- */
+
+.footer-funding {
+  max-width: var(--maxw);
+  margin: 2.5rem auto 0;
+  padding-top: 2rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.footer-funding-title {
+  margin-bottom: 0.9rem;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.footer-funding-logos {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem 1.8rem;
+  max-width: 100%;
+  padding: 0.9rem 1.1rem;
+  border-radius: 10px;
+  background: #fff;
+}
+
+.footer-funding-logos img {
+  width: 520px;
+  max-width: 100%;
+  height: auto;
+}
+
+.footer-funding-logos .footer-logo-cost {
+  width: 170px;
+}
+
+.footer-credit {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 0.5rem 2rem;
+  max-width: var(--maxw);
+  margin: 2rem auto 0;
+  font-size: 0.82rem;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+/* ---------- Team: current position of partners and past members ---------- */
+
+.person .now {
+  margin-top: 0.15rem;
+  color: var(--muted);
+  font-size: 0.88rem;
+  line-height: 1.45;
+}
+
+/* ---------- Research: active projects ---------- */
+
+.project-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.5rem;
+}
+
+.project-card {
+  display: flex;
+  flex-direction: column;
+  padding: 1.6rem;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: #fff;
+}
+
+.project-logo {
+  display: flex;
+  align-items: center;
+  height: 72px;
+  margin-bottom: 1.3rem;
+}
+
+.project-logo img {
+  max-width: 260px;
+  max-height: 72px;
+  width: auto;
+  height: auto;
+}
+
+.section .project-card h3 {
+  margin: 0 0 1.1rem;
+  font-size: 1.15rem;
+  line-height: 1.35;
+}
+
+.project-meta {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: 0.45rem 1rem;
+  margin-top: auto;
+  padding-top: 1rem;
+  border-top: 1px solid var(--line);
+  font-size: 0.95rem;
+}
+
+.project-meta dt {
+  font-family: var(--font-mono);
+  font-size: 0.74rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+  padding-top: 0.15rem;
+}
+
+.project-meta dd {
+  color: var(--text);
+}
+
+@media (max-width: 760px) {
+  .project-grid {
+    grid-template-columns: 1fr;
+  }
+}

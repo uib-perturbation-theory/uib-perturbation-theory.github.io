@@ -604,13 +604,14 @@
 
       <p>
 
-        Explore the amplitude and phase structure of the QNM excitation overlap
-        $T_n$ in the $(\sigma,\nu)$ parameter space. The amplitude view shows
-        $\ln|T_n|^2$, while the phase can be displayed either modulo $2\pi$ or
-        as a continuous unwrapped surface. The stationary curves are obtained
-        directly from the corresponding numerical landscapes. Select the
-        quantity and overtone below, then rotate, zoom, and inspect the
-        three-dimensional surface.
+        Explore the amplitude and phase of the excitation coefficients $C_n$
+        in the $(\sigma,\nu)$ parameter space of the initial perturbation. The
+        amplitude view shows $\log_{10}|C_n|$, and the phase view shows the
+        continuous, unwrapped phase $\arg C_n$. Both surfaces include the
+        stationary curves obtained directly from the numerical landscapes,
+        together with reference lines such as $\nu=\pm\omega_n^{\rm Re}$.
+        Select the quantity and overtone below, then rotate, zoom, and inspect
+        the three-dimensional surface.
 
       </p>
 
@@ -634,21 +635,14 @@
               class="landscape-btn quantity-btn active"
               onclick="selectQuantity('amplitude', this)"
             >
-              Amplitude
+              Amplitude · log₁₀|C<sub>n</sub>|
             </button>
 
             <button
               class="landscape-btn quantity-btn"
               onclick="selectQuantity('phase', this)"
             >
-              Phase
-            </button>
-
-            <button
-              class="landscape-btn quantity-btn"
-              onclick="selectQuantity('phase_unwrapped', this)"
-            >
-              Unwrapped phase
+              Phase · arg C<sub>n</sub>
             </button>
 
           </div>
@@ -707,7 +701,7 @@
 
         <iframe
           id="landscape-frame"
-          src="../assets/interactive/T0_amplitude_numeric_3D.html"
+          src="../assets/interactive/C0_3d_log10_amplitude.html"
           title="Interactive QNM excitation landscape"
           loading="lazy">
         </iframe>
@@ -729,13 +723,10 @@
         const landscapeFiles = {
 
           amplitude: n =>
-            `../assets/interactive/T${n}_amplitude_numeric_3D.html`,
+            `../assets/interactive/C${n}_3d_log10_amplitude.html`,
 
           phase: n =>
-            `../assets/interactive/T${n}_phase_numeric_3D.html`,
-
-          phase_unwrapped: n =>
-            `../assets/interactive/T${n}_phase_unwrapped_3D.html`
+            `../assets/interactive/C${n}_3d_phase.html`
 
         };
 

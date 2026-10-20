@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>
+    Can bosenovae deplete the galactic dark matter? — Strong Gravity Group @ UIB
+  </title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Source+Sans+3:wght@400;600&family=IBM+Plex+Mono:wght@400;500&display=swap"
+    rel="stylesheet"
+  >
+  <link rel="stylesheet" href="../css/style.css">
+
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']]
+      },
+      svg: {
+        fontCache: 'global'
+      }
+    };
+  </script>
+  <script
+    defer
+    src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"
+  ></script>
+</head>
+
+<body>
+
+  <nav class="nav">
+    <div class="nav-inner">
+      <a class="brand" href="../index.html">
+        Strong Gravity Group <span class="tilde">~</span> UIB
+      </a>
+
+      <button
+        class="nav-toggle"
+        aria-label="Open menu"
+        onclick="document.querySelector('.nav-links').classList.toggle('open')"
+      >
+        ☰
+      </button>
+
+      <ul class="nav-links">
+        <li><a href="../research.html">Research</a></li>
+        <li><a href="../lab.html">Lab</a></li>
+        <li><a href="../team.html">Team</a></li>
+        <li><a href="../publications.html" aria-current="page">Publications</a></li>
+        <li><a href="../resources.html">Resources</a></li>
+        <li><a href="../news.html">News</a></li>
+        <li><a href="../contact.html">Contact</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <header class="page-head">
+    <div class="page-head-inner">
+      <p class="eyebrow">Paper overview</p>
+
+      <h1>
+        Can bosenovae deplete the galactic dark matter?
+      </h1>
+
+      <p class="paper-hero-meta">
+        Samuel Gómez Gómez, Joshua Eby · 2026
+      </p>
+    </div>
+  </header>
+
+  <section class="section">
+    <div class="section-inner paper-layout">
+
+      <p class="paper-lede">
+        If dark matter is made of ultralight bosons with attractive
+        self-interactions, it can be captured around stars and compact objects
+        into gravitational atoms, or condense into self-gravitating boson
+        stars. When these configurations grow beyond a critical mass they
+        collapse in a bosenova and radiate part of their mass as relativistic
+        bosons that escape the galaxy. This work asks whether repeated
+        bosenovae could act as a dark-matter pump and empty a galactic halo
+        over cosmic time. The answer is no, by a wide margin.
+      </p>
+
+      <h2>The question</h2>
+
+      <p>
+        Ultralight bosons, with masses $10^{-22}\,{\rm eV}\lesssim m\lesssim
+        1\,{\rm eV}$, are among the most studied alternatives to weakly
+        interacting massive particles. Any axion-like potential implies an
+        attractive quartic self-interaction,
+      </p>
+
+      <div class="paper-equation">
+        $$
+        V(\phi)
+        =
+        m^2 f_a^2\left[1-\cos\left(\frac{\phi}{f_a}\right)\right]
+        \simeq
+        \frac{1}{2}m^2\phi^2+\frac{\lambda}{4!}\phi^4,
+        \qquad
+        \lambda=-\frac{m^2}{f_a^2},
+        $$
+      </div>
+
+      <p>
+        where $f_a$ is the decay constant. The coupling is tiny, but the
+        enormous occupation numbers of galactic dark matter compensate for it
+        and can drive the formation of bound configurations by accretion alone.
+      </p>
+
+      <p>
+        A galaxy contains $\sim10^{11}$ stars and compact remnants embedded in
+        its dark-matter halo. If each of them hosts an atom that repeatedly
+        turns cold dark matter into radiation, could these processes deplete a
+        significant fraction of the halo? A positive answer would convert dark
+        matter into radiation without any coupling to the Standard Model, and
+        could even produce dark-matter-deficient galaxies such as NGC 1052-DF2.
+      </p>
+
+      <h2>Two kinds of pumps</h2>
+
+      <p>
+        Near a star or compact object of mass $M$, the bosons form
+        hydrogen-like bound states, a <strong>gravitational atom</strong>, with
+        a Bohr radius and a focusing parameter
+      </p>
+
+      <div class="paper-equation">
+        $$
+        R^{\rm GA}=\frac{1}{M m^2},
+        \qquad
+        \xi_{\rm foc}=\frac{2\pi M m}{v_{\rm dm}} .
+        $$
+      </div>
+
+      <p>
+        Self-interactions populate these states from the ambient dark-matter
+        waves. When the atom is smaller than their de Broglie wavelength
+        ($\xi_{\rm foc}>1$, a <em>dense</em> atom), Bose enhancement makes its
+        mass grow exponentially,
+      </p>
+
+      <div class="paper-equation">
+        $$
+        \dot M^{\rm GA}=C+\Gamma^{\rm GA}M^{\rm GA},
+        $$
+      </div>
+
+      <p>
+        until the attractive self-interaction overcomes the gradient pressure
+        at the critical mass
+      </p>
+
+      <div class="paper-equation">
+        $$
+        M_c^{\rm GA}=\frac{16\pi f_a^2}{M m^2} .
+        $$
+      </div>
+
+      <p>
+        The atom then collapses in a bosenova, radiates a fraction of its mass
+        and starts growing again, so the cycle can in principle repeat over the
+        age of the galaxy.
+      </p>
+
+      <figure class="paper-figure">
+        <img
+          src="../assets/papers/bosenovae-galactic-dark-matter/atom-growth-cycle.png"
+          alt="Growth and repeated collapse of a gravitational atom around a 10 solar-mass black hole for three decay constants"
+        >
+        <figcaption>
+          <strong>Figure 1.</strong>
+          Growth of a gravitational atom around a $10\,M_\odot$ black hole at
+          the solar position, for $m=10^{-14}\,{\rm eV}$ and three decay
+          constants. The atom grows exponentially until it reaches the critical
+          mass $M_c^{\rm GA}$ (dashed line) and explodes. Since the cycle time
+          scales as $f_a^4$, it explodes seven times within the age of the
+          Galaxy for $f_a=4.5\times10^7\,{\rm GeV}$, twice for
+          $6\times10^7\,{\rm GeV}$ and never for $8\times10^7\,{\rm GeV}$.
+        </figcaption>
+      </figure>
+
+      <p>
+        Gravity and self-interactions also act on the halo itself, which can
+        nucleate <strong>boson stars</strong>. Embedded in the halo, a boson
+        star keeps growing by Bose-enhanced scattering of the surrounding dark
+        matter, but with an attractive coupling it is stable only up to a
+        maximum mass,
+      </p>
+
+      <div class="paper-equation">
+        $$
+        M_c^{\rm BS}\simeq10\,\frac{f_a}{m} .
+        $$
+      </div>
+
+      <p>
+        A heavier star collapses and radiates a fraction $\delta^{\rm BS}
+        \simeq0.3$ of its mass, after which the remnant grows again. Boson
+        stars are therefore a second kind of pump, fed directly by the halo
+        rather than by the stars of the galaxy.
+      </p>
+
+      <h2>A bound from mass conservation</h2>
+
+      <p>
+        An atom can only radiate what it has captured. Splitting the evolution
+        at the first bosenova, at time $t_c^{\rm GA}$, the mass that a single
+        object ejects in a time $T$ is bounded by
+      </p>
+
+      <div class="paper-equation">
+        $$
+        M_{\rm ej}^{\max,{\rm GA}}
+        =
+        \underbrace{\delta^{\rm GA}M_c^{\rm GA}}_{\rm store}
+        +
+        \underbrace{\left(T-t_c^{\rm GA}\right)
+        \min\left\{C+\Gamma^{\rm GA}M_c^{\rm GA},\,F_{\rm geo}\right\}}_{\rm pump},
+        $$
+      </div>
+
+      <p>
+        where the pump term is the throughput of an atom at its critical mass,
+        capped by the geometric flux $F_{\rm geo}$ of dark matter through its
+        gravitationally focused cross section. The bound is applied only where
+        the formation mechanism is valid: point-like source, non-relativistic
+        bound state, perturbative background, dense regime and enough time.
+        Even in its most favourable corner, a single object ejects less than
+        $3\times10^{-8}\,M_\odot$ over the age of the Galaxy.
+      </p>
+
+      <h2>The Milky Way</h2>
+
+      <p>
+        The total ejection follows from summing this bound over a realistic
+        model of the Milky Way: an NFW dark-matter halo, thin and thick discs
+        and a bulge with their formation histories, a standard initial mass
+        function, and stellar evolution into white dwarfs, neutron stars and
+        black holes, including natal kicks. Over the whole $(m,f_a)$ plane, the
+        stars of the Galaxy deplete at most
+      </p>
+
+      <div class="paper-equation">
+        $$
+        \epsilon^{\rm GA}_\star
+        \simeq
+        2.8\times10^{-9}
+        \quad\text{at}\quad
+        m\simeq7\times10^{-16}\,{\rm eV},\;
+        f_a\simeq1.3\times10^{8}\,{\rm GeV},
+        $$
+      </div>
+
+      <p>
+        about $3\times10^3\,M_\odot$ of dark matter over the age of the Galaxy.
+        Almost all of it comes from stellar-mass black holes in the inner few
+        hundred parsecs, where the dark matter is densest; the solar
+        neighbourhood contributes only $\sim10^{-5}$ of the total.
+      </p>
+
+      <figure class="paper-figure">
+        <img
+          src="../assets/papers/bosenovae-galactic-dark-matter/milky-way-ejection-map.png"
+          alt="Upper bound on the fraction of Milky Way dark matter ejected by bosenovae of gravitational atoms in the boson mass and decay constant plane"
+        >
+        <figcaption>
+          <strong>Figure 2.</strong>
+          Upper bound on the fraction $\epsilon^{\rm GA}$ of the Milky-Way dark
+          matter ejected by bosenovae of gravitational atoms in $10\,{\rm Gyr}$.
+          The stellar population and the central black hole, Sgr A$^*$,
+          contribute in separate windows of boson mass; the stars mark their
+          maxima. The grey region is excluded by linear structure formation and
+          the dotted line is the Lyman-$\alpha$ bound.
+        </figcaption>
+      </figure>
+
+      <h2>Supermassive black holes and other galaxies</h2>
+
+      <p>
+        The central black hole, Sgr A$^*$, does better in a separate window of
+        boson masses. Near the Lyman-$\alpha$ bound its atom could radiate up
+        to $\epsilon^{\rm GA}\sim10^{-3}$ of the halo, but only for
+        $m\simeq2\times10^{-20}\,{\rm eV}$, a mass disfavoured by the stellar
+        kinematics of ultrafaint dwarf galaxies, and through a geometric bound
+        that applies where the perturbative treatment has broken down. Above
+        $3\times10^{-19}\,{\rm eV}$ this term is at most $3\times10^{-6}$.
+      </p>
+
+      <p>
+        Repeating the calculation for dwarf spheroidals, ultra-diffuse and
+        compact galaxies and giant ellipticals gives a remarkably stable
+        answer: every template ejects about $10^3\,M_\odot$. The pump is
+        locally significant only in a dense nucleus, where the black holes of a
+        nuclear star cluster can process $\sim10\%$ of the dark matter within
+        the central parsecs. A DF2-like galaxy would lose $\sim10^3\,M_\odot$,
+        more than four orders of magnitude short of the $\sim5\times10^{10}\,
+        M_\odot$ halo it would have to have lost.
+      </p>
+
+      <h2>Boson star pumps</h2>
+
+      <p>
+        If a fraction $f_{\rm BS}$ of the dark matter is in boson stars feeding
+        on the rest of the halo, the radiated fraction is largest for
+        $f_{\rm BS}\simeq1/2$ and boson masses close to the Lyman-$\alpha$
+        bound. Even then, the pump would radiate at most $3\times10^{-5}$ of
+        the Milky-Way halo, $0.1\%$ of a DF2-like galaxy and $6\%$ of a dwarf
+        spheroidal. These are upper estimates, since the self-interaction
+        growth rate is overestimated for the large, dilute stars that
+        dominate.
+      </p>
+
+      <figure class="paper-figure">
+        <img
+          src="../assets/papers/bosenovae-galactic-dark-matter/channels-overview.png"
+          alt="Overview of the boson star, Sgr A* and stellar atom channels and the largest fraction of the Milky Way halo each can radiate"
+        >
+        <figcaption>
+          <strong>Figure 3.</strong>
+          Overview of the three channels as a function of the boson mass. Top:
+          where each channel acts, with boson stars drawn at the mass and size
+          at which they pump best. Bottom: largest fraction of the Milky-Way
+          halo radiated in $10\,{\rm Gyr}$ by boson stars, by the atom of
+          Sgr A$^*$ and by the atoms of stars and remnants. Masses below
+          $2\times10^{-20}\,{\rm eV}$ are excluded by the Lyman-$\alpha$
+          forest.
+        </figcaption>
+      </figure>
+
+      <h2>Physical interpretation</h2>
+
+      <p>
+        Bosenovae cannot empty galaxies of dark matter, but they may still be
+        observable if the boson couples, even weakly, to the Standard Model.
+        Each bosenova emits a burst of relativistic bosons, and for derivative
+        couplings to spins such bursts are a promising target for magnetometer
+        networks. The flux from the Galaxy as a whole is negligible at the
+        Earth, but for $1.7\times10^{-14}\,{\rm eV}&lt;m&lt;1.9\times10^{-13}\,
+        {\rm eV}$ the Sun hosts its own atom, whose explosions could be
+        detectable.
+      </p>
+
+      <p>
+        The decay constants at which every channel peaks lie many orders of
+        magnitude below those for which vacuum misalignment alone produces the
+        observed abundance. On the misalignment line itself, where all the
+        rates are smaller still, every channel is even more negligible.
+      </p>
+
+      <h2>Takeaway</h2>
+
+      <p>
+        The paper bounds, for every channel, how much dark matter bosenovae can
+        convert into escaping radiation:
+      </p>
+
+      <div class="paper-equation">
+        $$
+        \boxed{
+        \epsilon^{\rm GA}_\star\simeq3\times10^{-9},
+        \qquad
+        \epsilon^{\rm BS}\lesssim3\times10^{-5}
+        \quad\text{(Milky Way, 10 Gyr)}
+        }
+        $$
+      </div>
+
+      <p>
+        Neither the atoms of stars and compact remnants nor boson stars
+        feeding on the halo come close to depleting a galaxy. Only the atoms of
+        supermassive black holes reach larger fractions, and only for boson
+        masses that are already disfavoured and in a regime beyond the validity
+        of the perturbative treatment. Bosenovae therefore cannot explain
+        dark-matter-deficient galaxies, although the bursts of the Sun's own
+        atom could still offer an observational handle.
+      </p>
+
+      <div class="paper-actions">
+        <a class="btn" href="https://arxiv.org/abs/2610.20507" rel="noopener">
+          Read on arXiv
+        </a>
+
+        <a class="btn btn-secondary" href="../publications.html">
+          Back to publications
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      <div>
+        <strong>Strong Gravity Group @ UIB</strong><br>
+        IAC3 – UIB, Parc BIT<br>
+        Carrer Blaise Pascal, 6, 07121 Palma, Spain
+      </div>
+
+      <div>
+        <a href="../contact.html">Contact</a><br>
+        <a href="https://www.uib.eu/" rel="noopener">UIB</a>
+      </div>
+    </div>
+
+    <div class="footer-funding">
+      <p class="footer-funding-title">Funding &amp; support</p>
+      <div class="footer-funding-logos">
+        <img
+          src="../assets/logos/funding-logos.png"
+          alt="Funded by the Ministerio de Ciencia, Innovación y Universidades, co-financed by the European Union, the Agencia Estatal de Investigación, the Conselleria d'Educació i Universitats of the Govern de les Illes Balears, and REDONGRA, the Spanish Network of Gravitational Wave Physics"
+          width="840"
+          height="388"
+          loading="lazy"
+        >
+        <img
+          class="footer-logo-cost"
+          src="../assets/logos/cost.jpg"
+          alt="COST, European Cooperation in Science and Technology"
+          width="700"
+          height="267"
+          loading="lazy"
+        >
+      </div>
+    </div>
+
+    <div class="footer-credit">
+      <span>© 2026 Strong Gravity Group @ UIB</span>
+      <span>
+        Website by
+        <a href="../people/alejandro-svyatkovskyy.html">Alejandro Svyatkovskyy Kholyavka</a>
+      </span>
+    </div>
+
+  </footer>
+
+</body>
+</html>

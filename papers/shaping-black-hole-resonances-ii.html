@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>
+    Shaping black hole resonances II — Strong Gravity Group @ UIB
+  </title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Source+Sans+3:wght@400;600&family=IBM+Plex+Mono:wght@400;500&display=swap"
+    rel="stylesheet"
+  >
+  <link rel="stylesheet" href="../css/style.css">
+
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']]
+      },
+      svg: {
+        fontCache: 'global'
+      }
+    };
+  </script>
+  <script
+    defer
+    src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"
+  ></script>
+</head>
+
+<body>
+
+  <nav class="nav">
+    <div class="nav-inner">
+      <a class="brand" href="../index.html">
+        Strong Gravity Group <span class="tilde">~</span> UIB
+      </a>
+
+      <button
+        class="nav-toggle"
+        aria-label="Open menu"
+        onclick="document.querySelector('.nav-links').classList.toggle('open')"
+      >
+        ☰
+      </button>
+
+      <ul class="nav-links">
+        <li><a href="../research.html">Research</a></li>
+        <li><a href="../lab.html">Lab</a></li>
+        <li><a href="../team.html">Team</a></li>
+        <li><a href="../publications.html" aria-current="page">Publications</a></li>
+        <li><a href="../resources.html">Resources</a></li>
+        <li><a href="../news.html">News</a></li>
+        <li><a href="../contact.html">Contact</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <header class="page-head">
+    <div class="page-head-inner">
+      <p class="eyebrow">Paper overview</p>
+
+      <h1>
+        Shaping black hole resonances II. Spectroscopic landscapes and
+        interference in black hole ringdown
+      </h1>
+
+      <p class="paper-hero-meta">
+        Alejandro Svyatkovskyy Kholyavka, Sayak Datta,
+        Jose Antonio León Vega, Xisco Jiménez Forteza · 2026
+      </p>
+    </div>
+  </header>
+
+  <section class="section">
+    <div class="section-inner paper-layout">
+
+      <p class="paper-lede">
+        How strongly a black hole rings in each of its quasinormal modes
+        depends on the perturbation that excites it. This paper maps that
+        dependence over the full parameter space of an oscillatory Gaussian
+        perturbation, its width $\sigma$ and its carrier frequency $\nu$, for
+        both the amplitude and the phase of the excitation coefficients $C_n$.
+        The map shows that tuning the carrier to the mode frequency maximises
+        the excitation only for narrowband sources, and that the positive- and
+        negative-frequency components of a real source interfere, shaping both
+        the amplitude and the phase of the ringdown.
+      </p>
+
+      <h2>From spectral filtering to a map</h2>
+
+      <p>
+        In <a href="shaping-black-hole-resonances.html">Paper I</a> we showed
+        that a black hole acts as a bank of resonant spectral filters. At
+        future null infinity the quasinormal-mode content of the signal is
+      </p>
+
+      <div class="paper-equation">
+        $$
+        \Psi(r_\star,t)=\sum_n C_n\,e^{-i\omega_n(t-r_\star)},
+        \qquad
+        C_n=B_n\,T_n ,
+        $$
+      </div>
+
+      <p>
+        where the excitation factor $B_n$ depends only on the black hole and
+        the mode, and the overlap $T_n$ is, in the asymptotic regime, the
+        spatial Fourier transform of the perturbation evaluated at the complex
+        frequency $\omega_n=\omega_n^{\rm Re}-i\,\omega_n^{\rm Im}$. As in
+        Paper I, the initial data are oscillatory Gaussian pulses,
+      </p>
+
+      <div class="paper-equation">
+        $$
+        \Psi(r_\star)\Big|_{t=0}
+        =
+        \exp\left[-\frac{(r_\star-r_0)^2}{2\sigma^2}\right]
+        \cos\left[\nu\,(r_\star-r_0)\right],
+        $$
+      </div>
+
+      <p>
+        whose spectrum is
+      </p>
+
+      <div class="paper-equation">
+        $$
+        \tilde\Psi(\omega)
+        =
+        e^{i\omega r_0}\,
+        e^{-\frac{\sigma^2}{2}\left(\omega^2+\nu^2\right)}
+        \cosh\left(\sigma^2\omega\nu\right).
+        $$
+      </div>
+
+      <p>
+        The paper studies the Schwarzschild $\ell=2$ modes, from the
+        fundamental mode to the third overtone, and asks how $|C_n|$ and
+        $\arg C_n$ change across the whole $(\sigma,\nu)$ plane.
+      </p>
+
+      <h2>Two spectral regimes</h2>
+
+      <p>
+        The spectrum of the source has two branches centred at
+        $\omega=\pm\nu$, each with a width $\sim1/\sigma$. When they overlap
+        they merge into a single peak at $\omega=0$. The transition happens at
+      </p>
+
+      <div class="paper-equation">
+        $$
+        \alpha\equiv\sigma\nu=1 .
+        $$
+      </div>
+
+      <p>
+        For $\alpha&lt;1$ the pulse is broadband and its power is concentrated
+        at low frequencies. For $\alpha&gt;1$ the spectrum splits into two
+        resolved peaks that approach $\pm\nu$, and the width and carrier
+        frequency become independent knobs for the bandwidth and the central
+        frequency. The same bifurcation appears for any real modulated pulse
+        $f(r_\star)\cos(\nu r_\star)$; the Gaussian envelope only fixes the
+        exact threshold.
+      </p>
+
+      <figure class="paper-figure">
+        <img
+          src="../assets/papers/shaping-black-hole-resonances-ii/spectral-bifurcation.jpg"
+          alt="Spectral amplitude of the oscillatory Gaussian perturbation in the frequency and carrier-frequency plane at fixed widths, and in the frequency and width plane at fixed carrier frequencies"
+        >
+        <figcaption>
+          <strong>Figure 1.</strong>
+          Spectrum $|\tilde\Psi(\omega)|$ of the initial perturbation at fixed
+          width (top, $\sigma=1,2,5$) and at fixed carrier frequency (bottom,
+          $\nu=0,0.2,0.6$). Below the dotted line $\alpha=\sigma\nu=1$ the
+          spectrum has a single maximum at $\omega=0$; above it the maximum
+          splits into two peaks (red) that approach $\omega=\pm\nu$.
+        </figcaption>
+      </figure>
+
+      <h2>Two branches that interfere</h2>
+
+      <p>
+        For this family of initial data the overlap can be computed in closed
+        form. It is the coherent sum of the two frequency branches of the
+        source,
+      </p>
+
+      <div class="paper-equation">
+        $$
+        T_n
+        =
+        -i\sqrt{8\pi}\,\sigma\,\omega_n
+        \left[
+          e^{-\frac{\sigma^2}{2}(\omega_n+\nu)^2}
+          +
+          e^{-\frac{\sigma^2}{2}(\omega_n-\nu)^2}
+        \right].
+        $$
+      </div>
+
+      <p>
+        Because $\omega_n$ is complex, the two terms carry a relative phase set
+        by the damping rate, and their sum contains an interference term. The
+        amplitude factorises exactly into a Gaussian envelope and an
+        interference factor,
+      </p>
+
+      <div class="paper-equation">
+        $$
+        |T_n|^2
+        =
+        16\pi\sigma^2|\omega_n|^2\,
+        e^{-\sigma^2\left(\mathcal{P}_n+\nu^2\right)}\,
+        \mathcal{D}_n ,
+        $$
+      </div>
+
+      <p>
+        with
+      </p>
+
+      <div class="paper-equation">
+        $$
+        \begin{aligned}
+        \mathcal{D}_n
+        &=
+        \cosh\left(2\sigma^2\nu\,\omega_n^{\rm Re}\right)
+        +
+        \cos\left(2\sigma^2\nu\,\omega_n^{\rm Im}\right),
+        \\[0.4em]
+        \mathcal{P}_n
+        &=
+        \left(\omega_n^{\rm Re}\right)^2-\left(\omega_n^{\rm Im}\right)^2 .
+        \end{aligned}
+        $$
+      </div>
+
+      <p>
+        For a non-oscillatory pulse, $\nu=0$, the interference factor is
+        constant and the response is set by the envelope alone. For $\nu\neq0$
+        the oscillating cosine modulates the amplitude, and its weight
+        relative to the hyperbolic term is controlled by the ratio
+        $\omega_n^{\rm Re}/\omega_n^{\rm Im}$. Weakly damped modes
+        ($\mathcal{P}_n&gt;0$, here $n=0,1$) are barely affected, while
+        strongly damped overtones ($\mathcal{P}_n&lt;0$, $n=2,3$) develop dips
+        at finite carrier frequency. The mechanism is not specific to the
+        Gaussian: any real oscillatory source gives
+        $T_n\propto F(\omega_n+\nu)+F(\omega_n-\nu)$.
+      </p>
+
+      <figure class="paper-figure">
+        <img
+          src="../assets/papers/shaping-black-hole-resonances-ii/excitation-vs-carrier-frequency.png"
+          alt="Excitation amplitude of the first four quasinormal modes as a function of the carrier frequency at fixed width"
+        >
+        <figcaption>
+          <strong>Figure 2.</strong>
+          Excitation amplitude $|C_n|$ against the carrier frequency at
+          $\sigma=5$ for $n=0$–$3$. Solid lines use the full quasinormal-mode
+          wavefunctions and dashed lines the asymptotic approximation; the two
+          overlap throughout. Dotted lines mark $\omega_n^{\rm Re}$ and the red
+          line marks $\alpha=1$. The dips of $n=2,3$ at low $\nu$ come from the
+          interference term, which for $n=3$ moves the maximum about $27\%$
+          below $\omega_3^{\rm Re}$.
+        </figcaption>
+      </figure>
+
+      <h2>Resonance matching only for narrowband sources</h2>
+
+      <p>
+        The stationary points of the amplitude follow from the derivatives of
+        $\ln|T_n|^2$. The line $\nu=0$ is always stationary, and its curvature
+        along $\nu$ is
+      </p>
+
+      <div class="paper-equation">
+        $$
+        \partial_{\nu\nu}\ln|T_n|^2\Big|_{\nu=0}
+        =
+        2\sigma^2\left(\sigma^2\mathcal{P}_n-1\right),
+        $$
+      </div>
+
+      <p>
+        which changes sign at the critical width
+      </p>
+
+      <div class="paper-equation">
+        $$
+        \sigma_n^\ast=\frac{1}{\sqrt{\mathcal{P}_n}} ,
+        $$
+      </div>
+
+      <p>
+        the optimal width of a non-oscillatory Gaussian found in Paper I
+        ($\sigma_0^\ast\simeq2.75$, $\sigma_1^\ast\simeq4.70$). For narrower
+        pulses, $\sigma&lt;\sigma_n^\ast$, the strongest excitation occurs at
+        $\nu=0$: the source is broadband enough to overlap with the mode
+        without any carrier at all. Above $\sigma_n^\ast$, $\nu=0$ becomes a
+        minimum and two maxima move out towards $\nu=\pm\omega_n^{\rm Re}$.
+        The familiar resonance-matching picture is therefore recovered only in
+        the narrowband limit.
+      </p>
+
+      <p>
+        For the strongly damped overtones no critical width exists and $\nu=0$
+        stays a maximum at every width. Their extrema curves fold through
+        several turning points, and at some widths ($\sigma\simeq3.05$ for
+        $n=2$; $\sigma\simeq2.87$ and $5.06$ for $n=3$) the carrier frequency
+        $\nu=\omega_n^{\rm Re}$ is even a <em>minimum</em> of the excitation:
+        a mode can be weakly excited despite the source being exactly on
+        resonance.
+      </p>
+
+      <figure class="paper-figure">
+        <img
+          src="../assets/papers/shaping-black-hole-resonances-ii/carrier-frequency-extrema.png"
+          alt="Maxima and minima of the excitation amplitude along the carrier frequency in the carrier-frequency and width plane for the first four modes"
+        >
+        <figcaption>
+          <strong>Figure 3.</strong>
+          Maxima (dark) and minima (light) of $|C_n|$ along $\nu$ in the
+          $(\nu,\sigma)$ plane for $n=0$–$3$. For $n=0,1$, $\nu=0$ switches
+          from a maximum to a minimum at $\sigma_n^\ast$ (dotted lines); for
+          $n=2,3$ it is a maximum at all widths. Circles mark
+          $\nu=\pm\omega_n^{\rm Re}$ and stars the turning points of each
+          curve.
+        </figcaption>
+      </figure>
+
+      <h2>Optimal widths and the mode linewidth</h2>
+
+      <p>
+        The complementary question is which width maximises the excitation at
+        a fixed carrier frequency. For wide pulses the hyperbolic part of the
+        interference factor dominates and the stationarity condition along
+        $\sigma$ reduces to
+      </p>
+
+      <div class="paper-equation">
+        $$
+        \left(\nu-\omega_n^{\rm Re}\right)^2
+        =
+        \left(\omega_n^{\rm Im}\right)^2+\frac{1}{\sigma^2}
+        \quad\Longrightarrow\quad
+        \sigma_{\rm opt}(\nu)
+        \simeq
+        \frac{1}{\sqrt{\left(\nu-\omega_n^{\rm Re}\right)^2
+        -\left(\omega_n^{\rm Im}\right)^2}} .
+        $$
+      </div>
+
+      <p>
+        The power spectrum of a damped mode is a Lorentzian centred at
+        $\omega_n^{\rm Re}$ with half-width $\omega_n^{\rm Im}$. A finite
+        optimal width exists only when the carrier lies outside this
+        linewidth; inside it, the excitation keeps growing with $\sigma$. The
+        stationary branches therefore approach the half-power points
+        $\nu\to\omega_n^{\rm Re}\pm\omega_n^{\rm Im}$ as $\sigma\to\infty$.
+        Combining both stationarity conditions shows that the only joint
+        stationary point of the plane is $(\nu,\sigma)=(0,\sigma_n^\ast)$, and
+        that it is not a maximum: the excitation keeps increasing along the
+        branch of $\sigma$-maxima that starts there.
+      </p>
+
+      <figure class="paper-figure">
+        <img
+          src="../assets/papers/shaping-black-hole-resonances-ii/width-extrema.png"
+          alt="Maxima and minima of the excitation amplitude along the width in the carrier-frequency and width plane for the first four modes"
+        >
+        <figcaption>
+          <strong>Figure 4.</strong>
+          Maxima (dark) and minima (light) of $|C_n|$ along $\sigma$ in the
+          $(\nu,\sigma)$ plane for $n=0$–$3$. The outer branches bend towards
+          the centre as $\sigma$ grows and approach
+          $\nu=\pm(\omega_n^{\rm Re}+\omega_n^{\rm Im})$ (circles for
+          $\nu&gt;0$); for $n=0,1$ an inner, U-shaped branch starts at
+          $(0,\sigma_n^\ast)$ (dotted lines) and approaches
+          $\omega_n^{\rm Re}-\omega_n^{\rm Im}$ (diamonds for $\nu&gt;0$).
+          For $\nu&lt;0$ the markers refer to the mirror mode
+          $-\omega_n^\ast$. Stars mark the turning points, whose number grows
+          with the damping of the mode.
+        </figcaption>
+      </figure>
+
+      <h2>Comparison with time-domain simulations</h2>
+
+      <p>
+        The analytical landscape is compared with excitation coefficients
+        extracted from time-domain Regge–Wheeler evolutions over the whole
+        $(\sigma,\nu)$ plane. The extraction recovers the source bifurcation,
+        the critical width, the resonant frequencies and the linewidth
+        boundaries, together with most of the stationary branches. The median
+        relative difference in $|C_0|$ is about $4\%$. For the first overtone,
+        which decays about three times faster and is harder to fit, it is
+        $16\%$ for $\sigma\leq5$ and $36\%$ over the full plane.
+      </p>
+
+      <figure class="paper-figure">
+        <img
+          src="../assets/papers/shaping-black-hole-resonances-ii/amplitude-landscape.jpg"
+          style="max-width: 760px; margin-inline: auto;"
+          alt="Theoretical and numerical excitation amplitude landscapes of the fundamental mode and first overtone in the carrier-frequency and width plane, and their ratio"
+          loading="lazy"
+        >
+        <figcaption>
+          <strong>Figure 5.</strong>
+          Amplitude landscape $|C_n|$ for $n=0$ (left) and $n=1$ (right):
+          analytical prediction (top), time-domain extraction (middle) and
+          $\log_{10}(|C_n^{\rm num}|/|C_n^{\rm th}|)$ (bottom). The overlaid
+          curves are the maxima and minima along $\nu$ and $\sigma$, the
+          critical width $\sigma_n^\ast$, the lines $\nu=\pm\omega_n^{\rm Re}$
+          and $\nu=\omega_n^{\rm Re}\pm\omega_n^{\rm Im}$, and the source
+          bifurcation $\sigma\nu=\pm1$.
+        </figcaption>
+      </figure>
+
+      <h2>The phase as an independent observable</h2>
+
+      <p>
+        The phase of the excitation coefficient carries information that the
+        amplitude does not. It separates into a mode-only, a width-only and a
+        carrier-dependent term,
+      </p>
+
+      <div class="paper-equation">
+        $$
+        \arg T_n
+        =
+        -\frac{\pi}{2}
+        -\arctan\left(\frac{\omega_n^{\rm Im}}{\omega_n^{\rm Re}}\right)
+        +\sigma^2\omega_n^{\rm Re}\omega_n^{\rm Im}
+        +\Phi_{\rm int}(\sigma,\nu),
+        $$
+      </div>
+
+      <p>
+        where the last term is generated by the same two-branch interference,
+      </p>
+
+      <div class="paper-equation">
+        $$
+        \Phi_{\rm int}(\sigma,\nu)
+        =
+        -\arctan\left[
+          \tanh\left(\sigma^2\omega_n^{\rm Re}\nu\right)
+          \tan\left(\sigma^2\omega_n^{\rm Im}\nu\right)
+        \right].
+        $$
+      </div>
+
+      <p>
+        The phase is nonzero even though the source itself carries no phase:
+        it comes from evaluating the source spectrum at a complex frequency.
+        Unlike the amplitude, its structure along $\nu$ never changes: $\nu=0$
+        is the unique maximum at every width and for every mode. Along
+        $\sigma$, the stationary branches approach $\nu=\pm\omega_n^{\rm Re}$
+        in the narrowband limit, whereas the amplitude branches approach the
+        linewidth edges $\omega_n^{\rm Re}\pm\omega_n^{\rm Im}$. Amplitude and
+        phase therefore encode the real and imaginary parts of the
+        quasinormal-mode frequency in complementary ways. The time-domain
+        phases agree with the prediction to a median of $0.14\,{\rm rad}$ for
+        $n=0$ and $0.34\,{\rm rad}$ for $n=1$ with $\sigma\leq5$.
+      </p>
+
+      <figure class="paper-figure">
+        <img
+          src="../assets/papers/shaping-black-hole-resonances-ii/phase-landscape.jpg"
+          style="max-width: 760px; margin-inline: auto;"
+          alt="Theoretical and numerical unwrapped phase landscapes of the fundamental mode and first overtone in the carrier-frequency and width plane, and their difference"
+          loading="lazy"
+        >
+        <figcaption>
+          <strong>Figure 6.</strong>
+          Unwrapped phase $\phi_n=\arg C_n$ for $n=0$ (left) and $n=1$ (right):
+          analytical prediction (top), time-domain extraction (middle) and
+          their difference (bottom). White curves are contours
+          $\phi_n=m\pi/2$; the coloured curves are the maxima and minima of the
+          phase along $\sigma$ and $\nu$, and the dotted lines mark
+          $\nu=\pm\omega_n^{\rm Re}$.
+        </figcaption>
+      </figure>
+
+      <h2>Physical interpretation</h2>
+
+      <p>
+        The landscapes show that quasinormal-mode excitation cannot be
+        understood through frequency matching alone. A broadband perturbation
+        can excite a mode efficiently with no carrier tuned to it, while a
+        source exactly on resonance can leave a strongly damped overtone
+        almost silent. The interference between the two frequency branches is
+        a generic feature of real oscillatory sources, complementary to the
+        interference between different modes studied in the context of
+        spectral instabilities.
+      </p>
+
+      <p>
+        These results are relevant for interpreting the ringdown of sources
+        whose spectral content is broad compared with the quasinormal-mode
+        linewidth. A natural next step is to apply the same analysis to
+        physically motivated sources, such as near-circular and eccentric
+        plunges, with direct relevance for extreme-mass-ratio inspirals.
+      </p>
+
+      <h2>Takeaway</h2>
+
+      <p>
+        For a real oscillatory source, the excitation of each mode is a
+        Gaussian spectral envelope modulated by the interference of the two
+        frequency branches:
+      </p>
+
+      <div class="paper-equation">
+        $$
+        \boxed{
+        |C_n|
+        \propto
+        |B_n|\,\sigma|\omega_n|\,
+        e^{-\frac{\sigma^2}{2}\left(\mathcal{P}_n+\nu^2\right)}
+        \sqrt{\cosh\left(2\sigma^2\nu\,\omega_n^{\rm Re}\right)
+        +\cos\left(2\sigma^2\nu\,\omega_n^{\rm Im}\right)}
+        }
+        $$
+      </div>
+
+      <p>
+        Matching the carrier to the mode frequency is optimal only for
+        narrowband sources, and the phase provides an independent handle on
+        the complex quasinormal-mode spectrum. Together, amplitude and phase
+        turn the excitation coefficients into a spectroscopic map of how a
+        source probes the black-hole resonances.
+      </p>
+
+      <!-- ================================================== -->
+      <!-- Interactive excitation landscape -->
+      <!-- ================================================== -->
+
+      <h2>Explore the excitation landscape</h2>
+
+      <p>
+        Explore the amplitude and phase of the excitation coefficients $C_n$
+        in the $(\sigma,\nu)$ plane for the fundamental mode and the first
+        three overtones. The amplitude view shows $\log_{10}|C_n|$ and the
+        phase view the unwrapped phase $\arg C_n$, together with the
+        stationary curves and reference lines such as
+        $\nu=\pm\omega_n^{\rm Re}$. Select the quantity and overtone below,
+        then rotate, zoom and inspect the three-dimensional surface.
+      </p>
+
+      <div class="interactive-landscape">
+
+        <div class="landscape-selector-group">
+          <span class="landscape-selector-label">Quantity</span>
+
+          <div class="landscape-controls">
+            <button
+              class="landscape-btn quantity-btn active"
+              onclick="selectQuantity('amplitude', this)"
+            >
+              Amplitude · log₁₀|C<sub>n</sub>|
+            </button>
+
+            <button
+              class="landscape-btn quantity-btn"
+              onclick="selectQuantity('phase', this)"
+            >
+              Phase · arg C<sub>n</sub>
+            </button>
+          </div>
+        </div>
+
+        <div class="landscape-selector-group">
+          <span class="landscape-selector-label">Overtone</span>
+
+          <div class="landscape-controls">
+            <button
+              class="landscape-btn overtone-btn active"
+              onclick="selectOvertone(0, this)"
+            >
+              n = 0
+            </button>
+
+            <button
+              class="landscape-btn overtone-btn"
+              onclick="selectOvertone(1, this)"
+            >
+              n = 1
+            </button>
+
+            <button
+              class="landscape-btn overtone-btn"
+              onclick="selectOvertone(2, this)"
+            >
+              n = 2
+            </button>
+
+            <button
+              class="landscape-btn overtone-btn"
+              onclick="selectOvertone(3, this)"
+            >
+              n = 3
+            </button>
+          </div>
+        </div>
+
+        <iframe
+          id="landscape-frame"
+          src="../assets/interactive/C0_3d_log10_amplitude.html"
+          title="Interactive QNM excitation landscape"
+          loading="lazy">
+        </iframe>
+
+      </div>
+
+      <script>
+        let currentQuantity = "amplitude";
+        let currentOvertone = 0;
+
+        const landscapeFiles = {
+          amplitude: n =>
+            `../assets/interactive/C${n}_3d_log10_amplitude.html`,
+          phase: n =>
+            `../assets/interactive/C${n}_3d_phase.html`
+        };
+
+        function updateLandscape() {
+          document.getElementById("landscape-frame").src =
+            landscapeFiles[currentQuantity](currentOvertone);
+        }
+
+        function selectQuantity(quantity, button) {
+          currentQuantity = quantity;
+          document
+            .querySelectorAll(".quantity-btn")
+            .forEach(btn => btn.classList.remove("active"));
+          button.classList.add("active");
+          updateLandscape();
+        }
+
+        function selectOvertone(n, button) {
+          currentOvertone = n;
+          document
+            .querySelectorAll(".overtone-btn")
+            .forEach(btn => btn.classList.remove("active"));
+          button.classList.add("active");
+          updateLandscape();
+        }
+      </script>
+
+      <div class="paper-actions">
+        <a class="btn" href="https://arxiv.org/abs/2611.13075" rel="noopener">
+          Read on arXiv
+        </a>
+
+        <a class="btn btn-secondary" href="shaping-black-hole-resonances.html">
+          Read the Paper I overview
+        </a>
+
+        <a class="btn btn-secondary" href="../publications.html">
+          Back to publications
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      <div>
+        <strong>Strong Gravity Group @ UIB</strong><br>
+        IAC3 – UIB, Parc BIT<br>
+        Carrer Blaise Pascal, 6, 07121 Palma, Spain
+      </div>
+
+      <div>
+        <a href="../contact.html">Contact</a><br>
+        <a href="https://www.uib.eu/" rel="noopener">UIB</a>
+      </div>
+    </div>
+
+    <div class="footer-funding">
+      <p class="footer-funding-title">Funding &amp; support</p>
+      <div class="footer-funding-logos">
+        <img
+          src="../assets/logos/funding-logos.png"
+          alt="Funded by the Ministerio de Ciencia, Innovación y Universidades, co-financed by the European Union, the Agencia Estatal de Investigación, the Conselleria d'Educació i Universitats of the Govern de les Illes Balears, and REDONGRA, the Spanish Network of Gravitational Wave Physics"
+          width="840"
+          height="388"
+          loading="lazy"
+        >
+        <img
+          class="footer-logo-cost"
+          src="../assets/logos/cost.jpg"
+          alt="COST, European Cooperation in Science and Technology"
+          width="700"
+          height="267"
+          loading="lazy"
+        >
+      </div>
+    </div>
+
+    <div class="footer-credit">
+      <span>© 2026 Strong Gravity Group @ UIB</span>
+      <span>
+        Website by
+        <a href="../people/alejandro-svyatkovskyy.html">Alejandro Svyatkovskyy Kholyavka</a>
+      </span>
+    </div>
+
+  </footer>
+
+</body>
+</html>

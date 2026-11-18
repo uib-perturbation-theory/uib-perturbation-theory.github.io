@@ -43,12 +43,15 @@ export function createSpectrum(el) {
   const PAD = { l: 46, r: 12, t: 10, b: 32 };
 
   /* data = { w0, dw, nw, values[k] (|X| or |h|), wMax, omega[n][k] (quasinormal
-     frequencies), symbol, mark: null or { values[k], label } } */
+     frequencies), symbol, mark: null or { values[k], label },
+     labels: optional names of the rows of omega, all drawn alike (otherwise
+     row n is the overtone n), noRef: no a = 0 curve } */
   let data = null;
   let k = 0;
   let size = { w: 0, h: 0 };
   let hover = null; // omega
 
+  const showRef = () => k !== 0 && !data?.noRef;
   const plot = () => ({ x0: PAD.l, x1: size.w - PAD.r, y0: PAD.t, y1: size.h - PAD.b });
   const xOf = (w, p) => p.x0 + (w / data.wMax) * (p.x1 - p.x0);
 
@@ -77,7 +80,7 @@ export function createSpectrum(el) {
     let m = 0;
 
     for (let j = 0; j < data.nw; j += 1) {
-      m = Math.max(m, data.values[k][j], data.values[0][j]);
+      m = Math.max(m, data.values[k][j], showRef() ? data.values[0][j] : 0);
     }
 
     const hiE = Math.ceil(Math.log10(m * 1.15));
@@ -135,7 +138,35 @@ export function createSpectrum(el) {
     // Quasinormal frequencies (real parts)
     const OMEGA = data.omega;
 
-    for (let n = 3; n >= 0; n -= 1) {
+    if (data.labels) {
+      // a family of modes: the same style for all, the two ends named
+      const xs = OMEGA.map((row) => xOf(Math.abs(row[k][0]), p));
+      ctx.save();
+      ctx.strokeStyle = QNM;
+      ctx.lineWidth = 1.2;
+      ctx.setLineDash([4, 4]);
+      xs.forEach((x) => {
+        ctx.beginPath();
+        ctx.moveTo(x, p.y0);
+        ctx.lineTo(x, p.y1);
+        ctx.stroke();
+      });
+      ctx.restore();
+
+      const hi = xs.indexOf(Math.max(...xs));
+      const lo = xs.indexOf(Math.min(...xs));
+      ctx.fillStyle = QNM;
+      ctx.textBaseline = "top";
+      ctx.textAlign = "left";
+
+      if (xs[hi] - xs[lo] > 70) {
+        ctx.fillText(data.labels[hi], xs[hi] + 5, p.y0 + 2);
+        ctx.textAlign = "right";
+        ctx.fillText(data.labels[lo], xs[lo] - 5, p.y0 + 2);
+      } else {
+        ctx.fillText(data.family ?? "", xs[hi] + 5, p.y0 + 2);
+      }
+    } else for (let n = 3; n >= 0; n -= 1) {
       const x = xOf(OMEGA[n][k][0], p);
       ctx.save();
       ctx.strokeStyle = n === 0 ? QNM : "rgba(42,120,214,0.35)";
@@ -148,10 +179,12 @@ export function createSpectrum(el) {
       ctx.restore();
     }
 
-    ctx.fillStyle = QNM;
-    ctx.textAlign = "left";
-    ctx.textBaseline = "top";
-    ctx.fillText("Re ω₀", xOf(OMEGA[0][k][0], p) + 5, p.y0 + 2);
+    if (!data.labels) {
+      ctx.fillStyle = QNM;
+      ctx.textAlign = "left";
+      ctx.textBaseline = "top";
+      ctx.fillText("Re ω₀", xOf(OMEGA[0][k][0], p) + 5, p.y0 + 2);
+    }
 
     // Orbital marker (twice the ISCO frequency for the plunge)
     if (data.mark) {
@@ -202,7 +235,7 @@ export function createSpectrum(el) {
       ctx.restore();
     };
 
-    if (k !== 0) {
+    if (showRef()) {
       curve(0, REF, 1.3);
     }
 
@@ -228,7 +261,7 @@ export function createSpectrum(el) {
         ctx.fill();
       };
 
-      if (k !== 0) {
+      if (showRef()) {
         dot(valueAt(0, hover), REF);
       }
 
@@ -249,7 +282,7 @@ export function createSpectrum(el) {
     if (hover !== null) {
       let text = `ω = ${hover.toFixed(3)} / M · ${data.symbol} = ${formatValue(valueAt(k, hover))}`;
 
-      if (k !== 0) {
+      if (showRef()) {
         text += ` · a = 0: ${formatValue(valueAt(0, hover))}`;
       }
 
@@ -258,6 +291,19 @@ export function createSpectrum(el) {
     }
 
     const mark = data.mark ? ` · ${data.mark.label} = ${data.mark.values[k].toFixed(4)} / M` : "";
+
+    if (data.labels) {
+      const re = data.omega.map((row) => Math.abs(row[k][0]));
+      const hi = re.indexOf(Math.max(...re));
+      const lo = re.indexOf(Math.min(...re));
+      readout.textContent =
+        k === 0
+          ? `a = 0 · ${data.family}: Re ω = ${re[0].toFixed(4)} / M for every m. Hover to read values.`
+          : `a = ${a.toFixed(1)} M · ${data.family}: Re ω from ${re[lo].toFixed(4)} (${data.labels[lo]}) ` +
+            `to ${re[hi].toFixed(4)} / M (${data.labels[hi]}). Hover to read values.`;
+      return;
+    }
+
     readout.textContent =
       `a = ${a.toFixed(1)} M · Re ω₀ = ${data.omega[0][k][0].toFixed(4)} / M${mark}. ` +
       "Hover to read values.";
@@ -294,13 +340,18 @@ export function createSpectrum(el) {
   return {
     setData(d) {
       data = d;
+
+      if (refKey) {
+        refKey.hidden = !showRef();
+      }
+
       draw();
     },
     setSpin(kk) {
       k = kk;
 
       if (refKey) {
-        refKey.hidden = k === 0;
+        refKey.hidden = !showRef();
       }
 
       draw();
@@ -315,11 +366,13 @@ export function createQnmPlane(el, { onPick }) {
   const readout = el.querySelector("[data-readout]");
   const ctx = canvas.getContext("2d");
 
-  const Y_RANGE = [-0.76, 0];
+  let Y_RANGE = [-0.76, 0];
   const PAD = { l: 46, r: 14, t: 12, b: 32 };
 
-  // modes = { omega[n][k], curve[n][j] (a = 0.01 j), xRange }
+  // modes = { omega[n][k], curve[n][j] (a = 0.01 j), xRange, and optionally
+  // yRange and labels[n] (series named by their label at the a = 0.99 end) }
   let OMEGA = null;
+  let LABELS = null;
   let CURVE = null;
   let X_RANGE = [0, 1];
   let k = 0;
@@ -347,7 +400,9 @@ export function createQnmPlane(el, { onPick }) {
     ctx.textAlign = "right";
     ctx.textBaseline = "middle";
 
-    for (let im = 0; im >= Y_RANGE[0] - 1e-9; im -= 0.1) {
+    const imStep = Y_RANGE[1] - Y_RANGE[0] > 0.3 ? 0.1 : 0.02;
+
+    for (let q = 0, im = 0; im >= Y_RANGE[0] - 1e-9; q += 1, im = -q * imStep) {
       const y = yOf(im, p);
       ctx.strokeStyle = GRID;
       ctx.beginPath();
@@ -355,9 +410,9 @@ export function createQnmPlane(el, { onPick }) {
       ctx.lineTo(p.x1, y);
       ctx.stroke();
 
-      if (Math.round(im * 10) % 2 === 0) {
+      if (q % 2 === 0) {
         ctx.fillStyle = AXIS;
-        ctx.fillText(im === 0 ? "0" : im.toFixed(1).replace("-", "−"), p.x0 - 6, y);
+        ctx.fillText(im === 0 ? "0" : im.toFixed(imStep < 0.1 ? 2 : 1).replace("-", "−"), p.x0 - 6, y);
       }
     }
 
@@ -460,8 +515,18 @@ export function createQnmPlane(el, { onPick }) {
     ctx.textBaseline = "middle";
 
     CURVE.forEach((pts, n) => {
-      const [re, im] = pts[0];
-      ctx.fillText(`n = ${n}`, xOf(re, p) - 10, yOf(im, p));
+      if (LABELS) {
+        // at the a = 0.99 end, on the side the curve is heading to; curves
+        // heading left (counter-rotating modes) are named above and below
+        const [re, im] = pts[pts.length - 1];
+        const left = re < pts[0][0];
+        const dy = left ? (im > pts[0][1] ? -9 : 9) : 0;
+        ctx.textAlign = left ? "right" : "left";
+        ctx.fillText(LABELS[n], xOf(re, p) + (left ? -6 : 8), yOf(im, p) + dy);
+      } else {
+        const [re, im] = pts[0];
+        ctx.fillText(`n = ${n}`, xOf(re, p) - 10, yOf(im, p));
+      }
     });
 
     ctx.fillStyle = AXIS;
@@ -485,14 +550,16 @@ export function createQnmPlane(el, { onPick }) {
 
     if (hover) {
       readout.textContent =
-        `a = ${SPINS[hover.k].toFixed(1)} M · ω${SUB[hover.n]} M = ${complexText(OMEGA[hover.n][hover.k])}. ` +
+        `a = ${SPINS[hover.k].toFixed(1)} M · ${LABELS ? `${LABELS[hover.n]}: ω` : `ω${SUB[hover.n]}`} M = ${complexText(OMEGA[hover.n][hover.k])}. ` +
         "Click to use this spin.";
       return;
     }
 
-    readout.textContent =
-      `a = ${SPINS[k].toFixed(1)} M · ω₀ M = ${complexText(OMEGA[0][k])} · ` +
-      `ω₁ M = ${complexText(OMEGA[1][k])}`;
+    readout.textContent = LABELS
+      ? `a = ${SPINS[k].toFixed(1)} M · ${LABELS[0]}: ω M = ${complexText(OMEGA[0][k])} · ` +
+        `${LABELS[OMEGA.length - 1]}: ω M = ${complexText(OMEGA[OMEGA.length - 1][k])}`
+      : `a = ${SPINS[k].toFixed(1)} M · ω₀ M = ${complexText(OMEGA[0][k])} · ` +
+        `ω₁ M = ${complexText(OMEGA[1][k])}`;
   }
 
   function nearest(event) {
@@ -552,6 +619,8 @@ export function createQnmPlane(el, { onPick }) {
       OMEGA = modes.omega;
       CURVE = modes.curve;
       X_RANGE = modes.xRange;
+      Y_RANGE = modes.yRange || [-0.76, 0];
+      LABELS = modes.labels || null;
       hover = null;
       draw();
     },

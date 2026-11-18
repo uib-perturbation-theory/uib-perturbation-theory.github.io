@@ -103,7 +103,8 @@ function init() {
   controls.dampingFactor = 0.08;
   controls.minDistance = 25;
   controls.maxDistance = 1200;
-  controls.maxPolarAngle = Math.PI * 0.49;
+  // the camera can go below the sheet, which is drawn on both sides
+  controls.maxPolarAngle = Math.PI;
   controls.rotateSpeed = 0.7;
 
   scene.add(new THREE.HemisphereLight(0xffffff, 0xb8b0a2, 1.25));
@@ -115,6 +116,11 @@ function init() {
   const fillLight = new THREE.DirectionalLight(0xffeedd, 0.55);
   fillLight.position.set(140, 60, -110);
   scene.add(fillLight);
+
+  // lights the underside of the sheet (the faces above do not see it)
+  const underLight = new THREE.DirectionalLight(0xffffff, 1.4);
+  underLight.position.set(70, -170, -100);
+  scene.add(underLight);
 
   // ---------- Black hole ----------
 

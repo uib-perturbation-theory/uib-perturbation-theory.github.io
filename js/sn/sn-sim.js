@@ -11,13 +11,20 @@
      world y), with height H Re[f(h_22(t - r*)) e^{2 i phi}], the strain h_+
      radiated in that plane (sn-plunge.json); f compresses the modulus and
      keeps the phase.
-   In both, the sheet shows the outgoing radiation emitted so far, which lies
-   outside the particle and outside the light ring. */
+   - "incl": a particle plunges from the innermost stable spherical orbit,
+     tilted by iota from the equator. The sheet is again the equatorial plane,
+     with height the strain h_+ radiated in that plane, summed over the modes
+     l = 2..4 (sn-incl.js, js/sn/incl/); the observer can sit at any angle
+     from the spin axis.
+   In all three, the sheet shows the outgoing radiation emitted so far, which
+   lies outside the particle and outside the light ring. */
 
 import * as THREE from "three";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
-import { SPINS, OMEGA, CURVE, OMEGA22, CURVE22 } from "./sn-qnm.js";
-import { infall, isco, lightRing, photonOrbit, plunge, rstar } from "./sn-orbit.js";
+import { SPINS, OMEGA, CURVE, OMEGA22, CURVE22, OMEGA2M, CURVE2M } from "./sn-qnm.js";
+import { inclinedPlunge, infall, isco, lightRing, photonOrbit, plunge, rstar, sphericalPhotonOrbit } from "./sn-orbit.js";
+import { MODES, equatorialCoeffs, inclWave, interpComplex, loadInclIndex, loadInclOrbit, sYlm } from "./sn-incl.js";
+import { createVolume } from "./sn-volume.js";
 import { fitRingdown, loadPlunge, loadWaveforms, plungeWave, waveform } from "./sn-data.js";
 import { createQnmPlane, createSpectrum } from "./sn-panels.js";
 
@@ -69,7 +76,7 @@ function init() {
     [...root.querySelectorAll("[data-out]")].map((el) => [el.dataset.out, el])
   );
 
-  const params = { spin: 0, sObs: 60, speed: 20, log: true, mode: "axis" };
+  const params = { spin: 0, sObs: 60, speed: 20, log: true, mode: "axis", iota: 60, phase: 0, thetaObs: 60, view: "sheet" };
 
   root.querySelectorAll("[data-param]").forEach((input) => {
     const key = input.dataset.param;
@@ -80,6 +87,8 @@ function init() {
     spin: (v) => `a = ${v.toFixed(1)} M`,
     sObs: (v) => `${v.toFixed(0)} M`,
     speed: (v) => `${v.toFixed(0)} M/s`,
+    iota: (v) => `${v.toFixed(0)}°`,
+    thetaObs: (v) => `${v.toFixed(0)}°`,
   };
 
   const showOutputs = () => {
@@ -116,7 +125,8 @@ function init() {
   controls.dampingFactor = 0.08;
   controls.minDistance = 25;
   controls.maxDistance = 1200;
-  controls.maxPolarAngle = Math.PI * 0.49;
+  // the camera can go below the sheet, which is drawn on both sides
+  controls.maxPolarAngle = Math.PI;
   controls.rotateSpeed = 0.7;
 
   scene.add(new THREE.HemisphereLight(0xffffff, 0xb8b0a2, 1.25));
@@ -128,6 +138,11 @@ function init() {
   const fillLight = new THREE.DirectionalLight(0xffeedd, 0.55);
   fillLight.position.set(140, 60, -110);
   scene.add(fillLight);
+
+  // lights the underside of the sheet (the faces above do not see it)
+  const underLight = new THREE.DirectionalLight(0xffffff, 1.4);
+  underLight.position.set(70, -170, -100);
+  scene.add(underLight);
 
   // ---------- Black hole and spin ----------
 
@@ -153,7 +168,7 @@ function init() {
     const len = spinLength(a);
     spinShaft.scale.set(1, len, 1);
 
-    if (params.mode === "plunge") {
+    if (params.mode !== "axis") {
       // Rotation axis vertical: the arrow comes out of the top of the hole.
       spinShaft.rotation.set(0, 0, 0);
       spinHead.rotation.set(0, 0, 0);
@@ -225,7 +240,7 @@ function init() {
           gx = dyr * cph - dyp * sph;
           gz = dyr * sph + dyp * cph;
           vVal = ringData.z * aG;
-        } else {
+        } else if (uMode < 1.5) {
           // equatorial plane, azimuth phi = atan2(-z, x):
           // ring = (A, B, dA/drho, dB/drho), height A cos 2phi - B sin 2phi
           float c2 = cph * cph - sph * sph;
@@ -233,6 +248,30 @@ function init() {
           yV = ringData.x * c2 - ringData.y * s2;
           float dyr = ringData.z * c2 - ringData.w * s2;
           float dyp = -2.0 * (ringData.x * s2 + ringData.y * c2) / rhoV;
+          gx = dyr * cph + dyp * sph;
+          gz = dyr * sph - dyp * cph;
+          vVal = yV / uHeight;
+        } else {
+          // equatorial plane, all m: row m of the ring texture holds
+          // (A_m, B_m, dA_m/drho, dB_m/drho), height sum A_m cos m phi - B_m sin m phi
+          float cp = cph;
+          float sp = -sph;
+          float cm = 1.0;
+          float sm = 0.0;
+          yV = 0.0;
+          float dyr = 0.0;
+          float dyp = 0.0;
+          for (int m = 0; m < 5; m++) {
+            vec4 d = texelFetch(uRing, ivec2(int(aRing + 0.5), m), 0);
+            float fm = float(m);
+            yV += d.x * cm - d.y * sm;
+            dyr += d.z * cm - d.w * sm;
+            dyp -= fm * (d.x * sm + d.y * cm);
+            float cn = cm * cp - sm * sp;
+            sm = sm * cp + cm * sp;
+            cm = cn;
+          }
+          dyp /= rhoV;
           gx = dyr * cph + dyp * sph;
           gz = dyr * sph - dyp * cph;
           vVal = yV / uHeight;
@@ -280,6 +319,7 @@ function init() {
 
   let sheet = null;
   let ringTex = null;
+  const N_ROWS = 5; // rows of the ring texture: m = 0..4 in the inclined plunge
   // Float32Array(nRing * 4): on axis F, dF/drho, value, 0; in the plunge
   // A, B, dA/drho, dB/drho (see the vertex shader)
   let ringData = null;
@@ -371,8 +411,8 @@ function init() {
     geometry.setAttribute("aGp", new THREE.BufferAttribute(aGp, 1));
     geometry.setIndex(new THREE.BufferAttribute(index, 1));
 
-    ringData = new Float32Array(nRing * 4);
-    ringTex = new THREE.DataTexture(ringData, nRing, 1, THREE.RGBAFormat, THREE.FloatType);
+    ringData = new Float32Array(nRing * 4 * N_ROWS);
+    ringTex = new THREE.DataTexture(ringData, nRing, N_ROWS, THREE.RGBAFormat, THREE.FloatType);
     ringTex.minFilter = THREE.NearestFilter;
     ringTex.magFilter = THREE.NearestFilter;
     ringTex.generateMipmaps = false;
@@ -440,13 +480,35 @@ function init() {
     return out.set(rho * Math.cos(phi), y, -rho * Math.sin(phi));
   };
 
+  // A point of the inclined orbit in the scene (spin along world y).
+  const inSpace = (p, out = new THREE.Vector3()) => {
+    const rho = rhoOf(p.rStar);
+    const st = Math.sin(p.theta);
+    return out.set(rho * st * Math.cos(p.phi), rho * Math.cos(p.theta), -rho * st * Math.sin(p.phi));
+  };
+
   function setMarkers() {
     ringLine = replace(ringLine, dashedLine(circlePoints(rhoOf(state.rsLR)), 0x0b1220, 0.45, 0.8, 0.8));
 
     let start;
     let path;
 
-    if (params.mode === "plunge") {
+    if (params.mode === "incl") {
+      iscoLine = replace(iscoLine, dashedLine(circlePoints(rhoOf(state.rsIsco)), 0x0b1220, 0.3, 0.4, 1.2));
+      path = [];
+
+      for (let time = state.tStart; time <= state.orbit.tMax; time += 0.25) {
+        const p = state.orbit.at(time);
+
+        if (p.rStar < R_IN) {
+          break;
+        }
+
+        path.push(inSpace(p));
+      }
+
+      start = inSpace(state.orbit.at(state.tStart));
+    } else if (params.mode === "plunge") {
       iscoLine = replace(iscoLine, dashedLine(circlePoints(rhoOf(state.rsIsco)), 0x0b1220, 0.3, 0.4, 1.2));
 
       // Spiral path of the particle, from its starting point to the hole.
@@ -489,10 +551,8 @@ function init() {
   );
   scene.add(particle);
 
-  const observer = new THREE.Mesh(
-    new THREE.SphereGeometry(1.7, 32, 24),
-    new THREE.MeshStandardMaterial({ color: 0x0b1220, roughness: 0.35 })
-  );
+  const observerMat = new THREE.MeshStandardMaterial({ color: 0x0b1220, roughness: 0.35 });
+  const observer = new THREE.Mesh(new THREE.SphereGeometry(1.7, 32, 24), observerMat);
   scene.add(observer);
 
   const obsStem = new THREE.Line(
@@ -506,6 +566,11 @@ function init() {
   const state = {
     data: null, // on-axis waveforms
     plungeData: null, // plunge waveforms, loaded on first use
+    incl: null, // index of the inclined plunges, loaded on first use
+    inclOrbit: null, // modes of the current inclined orbit
+    inclKey: "",
+    G: null, // equatorial coefficients G_m(u) of the inclined orbit
+    envPeak: 1,
     loading: false,
     k: 0,
     a: 0,
@@ -522,13 +587,94 @@ function init() {
   let t = 0;
   let playing = true;
 
+  // Spins and orbits of the inclined plunge
+  function showInclSpins(sp) {
+    const el = root.querySelector("[data-incl-spins]");
+
+    if (!el) {
+      return;
+    }
+
+    const fmt = (a) => String(+a.toFixed(2));
+    const uniform = sp.length > 2 && sp.every((s, j) => j === 0 || Math.abs(s - sp[j - 1] - (sp[1] - sp[0])) < 1e-9);
+    el.textContent =
+      sp.length === 1
+        ? `Computed for a = ${fmt(sp[0])}.`
+        : uniform
+          ? `Computed for a = ${fmt(sp[0])} to ${fmt(sp[sp.length - 1])} in steps of ${fmt(sp[1] - sp[0])}.`
+          : `Computed for a = ${sp.slice(0, -1).map(fmt).join(", ")} and ${fmt(sp[sp.length - 1])}.`;
+  }
+
+  const inclSpin = (a) => {
+    const sp = state.incl.spins;
+    return sp.reduce((best, s, j) => (Math.abs(s - a) < Math.abs(sp[best] - a) ? j : best), 0);
+  };
+  let inclToken = 0;
+
+  async function loadIncl(k, opts) {
+    const idx = state.incl;
+    const kk = inclSpin(SPINS[k]);
+    const i = idx.iotas.indexOf(params.iota);
+    const c = params.phase;
+    const key = `${kk}/${i}/${c}`;
+    const token = ++inclToken;
+    state.loading = true;
+    statusEl.textContent = "Loading the waveforms…";
+
+    try {
+      const orbit = await loadInclOrbit(idx, kk, i, c);
+      if (token !== inclToken) return;
+      state.inclOrbit = orbit;
+      state.inclKey = key;
+    } catch (err) {
+      statusEl.textContent = `Could not load the waveforms: ${err.message}`;
+      return;
+    } finally {
+      if (token === inclToken) state.loading = false;
+    }
+
+    setSpin(k, opts);
+  }
+
   function setSpin(k, { keepTime = true } = {}) {
+    if (params.mode === "incl") {
+      const key = `${inclSpin(SPINS[k])}/${state.incl.iotas.indexOf(params.iota)}/${params.phase}`;
+
+      if (key !== state.inclKey) {
+        loadIncl(k, { keepTime });
+        return;
+      }
+    }
+
     state.k = k;
     state.a = SPINS[k];
     state.fit = undefined;
     const oldStart = state.tStart;
 
-    if (params.mode === "plunge") {
+    if (params.mode === "incl") {
+      const orb = state.inclOrbit;
+      // equatorial orbits have no polar phase
+      root.querySelectorAll("[data-phase]").forEach((b) => (b.disabled = orb.meta.iota % 180 === 0));
+      state.wave = inclWave(orb, (params.thetaObs * Math.PI) / 180, PHI_OBS);
+      state.G = equatorialCoeffs(orb);
+      let env = 0;
+
+      for (let s = 0; s < orb.n; s += 1) {
+        let e = 0;
+        for (const g of state.G) e += Math.hypot(g[2 * s], g[2 * s + 1]);
+        env = Math.max(env, e);
+      }
+
+      state.envPeak = env || 1;
+      state.orbit = inclinedPlunge(state.a, orb.meta.x, (params.phase * Math.PI) / 2, T_START_PLUNGE - 20);
+      // the photon orbit with the inclination of the particle
+      state.rsLR = rstar(sphericalPhotonOrbit(state.a, orb.meta.x), state.a);
+      state.rsIsco = rstar(state.orbit.rIsso, state.a);
+      state.tStart = T_START_PLUNGE;
+      state.rs0 = state.orbit.at(state.tStart).rStar;
+      state.spectrum = inclSpectrum(state.wave);
+      if (spectrum) spectrum.setData(inclSpectrumData());
+    } else if (params.mode === "plunge") {
       state.wave = plungeWave(state.plungeData, k, PHI_OBS);
       state.orbit = plunge(state.a, T_START_PLUNGE - 20);
       state.rsLR = rstar(photonOrbit(state.a), state.a);
@@ -580,6 +726,125 @@ function init() {
     state.tEnd = params.sObs + state.wave.uPeak + T_AFTER;
   }
 
+  // ---------- Volume view ----------
+
+  let volume = null;
+  let vsrc = null;
+  const Y_AXIS = new THREE.Vector3(0, 1, 0);
+  const X_AXIS = new THREE.Vector3(1, 0, 0);
+  const Z_AXIS = new THREE.Vector3(0, 0, 1);
+  const Z_NEG = new THREE.Vector3(0, 0, -1);
+
+  /* The modes of the current trajectory for the volume view. In the plunges
+     the axis is the spin (world y) and phi = atan2(-z, x), as on the sheet;
+     along the axis the radiation is Psi(t - r*) sin^2(theta) around the
+     line of fall (world x). */
+  function volumeSource() {
+    const key = params.mode === "incl" ? `incl/${state.inclKey}` : `${params.mode}/${state.k}`;
+
+    if (vsrc && vsrc.key === key) {
+      return vsrc;
+    }
+
+    let src;
+
+    if (params.mode === "incl") {
+      const { modes, u0, du, n } = state.inclOrbit;
+      src = {
+        modes: MODES.map(([l, m], q) => ({
+          l,
+          m,
+          at: (u, out) => {
+            const x = (u - u0) / du;
+            if (x < 0 || x > n - 1) {
+              out[0] = 0;
+              out[1] = 0;
+              return out;
+            }
+            return interpComplex(modes[q], n, x, out);
+          },
+        })),
+        Y: (l, m, th) => sYlm(-2, l, m, th),
+        axis: Y_AXIS,
+        e1: X_AXIS,
+        e2: Z_NEG,
+      };
+    } else if (params.mode === "plunge") {
+      const { wave } = state;
+      src = {
+        modes: [
+          { l: 2, m: 2, at: (u, out) => wave.atC(u, out) },
+          {
+            l: 2,
+            m: -2,
+            at: (u, out) => {
+              wave.atC(u, out);
+              out[1] = -out[1];
+              return out;
+            },
+          },
+        ],
+        Y: (l, m, th) => sYlm(-2, l, m, th),
+        axis: Y_AXIS,
+        e1: X_AXIS,
+        e2: Z_NEG,
+      };
+    } else {
+      const { wave } = state;
+      src = {
+        modes: [
+          {
+            l: 2,
+            m: 0,
+            at: (u, out) => {
+              out[0] = wave.at(u);
+              out[1] = 0;
+              return out;
+            },
+          },
+        ],
+        Y: (l, m, th) => Math.sin(th) ** 2,
+        axis: X_AXIS,
+        e1: Y_AXIS,
+        e2: Z_AXIS,
+      };
+    }
+
+    src.key = key;
+    const us = [];
+    for (let u = state.wave.uPeak - 320; u <= state.wave.uPeak + 120; u += 1) us.push(u);
+    src.norm = volume.normOf(src, us);
+    vsrc = src;
+    return src;
+  }
+
+  const lightMat = new THREE.MeshStandardMaterial({ color: 0xe9e4da, roughness: 0.4 });
+
+  function setView(view) {
+    params.view = view;
+    const vol = view === "volume";
+
+    if (vol && !volume) {
+      volume = createVolume(THREE, scene);
+    }
+
+    if (volume) {
+      volume.visible = vol;
+    }
+
+    root.querySelectorAll("[data-view]").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.view === view)));
+    stage.classList.toggle("is-volume", vol);
+    // dark pieces turn light on the dark background of the volume
+    observer.material = vol ? lightMat : observerMat;
+    spinShaft.material = vol ? lightMat : spinMat;
+    spinHead.material = vol ? lightMat : spinMat;
+    obsStem.material.color.set(vol ? 0xe9e4da : 0x0b1220);
+    // fewer pixels for the ray marching
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, vol ? 1.25 : 2));
+    resize();
+    resetView();
+  }
+
   // ---------- Per-frame update of the sheet ----------
 
   const compress = (v) =>
@@ -597,13 +862,66 @@ function init() {
     const p = orbit.at(t);
     particleR = p.r;
 
+    // the sheet and its circles are replaced by the cloud in the volume view
+    const showSheet = params.view !== "volume";
+    sheet.visible = showSheet;
+    if (ringLine) ringLine.visible = showSheet;
+    if (iscoLine) iscoLine.visible = showSheet;
+
     // Outgoing radiation lives outside the particle; once the particle is
     // inside the light ring it is emitted from there.
     const cut = Math.max(p.rStar, state.rsLR - 3);
     const n = rStarRing.length;
     const plungeMode = params.mode === "plunge";
+    const inclMode = params.mode === "incl";
 
-    if (plungeMode) {
+    if (inclMode) {
+      // h_+ on the equatorial plane, sum over m of Re[G_m e^{i m phi}]; the
+      // envelope sum_m |G_m| is compressed and the pattern kept.
+      const inv = 1 / state.envPeak;
+      const { G } = state;
+      const { u0, du, n: ns } = state.inclOrbit;
+      const gm = new Float64Array(10);
+
+      for (let i = 0; i < n; i += 1) {
+        const rs = rStarRing[i];
+        const w = taper[i] * smoothstep(cut, cut + FADE, rs);
+        let f = 0;
+
+        if (w > 0) {
+          const x = (t - rs - u0) / du;
+          let env = 0;
+
+          for (let m = 0; m <= 4; m += 1) {
+            interpComplex(G[m], ns, x, hc);
+            gm[2 * m] = hc[0];
+            gm[2 * m + 1] = hc[1];
+            env += Math.hypot(hc[0], hc[1]);
+          }
+
+          if (env > 0 && x >= 0 && x <= ns - 1) {
+            f = (HEIGHT * w * compress(env * inv)) / env;
+          }
+        }
+
+        for (let m = 0; m <= 4; m += 1) {
+          const o = 4 * (m * n + i);
+          ringData[o] = f * gm[2 * m];
+          ringData[o + 1] = f * gm[2 * m + 1];
+        }
+      }
+
+      for (let m = 0; m <= 4; m += 1) {
+        for (let i = 0; i < n; i += 1) {
+          const a = Math.max(0, i - 1);
+          const b = Math.min(n - 1, i + 1);
+          const drho = rhoRing[b] - rhoRing[a];
+          const o = 4 * (m * n + i);
+          ringData[o + 2] = (ringData[4 * (m * n + b)] - ringData[4 * (m * n + a)]) / drho;
+          ringData[o + 3] = (ringData[4 * (m * n + b) + 1] - ringData[4 * (m * n + a) + 1]) / drho;
+        }
+      }
+    } else if (plungeMode) {
       // Compressed modulus, true phase: A + iB = H w f(|h|/peak) h/|h|.
       const inv = 1 / wave.ampPeak;
 
@@ -655,13 +973,30 @@ function init() {
 
     ringTex.needsUpdate = true;
 
+    if (params.view === "volume") {
+      const src = volumeSource();
+      const rOut = rOutSheet;
+      volume.update(t, src, {
+        rho0: R_BH,
+        rho1: rhoOf(rOut),
+        rStarOf: (rho) => rho - R_BH + R_IN,
+        weight: (rs) => (1 - smoothstep(rOut - 14, rOut, rs)) * smoothstep(cut, cut + FADE, rs),
+        // linear in h_+, as the eye reads the brightness: with the compression
+        // of the sheet the long, steady parts of the signal fill the ball
+        log: false,
+        eps: EPS,
+      });
+    }
+
     // Particle: where the sheet is still flat (on the axis, or inside the
     // radiation in the plunge).
     const visible = p.rStar > R_IN + 0.6;
     particle.visible = visible;
 
     if (visible) {
-      if (plungeMode) {
+      if (inclMode) {
+        inSpace(p, particle.position);
+      } else if (plungeMode) {
         onSheet(p.rStar, p.phi, 1.35, particle.position);
       } else {
         particle.position.set(rhoOf(p.rStar), 1.35, 0);
@@ -679,13 +1014,26 @@ function init() {
         : ringData[4 * i];
     const y = (1 - u) * height(i0) + u * height(i0 + 1);
     const rhoObs = rhoOf(params.sObs);
-    const ox = rhoObs * Math.cos(OBS_PHI);
-    const oz = rhoObs * Math.sin(OBS_PHI);
-    observer.position.set(ox, y + 1.7, oz);
-
     const stem = obsStem.geometry.getAttribute("position");
-    stem.setXYZ(0, ox, 0.05, oz);
-    stem.setXYZ(1, ox, y, oz);
+
+    if (inclMode) {
+      // at the angle thetaObs from the spin axis, azimuth PHI_OBS; the stem
+      // drops to the equatorial plane
+      const th = (params.thetaObs * Math.PI) / 180;
+      const ox = rhoObs * Math.sin(th) * Math.cos(OBS_PHI);
+      const oz = rhoObs * Math.sin(th) * Math.sin(OBS_PHI);
+      const oy = rhoObs * Math.cos(th);
+      observer.position.set(ox, oy, oz);
+      stem.setXYZ(0, ox, 0.05, oz);
+      stem.setXYZ(1, ox, oy, oz);
+    } else {
+      const ox = rhoObs * Math.cos(OBS_PHI);
+      const oz = rhoObs * Math.sin(OBS_PHI);
+      observer.position.set(ox, y + 1.7, oz);
+      stem.setXYZ(0, ox, 0.05, oz);
+      stem.setXYZ(1, ox, y, oz);
+    }
+
     stem.needsUpdate = true;
   }
 
@@ -715,7 +1063,7 @@ function init() {
       return;
     }
 
-    const plungeMode = params.mode === "plunge";
+    const plungeMode = params.mode !== "axis";
     const bhTop = plungeMode && state.a > 0 ? R_BH + spinLength(state.a) + 3 : R_BH + 1.5;
     placeLabel(labels.bh, labelPoint.set(0, bhTop, 0), -6);
 
@@ -756,12 +1104,13 @@ function init() {
   const plane = planeEl
     ? createQnmPlane(planeEl, {
         onPick: (k) => {
-          params.spin = SPINS[k];
+          // the inclined plunge has only some spins: take the nearest
+          params.spin = params.mode === "incl" ? state.incl.spins[inclSpin(SPINS[k])] : SPINS[k];
           root.querySelector('[data-param="spin"]').value = String(params.spin);
           showOutputs();
 
           if (state.data && !state.loading) {
-            setSpin(k);
+            setSpin(spinIndex(params.spin));
           }
         },
       })
@@ -771,8 +1120,66 @@ function init() {
   // plunge peaks.
   const TWO_OMEGA_ISCO = SPINS.map((a) => 2 * isco(a).omega);
 
+  // Spectrum |h~_+(omega)| of the inclined plunge at the observer, from the
+  // samples (the start is tapered over 60 M).
+  const INCL_DW = 0.004;
+  const INCL_NW = 300;
+
+  function inclSpectrum(wave) {
+    const { samples, u0, du, n } = wave;
+    const out = new Float64Array(INCL_NW);
+
+    for (let j = 0; j < INCL_NW; j += 1) {
+      const w = (j + 0.5) * INCL_DW;
+      let re = 0;
+      let im = 0;
+
+      for (let s = 0; s < n; s += 1) {
+        const u = s * du;
+        const tap = u < 60 ? Math.sin((0.5 * Math.PI * u) / 60) ** 2 : 1;
+        const v = samples[s] * tap * du;
+        re += v * Math.cos(w * (u0 + u));
+        im += v * Math.sin(w * (u0 + u));
+      }
+
+      out[j] = Math.hypot(re, im);
+    }
+
+    return out;
+  }
+
+  function inclSpectrumData() {
+    return {
+      w0: 0.5 * INCL_DW,
+      dw: INCL_DW,
+      nw: INCL_NW,
+      values: SPINS.map(() => state.spectrum),
+      wMax: 1.2,
+      omega: OMEGA2M,
+      labels: ["m = 2", "m = 1", "m = 0", "m = −1", "m = −2"],
+      family: "ℓ = 2, n = 0",
+      noRef: true,
+      symbol: "|h̃₊|",
+      mark: null,
+    };
+  }
+
   function setPanels() {
-    if (params.mode === "plunge") {
+    if (params.mode === "incl") {
+      if (spectrum && state.spectrum) {
+        spectrum.setData(inclSpectrumData());
+      }
+
+      if (plane) {
+        plane.setModes({
+          omega: OMEGA2M,
+          curve: CURVE2M,
+          xRange: [0.24, 0.92],
+          yRange: [-0.1, -0.02],
+          labels: ["m = 2", "m = 1", "m = 0", "m = −1", "m = −2"],
+        });
+      }
+    } else if (params.mode === "plunge") {
       const d = state.plungeData;
 
       if (spectrum) {
@@ -913,7 +1320,30 @@ function init() {
   const FITS = {
     axis: { omega: OMEGA, tauA: 5, rates: [0.005, 0.015, 0.04, 0.1, 0.25], drawFrom: { 0: 25, 3: 5 } },
     plunge: { omega: OMEGA22, tauA: 15, rates: [], drawFrom: { 0: 30, 3: 15 } },
+    incl: { omega: null, tauA: 15, rates: [], drawFrom: { 0: 30, 3: 15 } },
   };
+
+  /* QNM set of the inclined plunge: the fundamental modes l = 2, 3 with all m
+     (group "n = 0") and the first overtones of l = 2 (added for "n <= 1").
+     For a real h_+ each frequency w enters as e^{Im w tau} (cos, sin)(Re w tau),
+     which also covers the mirror mode -conj(w). Frequencies that coincide (all
+     m at a = 0) are kept once. */
+  function inclOmegas() {
+    const q = state.incl.qnm;
+    const kk = inclSpin(state.a);
+    const pick = (list) => {
+      const out = [];
+      list.forEach((key) => {
+        const w = q[key][kk];
+        if (!out.some((v) => Math.hypot(v[0] - w[0], v[1] - w[1]) < 1e-6)) out.push(w);
+      });
+      return out;
+    };
+    const keys = (l, n) => Array.from({ length: 2 * l + 1 }, (_, j) => `${l},${j - l},${n}`);
+    const g0 = pick([...keys(2, 0), ...keys(3, 0)]);
+    const g1 = pick(keys(2, 1)).filter((w) => !g0.some((v) => Math.hypot(v[0] - w[0], v[1] - w[1]) < 1e-6));
+    return { omegas: [...g0, ...g1], n0: g0.length };
+  }
   const N_MAX = 3;
   const TAIL_COLOR = "#8a93a1";
 
@@ -924,8 +1354,21 @@ function init() {
 
     if (state.fit === undefined) {
       const cfg = FITS[params.mode];
-      const omegas = cfg.omega.slice(0, N_MAX + 1).map((row) => row[state.k]);
-      state.fit = fitRingdown(state.wave, omegas, cfg.rates, cfg.tauA, T_AFTER);
+
+      if (params.mode === "incl") {
+        // two separate fits: the fundamental modes alone ("n = 0") and with
+        // the l = 2 overtones ("n <= 1")
+        const { omegas, n0 } = inclOmegas();
+        const f0 = fitRingdown(state.wave, omegas.slice(0, n0), [], cfg.tauA, T_AFTER);
+        const f1 = fitRingdown(state.wave, omegas, [], cfg.tauA, T_AFTER);
+        state.fit = f0 && f1 && {
+          upTo: (nMax, tau) => (nMax === 0 ? f0.upTo(n0 - 1, tau) : f1.upTo(omegas.length - 1, tau)),
+          tail: () => 0,
+        };
+      } else {
+        const omegas = cfg.omega.slice(0, N_MAX + 1).map((row) => row[state.k]);
+        state.fit = fitRingdown(state.wave, omegas, cfg.rates, cfg.tauA, T_AFTER);
+      }
     }
 
     return state.fit;
@@ -1006,6 +1449,26 @@ function init() {
     }
 
     cctx.stroke();
+
+    if (params.mode === "incl" && traceScale === "lin") {
+      cctx.strokeStyle = "rgba(11,18,32,0.3)";
+      cctx.lineWidth = 1;
+      cctx.beginPath();
+
+      for (let time = state.tStart, first = true; time <= state.tEnd + 1e-9; time += TRACE_STEP) {
+        const x = traceX(time);
+        const y = traceY(state.wave.atCross(time - params.sObs));
+
+        if (first) {
+          cctx.moveTo(x, y);
+          first = false;
+        } else {
+          cctx.lineTo(x, y);
+        }
+      }
+
+      cctx.stroke();
+    }
 
     const fit = ringdownFit();
 
@@ -1105,7 +1568,10 @@ function init() {
   // ---------- Camera ----------
 
   function resetView() {
-    const reach = rhoOf(Math.max(params.sObs, rstar(R_START, 0))) + 10;
+    const reach =
+      params.view === "volume" && rOutSheet > 0
+        ? 1.1 * rhoOf(rOutSheet)
+        : rhoOf(Math.max(params.sObs, rstar(R_START, 0))) + 10;
     const vfov = THREE.MathUtils.degToRad(camera.fov);
     const hfov = 2 * Math.atan(Math.tan(vfov / 2) * camera.aspect);
     const fit = Math.min(hfov, vfov * 1.6);
@@ -1116,7 +1582,11 @@ function init() {
       : new THREE.Vector3(0.12, 0.62, 1).normalize();
 
     controls.target.set(reach * 0.08, 0, -reach * 0.12);
-    camera.position.copy(controls.target).addScaledVector(dir, dist);
+
+    // keep the observer in view when it floats above the plane
+    const lift = params.mode === "incl" ? Math.max(0, rhoOf(params.sObs) * Math.cos((params.thetaObs * Math.PI) / 180)) : 0;
+    controls.target.y = 0.35 * lift;
+    camera.position.copy(controls.target).addScaledVector(dir, dist * (1 + (0.35 * lift) / reach));
     controls.update();
   }
 
@@ -1155,7 +1625,17 @@ function init() {
       }
 
       if (key === "spin") {
+        if (params.mode === "incl") {
+          // only some spins were computed for the inclined plunge
+          params.spin = state.incl.spins[inclSpin(params.spin)];
+          input.value = String(params.spin);
+          showOutputs();
+        }
         setSpin(spinIndex(params.spin));
+      } else if (key === "iota" || key === "thetaObs") {
+        if (params.mode === "incl") {
+          setSpin(spinIndex(params.spin));
+        }
       } else if (key === "sObs") {
         setTimeRange();
         t = Math.min(t, state.tEnd);
@@ -1190,13 +1670,30 @@ function init() {
 
     if (qnmKey) {
       qnmKey.hidden = qnmMode < 0;
-      qnmKey.lastChild.textContent = `fit, n ${qnmMode === 0 ? "=" : "≤"} ${qnmMode}${withTail ? " + tail" : ""}`;
+      qnmKey.lastChild.textContent =
+        params.mode === "incl"
+          ? `fit, ℓ ≤ 3${qnmMode === 0 ? ", n = 0" : ", n ≤ 1 for ℓ = 2"}`
+          : `fit, n ${qnmMode === 0 ? "=" : "≤"} ${qnmMode}${withTail ? " + tail" : ""}`;
     }
 
     if (tailKey) {
       tailKey.hidden = qnmMode < 0 || !withTail;
     }
   }
+
+  root.querySelectorAll("[data-view]").forEach((btn) => {
+    btn.addEventListener("click", () => setView(btn.dataset.view));
+  });
+
+  root.querySelectorAll("[data-phase]").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      params.phase = Number(btn.dataset.phase);
+      root.querySelectorAll("[data-phase]").forEach((b) => b.setAttribute("aria-pressed", String(b === btn)));
+      if (params.mode === "incl") {
+        setSpin(spinIndex(params.spin));
+      }
+    });
+  });
 
   root.querySelectorAll("[data-qnm]").forEach((btn) => {
     btn.addEventListener("click", () => {
@@ -1230,15 +1727,74 @@ function init() {
       }
     }
 
+    if (mode === "incl") {
+      state.loading = true;
+      statusEl.textContent = "Loading the inclined plunges…";
+
+      try {
+        if (!state.incl) {
+          state.incl = await loadInclIndex(new URL("./incl/index.json", import.meta.url));
+          showInclSpins(state.incl.spins);
+        }
+        // the orbit for the current controls, so that the switch is immediate
+        const kk = inclSpin(params.spin);
+        const i = state.incl.iotas.indexOf(params.iota);
+        const key = `${kk}/${i}/${params.phase}`;
+
+        if (key !== state.inclKey) {
+          state.inclOrbit = await loadInclOrbit(state.incl, kk, i, params.phase);
+          state.inclKey = key;
+        }
+      } catch (err) {
+        statusEl.textContent = `Could not load the waveforms: ${err.message}`;
+        return;
+      } finally {
+        state.loading = false;
+      }
+    }
+
+    const reframe = mode === "incl" || params.mode === "incl";
     params.mode = mode;
-    uniforms.uMode.value = mode === "plunge" ? 1 : 0;
+    uniforms.uMode.value = { axis: 0, plunge: 1, incl: 2 }[mode];
+
+    if (labels.isco) {
+      labels.isco.textContent = mode === "incl" ? "ISSO" : "ISCO";
+    }
+
+    labels.ring.textContent = mode === "incl" ? "Photon orbit" : "Light ring";
     modeButtons.forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.mode === mode)));
     document.querySelectorAll("[data-show]").forEach((el) => {
-      el.hidden = el.dataset.show !== mode;
+      el.hidden = !el.dataset.show.split(" ").includes(mode);
     });
+
+    const spinInput = root.querySelector('[data-param="spin"]');
+
+    if (mode === "incl") {
+      // the slider covers the computed spins; values in between snap to the nearest
+      const sp = state.incl.spins;
+      const gaps = sp.slice(1).map((s, j) => s - sp[j]);
+      params.spin = sp[inclSpin(params.spin)];
+      spinInput.min = String(sp[0]);
+      spinInput.max = String(sp[sp.length - 1]);
+      spinInput.step = String(gaps.length ? +Math.min(...gaps).toFixed(2) : 0.1);
+      spinInput.disabled = sp.length < 2;
+    } else {
+      spinInput.min = "0";
+      spinInput.step = "0.1";
+      spinInput.max = "0.9";
+      spinInput.disabled = false;
+    }
+
+    spinInput.value = String(params.spin);
+    showOutputs();
+    state.k = spinIndex(params.spin);
     setPanels();
     setSpin(state.k, { keepTime: false });
     updateKeys();
+
+    if (reframe) {
+      resetView();
+    }
     playing = true;
     updatePlayButton();
   }
@@ -1291,6 +1847,9 @@ function init() {
 
       if (state.loading) {
         // keep the loading message
+      } else if (params.mode === "incl") {
+        const deg = Math.round(90 - (state.orbit.at(t).theta * 180) / Math.PI);
+        statusEl.textContent = `${where} · latitude ${String(deg).replace("-", "−")}° · ISSO r = ${state.orbit.rIsso.toFixed(2)} M`;
       } else if (params.mode === "plunge") {
         statusEl.textContent = `${where} · ISCO r = ${state.orbit.rIsco.toFixed(2)} M · light ring r = ${state.orbit.rph.toFixed(2)} M`;
       } else {

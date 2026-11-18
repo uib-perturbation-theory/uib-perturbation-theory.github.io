@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Sasaki–Nakamura simulator — Strong Gravity Group @ UIB</title>
-  <meta name="description" content="Interactive view of a particle falling into a Kerr black hole, along its rotation axis or plunging from the innermost stable circular orbit, with the gravitational waves computed with the generalized Sasaki–Nakamura equation.">
+  <meta name="description" content="Interactive view of a particle falling into a Kerr black hole, along its rotation axis or plunging from the innermost stable orbit, in the equatorial plane or tilted from it, with the gravitational waves computed with the generalized Sasaki–Nakamura equation.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Source+Sans+3:wght@400;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../css/style.css">
@@ -52,9 +52,9 @@
     <p class="eyebrow">Black Hole Lab · Simulator</p>
     <h1>Sasaki–Nakamura simulator</h1>
     <p class="lede">
-      A small body falls into a Kerr black hole, either from rest along the
-      rotation axis or spiralling in from the innermost stable circular
-      orbit. On its way in it sends out gravitational waves, and the black
+      A small body falls into a Kerr black hole: from rest along the
+      rotation axis, or spiralling in from the innermost stable orbit, in
+      the equatorial plane or tilted from it. On its way in it sends out gravitational waves, and the black
       hole then rings at its quasinormal frequencies. The waves come from
       the generalized Sasaki–Nakamura equation; the trajectory is computed
       in your browser.
@@ -79,7 +79,7 @@
         </div>
         <div class="rw-time" aria-live="off">t = 0.0 M</div>
         <div class="rw-status">Loading…</div>
-        <div class="rw-legend"><span><span data-show="axis">Ψ</span><span data-show="plunge" hidden>h₊</span> &lt; 0</span><span class="rw-legend-bar"></span><span><span data-show="axis">Ψ</span><span data-show="plunge" hidden>h₊</span> &gt; 0</span></div>
+        <div class="rw-legend"><span><span data-show="axis">Ψ</span><span data-show="plunge incl" hidden>h₊</span> &lt; 0</span><span class="rw-legend-bar"></span><span><span data-show="axis">Ψ</span><span data-show="plunge incl" hidden>h₊</span> &gt; 0</span></div>
         <div class="rw-hint">drag to rotate · scroll to zoom</div>
       </div>
 
@@ -87,8 +87,9 @@
         <div class="rw-trace-head">
           <span class="rw-trace-title">
             <span data-show="axis">Ψ at the observer</span>
-            <span data-show="plunge" hidden>r h₊ / μ at the observer</span>
-            <span class="rw-key"><i></i><span data-show="axis">GSN waveform</span><span data-show="plunge" hidden>waveform</span></span>
+            <span data-show="plunge incl" hidden>r h₊ / μ at the observer</span>
+            <span class="rw-key"><i></i><span data-show="axis">GSN waveform</span><span data-show="plunge" hidden>waveform</span><span data-show="incl" hidden>h₊</span></span>
+            <span class="rw-key" data-show="incl" hidden><i class="ref"></i>h×</span>
             <span class="rw-key" data-qnm-key><i class="dash"></i>fit, n = 0 + tail</span>
             <span class="rw-key" data-tail-key><i class="dots"></i>tail</span>
           </span>
@@ -97,11 +98,11 @@
               <span class="rw-tool-label">QNM</span>
               <button type="button" data-qnm="-1" aria-pressed="false">Off</button>
               <button type="button" data-qnm="0" aria-pressed="true">n = 0</button>
-              <button type="button" data-qnm="3" aria-pressed="false">n ≤ 3</button>
+              <button type="button" data-qnm="3" aria-pressed="false"><span data-show="axis plunge">n ≤ 3</span><span data-show="incl" hidden>n ≤ 1</span></button>
             </span>
             <span class="rw-trace-scale" role="group" aria-label="Vertical scale">
               <button type="button" data-scale="lin" aria-pressed="true">Linear</button>
-              <button type="button" data-scale="log" aria-pressed="false">log |<span data-show="axis">Ψ</span><span data-show="plunge" hidden>h₊</span>|</button>
+              <button type="button" data-scale="log" aria-pressed="false">log |<span data-show="axis">Ψ</span><span data-show="plunge incl" hidden>h₊</span>|</button>
             </span>
           </span>
         </div>
@@ -124,6 +125,7 @@
           <div class="rw-seg rw-seg-wide" role="group" aria-label="Trajectory">
             <button type="button" data-mode="axis" aria-pressed="true">Along the axis</button>
             <button type="button" data-mode="plunge" aria-pressed="false">Equatorial plunge</button>
+            <button type="button" data-mode="incl" aria-pressed="false">Inclined plunge</button>
           </div>
           <p class="rw-field-note" data-show="axis">
             Falls from rest at infinity (E = 1) along the rotation axis.
@@ -132,6 +134,28 @@
             Spirals in from the innermost stable circular orbit (ISCO) in the
             equatorial plane, moving with the rotation of the hole.
           </p>
+          <p class="rw-field-note" data-show="incl" hidden>
+            Spirals in from the innermost stable spherical orbit (ISSO): the
+            orbit is tilted from the equator and the particle also moves up
+            and down. <span data-incl-spins></span>
+          </p>
+          <div class="rw-field" data-show="incl" hidden style="margin-top:.8rem">
+            <label for="sn-iota">Inclination ι <output data-out="iota"></output></label>
+            <input id="sn-iota" type="range" min="0" max="180" step="30" value="60" data-param="iota">
+          </div>
+          <p class="rw-field-note" data-show="incl" hidden>
+            0° moves with the rotation in the equatorial plane, 90° passes over
+            the poles, 180° moves against the rotation.
+          </p>
+          <div data-show="incl" hidden style="margin-top:.6rem">
+            <p class="rw-field-note" style="margin:0">Up-and-down motion at t = 0</p>
+            <div class="rw-seg" role="group" aria-label="Phase of the polar motion at t = 0">
+              <button type="button" data-phase="0" aria-pressed="true">Top</button>
+              <button type="button" data-phase="1" aria-pressed="false">Down</button>
+              <button type="button" data-phase="2" aria-pressed="false">Bottom</button>
+              <button type="button" data-phase="3" aria-pressed="false">Up</button>
+            </div>
+          </div>
         </div>
 
         <div class="rw-group">
@@ -140,6 +164,23 @@
             <label for="sn-obs"><span>Position r*<sub>obs</sub></span> <output data-out="sObs"></output></label>
             <input id="sn-obs" type="range" min="20" max="100" step="5" value="60" data-param="sObs">
           </div>
+          <div class="rw-field" data-show="incl" hidden>
+            <label for="sn-thobs">Angle from the spin axis <output data-out="thetaObs"></output></label>
+            <input id="sn-thobs" type="range" min="0" max="180" step="5" value="60" data-param="thetaObs">
+          </div>
+        </div>
+
+        <div class="rw-group">
+          <p class="rw-group-title">View</p>
+          <div class="rw-seg" role="group" aria-label="How the radiation is drawn">
+            <button type="button" data-view="sheet" aria-pressed="true">Sheet</button>
+            <button type="button" data-view="volume" aria-pressed="false">Volume</button>
+          </div>
+          <p class="rw-field-note">
+            Volume draws h₊ in all directions around the hole as a glowing
+            cloud: orange where h₊ &gt; 0, blue where h₊ &lt; 0, on a linear
+            scale.
+          </p>
         </div>
 
         <div class="rw-group">
@@ -175,6 +216,11 @@
               the band up to the quasinormal frequency, above which the
               spectrum falls off steeply.
             </p>
+            <p data-show="incl" hidden>
+              Frequency content |h̃₊(ω)| of the wave at the observer. Several
+              m contribute, so the ringing is spread over the ℓ = 2
+              frequencies of all five m (and fainter ℓ = 3, 4).
+            </p>
           </div>
         </div>
         <div class="rw-card-keys">
@@ -192,7 +238,7 @@
           <div>
             <h3>Quasinormal frequencies</h3>
             <p>
-              The ℓ = 2, <span data-show="axis">m = 0</span><span data-show="plunge" hidden>m = 2</span>
+              The ℓ = 2, <span data-show="axis">m = 0</span><span data-show="plunge" hidden>m = 2</span><span data-show="incl" hidden>m = −2 … 2</span>
               modes from a = 0 to 0.99. Each dot is one of the spins of the
               simulator; click one to use it.
             </p>
@@ -224,6 +270,17 @@
       the waves travel at constant speed. The two spiral arms are the
       ℓ = m = 2 pattern, which turns with the orbit. Compressed heights
       compress the size of h₂₂ and keep its phase. Units: G = c = M = 1.
+    </p>
+    <p class="rw-note" data-show="incl" hidden>
+      The particle now moves in three dimensions, on a tilted orbit that
+      precesses around the spin axis; the dashed orange line is its path. The
+      sheet is still the equatorial plane, with height the strain h₊ radiated
+      in that plane, the sum of the modes ℓ = 2 to 4 with every m. The
+      observer floats at the chosen angle from the spin axis, and the trace
+      shows the wave in that direction, which mixes the modes differently.
+      The dashed circles mark the ISSO and the photon orbit with the same
+      inclination. Compressed heights compress the overall size and keep the
+      pattern. Units: G = c = M = 1.
     </p>
 
     <article class="rw-explain">
@@ -492,6 +549,146 @@
         exponentially, as for the fall along the axis.
       </p>
 
+      <h3>Tilted orbits</h3>
+      <p>
+        Off the equatorial plane a geodesic of Kerr has a third constant of
+        motion besides $E$ and $L$, the Carter constant $Q$, and there are
+        spherical orbits, which stay at a fixed $r$ while the body swings up
+        and down in latitude and the orbital plane precesses around the spin
+        axis. In the third trajectory the body starts on the innermost stable
+        one, the ISSO. Its tilt is the inclination $\iota$, with
+        $x = \cos\iota$ positive for orbits that go round with the hole: the
+        body reaches latitudes $\pm\iota$, so $|\cos\theta| \le z_- = \sin\iota$.
+        For $a = 0$ the inclination is only a rotation and the ISSO is the ISCO
+        at $6M$; for $a = 0.9\,M$ its radius goes from $2.32\,M$ at
+        $\iota = 0^\circ$ to $8.72\,M$ at $\iota = 180^\circ$.
+      </p>
+      <p>
+        With the Mino time $\lambda$, defined by $dt/d\lambda = \Sigma\,dt/d\tau$ with
+        $\Sigma = r^2 + a^2\cos^2\theta$,
+        the radial and polar motions separate. Writing
+        $z = \cos\theta = z_-\cos\chi$,
+      </p>
+      <div class="paper-equation">
+        $$
+        \left(\frac{dr}{d\lambda}\right)^2 = R(r) = P^2 - \Delta\left[r^2 + (L - aE)^2 + Q\right],
+        \qquad
+        \frac{d\chi}{d\lambda} = \sqrt{\frac{Q}{z_-^2} - a^2(1 - E^2)\,z_-^2\cos^2\chi},
+        $$
+        $$
+        \frac{dt}{d\lambda} = \frac{(r^2 + a^2)\,P}{\Delta} + aL - a^2E\,(1 - z^2),
+        \qquad
+        \frac{d\varphi}{d\lambda} = \frac{aP}{\Delta} - aE + \frac{L}{1 - z^2}.
+        $$
+      </div>
+      <p>
+        At the ISSO $R$ again has a triple root. Your browser finds $E$, $L$
+        and $Q$ by solving $R = R' = R'' = 0$ together with the condition
+        that fixes the inclination, and then integrates the plunge in $t$,
+        with $t = 0$ and $\varphi = 0$ when the body crosses the prograde
+        photon orbit, as before. Where the body is in its up-and-down motion
+        at that moment is the phase $\chi_0$: at the top of its swing, on the
+        way down, at the bottom or on the way up. The last two are the mirror
+        images of the first two in the equatorial plane, which turns
+        $h_{\ell m}$ into $(-1)^\ell\,h_{\ell,-m}^*$, so only two phases were
+        computed. At $\iota = 90^\circ$ the body has $L = 0$ and passes over
+        the poles.
+      </p>
+
+      <h3>Waves from a tilted plunge</h3>
+      <p>
+        Now every $m$ is excited, and the body moves through the angular
+        pattern of each mode. The amplitudes become
+      </p>
+      <div class="paper-equation">
+        $$
+        Z_{\ell m\omega} = \frac{1}{2i\omega\,B^{\rm inc}_{\ell m\omega}}\int dt\;
+        e^{i(\omega t - m\varphi(t))}\, I_{\ell m\omega}\big(r(t), \theta(t)\big),
+        $$
+      </div>
+      <p>
+        where the source $I_{\ell m\omega}$ now carries the spin-weighted
+        spheroidal harmonic ${}_{-2}S_{\ell m}(\theta; a\omega)$ and its first
+        two derivatives along $\theta(t)$, and terms with the polar velocity
+        that vanish in the equatorial plane. We use the source for generic
+        orbits of Sasaki and Tagoshi, in the form given by Drasco and Hughes
+        with the corrections of their 2014 erratum. A radial solution at
+        $(\ell, m, \omega)$ also gives the one at $(\ell, -m, -\omega)$ by
+        complex conjugation, so each solve serves two modes. To let the
+        observer move, the spheroidal harmonics are expanded in spherical
+        ones, ${}_{-2}S_{\ell m} = \sum_{\ell'} b^{\ell m}_{\ell'}(a\omega)\,{}_{-2}Y_{\ell' m}$, and
+      </p>
+      <div class="paper-equation">
+        $$
+        r\,h_{\ell' m}(u) = -2\sum_{\ell}\int d\omega\,\frac{Z_{\ell m\omega}}{\omega^2}\,
+        b^{\ell m}_{\ell'}(a\omega)\,e^{-i\omega u},
+        \qquad
+        h_+ - i h_\times = \sum_{\ell' m} h_{\ell' m}(u)\;{}_{-2}Y_{\ell' m}(\theta, \varphi),
+        $$
+      </div>
+      <p>
+        with $\ell, \ell' = 2, 3, 4$ and every $m$. Your browser does the last
+        sum for the direction of the observer, and the sheet shows the same
+        sum in the equatorial plane. On the spin axis only $m = 2$ (above) or
+        $m = -2$ (below) reaches the observer, since ${}_{-2}Y_{\ell m}$
+        vanishes there for every other $m$. The frequency integrals run up to
+        $|\omega| = 2.5/M$ in steps of $0.003/M$ and are rolled off smoothly
+        above $1.6$ times the fundamental quasinormal frequency of each mode.
+        The source is switched on as the body starts to leave the ISSO, and
+        never later than $t = -480\,M$, over at least $120\,M$ and almost three
+        orbits, so that the transient has gone before the part of the wave
+        shown.
+      </p>
+      <p>
+        As checks, for $\iota = 0^\circ$ the amplitudes agree with those of the
+        equatorial plunge to $10^{-9}$; the source reproduces the amplitudes
+        of the spherical-orbit routine of
+        <code>GeneralizedSasakiNakamura.jl</code>, including $m \le 0$ and the
+        harmonics of the polar motion; at $a = 0$ the
+        power in each $\ell$ does not depend on the inclination, to $10^{-8}$,
+        as it must for a rotated orbit; and the mirror symmetry holds to
+        $10^{-13}$. The ISSO and the orbital frequencies agree with
+        <code>KerrGeodesics.jl</code> to twelve digits or better.
+      </p>
+      <p>
+        The ringing now mixes many modes. The counter-rotating ones, with
+        $m &lt; 0$ in the plane at the bottom of the page, are excited strongly
+        when the orbit goes against the rotation, and the observer sees each
+        $m$ with a different weight. The fit on the observer panel uses the
+        fundamental modes of $\ell = 2$ and $3$ with every $m$ (and adds the
+        first overtones of $\ell = 2$ for "n ≤ 1"), starting $15\,M$ after the
+        peak of the total flux $\sum_{\ell m} |dh_{\ell m}/du|^2$, which does not
+        depend on the observer. It matches the wave to about $10^{-3}$ of its
+        peak.
+      </p>
+
+      <h3>The volume view</h3>
+      <p>
+        The sheet shows the wave in one plane. The volume view shows it in
+        every direction at once: at each point around the hole, at distance
+        $r_*$ and angles $(\theta, \varphi)$, it evaluates
+      </p>
+      <div class="paper-equation">
+        $$
+        h_+ = \mathrm{Re}\sum_{\ell m} h_{\ell m}(t - r_*)\;{}_{-2}Y_{\ell m}(\theta, \varphi),
+        $$
+      </div>
+      <p>
+        with the same modes as the observer, and draws it as a glowing cloud,
+        orange where $h_+ &gt; 0$ and blue where $h_+ &lt; 0$, more opaque where
+        $|h_+|$ is large. As on the sheet the $1/r$ fall-off is left out, so a
+        wave keeps its brightness as it travels out. Your browser tabulates
+        the angular sums on a grid in $r_*$ and $\theta$ every frame and
+        marches along each line of sight through a ball around the hole,
+        adding up colour and opacity. The scale is linear in $h_+$: the
+        compressed heights of the sheet would make the long, steady parts of
+        the signal fill the ball. In the fall along the axis the pattern is
+        $\Psi\,\sin^2\theta$ around the line of fall; in the equatorial plunge
+        it is the $\ell = 2$, $m = \pm 2$ pair, a double spiral that is
+        strongest along the spin axis; in the tilted plunge every $m$ adds its
+        own twist.
+      </p>
+
       <p class="rw-refs">
         M. Sasaki and T. Nakamura, Prog. Theor. Phys. 67, 1788 (1982) ·
         R. K. L. Lo, generalized Sasaki–Nakamura formalism and
@@ -503,7 +700,11 @@
         163001 (2009) · M. Davis, R. Ruffini, W. H. Press and R. H. Price,
         Phys. Rev. Lett. 27, 1466 (1971) · J. M. Bardeen, W. H. Press and
         S. A. Teukolsky, Astrophys. J. 178, 347 (1972) · M. Sasaki and
-        H. Tagoshi, Living Rev. Relativ. 6, 6 (2003). See also the
+        H. Tagoshi, Living Rev. Relativ. 6, 6 (2003) · Y. Mino, Phys. Rev. D
+        67, 084027 (2003) · S. A. Hughes, Phys. Rev. D 61, 084004 (2000) ·
+        S. Drasco and S. A. Hughes, Phys. Rev. D 73, 024027 (2006); erratum
+        Phys. Rev. D 90, 109905 (2014) · L. C. Stein and N. Warburton,
+        Phys. Rev. D 101, 064007 (2020). See also the
         <a href="regge-wheeler.html">Regge–Wheeler simulator</a>.
       </p>
     </article>

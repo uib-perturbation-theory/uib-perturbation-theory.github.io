@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Wormhole simulator — Strong Gravity Group @ UIB</title>
+  <meta name="description" content="Interactive simulation of a wave crossing a thin-shell wormhole between two universes: echoes, the cavity between the two potential peaks and the transmission comb, solved in your browser.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Source+Sans+3:wght@400;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/sim.css">
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.min.js",
+        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+      }
+    }
+  </script>
+  <script type="module" src="../js/wh/wh-sim.js"></script>
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']]
+      },
+      svg: { fontCache: 'global' }
+    };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="brand" href="../index.html">Strong Gravity Group <span class="tilde">~</span> UIB</a>
+    <button class="nav-toggle" aria-label="Open menu" onclick="document.querySelector('.nav-links').classList.toggle('open')">☰</button>
+    <ul class="nav-links">
+      <li><a href="../research.html">Research</a></li>
+      <li><a href="../lab.html" aria-current="page">Lab</a></li>
+      <li><a href="../team.html">Team</a></li>
+      <li><a href="../publications.html">Publications</a></li>
+      <li><a href="../resources.html">Resources</a></li>
+      <li><a href="../news.html">News</a></li>
+      <li><a href="../contact.html">Contact</a></li>
+    </ul>
+  </div>
+</nav>
+
+<header class="page-head lab-head">
+  <div class="page-head-inner">
+    <p class="eyebrow">Black Hole Lab · Simulator</p>
+    <h1>Wormhole simulator</h1>
+    <p class="lede">
+      Two copies of the outside of a black hole, glued along a thin shell
+      just outside where the horizon would be, form a wormhole between two
+      universes. Send a wave packet at it from one side: part of it bounces
+      back, part of it gets trapped between the two potential barriers and
+      leaks out as echoes, and part of it comes out in the other universe.
+      Everything is solved live in your browser.
+    </p>
+  </div>
+</header>
+
+<section class="section rw-section">
+  <div class="rw-wrap">
+    <a class="rw-back" href="../lab.html">← Black Hole Lab</a>
+
+    <div class="rw-app" data-wh>
+
+      <div class="rw-stage">
+        <canvas class="rw-canvas" aria-label="Three-dimensional view of the wave on the two sheets of the wormhole"></canvas>
+        <div class="rw-labels" aria-hidden="true">
+          <span class="rw-label" data-label="throat">Throat (shell)</span>
+          <span class="rw-label" data-label="peak">Potential peak</span>
+          <span class="rw-label" data-label="pulse">Pulse start</span>
+          <span class="rw-label" data-label="u1">Universe 1</span>
+          <span class="rw-label" data-label="u2">Universe 2</span>
+          <span class="rw-label" data-label="obsA">Observer A</span>
+          <span class="rw-label" data-label="obsB">Observer B</span>
+        </div>
+        <div class="rw-time" aria-live="off">t = 0.0 M</div>
+        <div class="rw-status">Loading…</div>
+        <div class="rw-legend"><span>ψ &lt; 0</span><span class="rw-legend-bar"></span><span>ψ &gt; 0</span></div>
+        <div class="rw-hint">drag to rotate, also from below · scroll to zoom</div>
+      </div>
+
+      <div class="rw-trace wh-trace">
+        <div class="rw-trace-head">
+          <span class="rw-trace-title">
+            <span>ψ at the two observers</span>
+            <span class="rw-key"><i></i>A, universe 1</span>
+            <span class="rw-key"><i class="blue"></i>B, universe 2</span>
+          </span>
+          <span class="rw-trace-tools">
+            <span class="rw-trace-scale" role="group" aria-label="Vertical scale">
+              <button type="button" data-scale="lin" aria-pressed="true">Linear</button>
+              <button type="button" data-scale="log" aria-pressed="false">log |ψ|</button>
+            </span>
+          </span>
+        </div>
+        <canvas aria-label="Signals recorded by the observers in both universes; click to jump in time"></canvas>
+        <p class="wh-energy" data-energy aria-live="off"></p>
+      </div>
+
+      <aside class="rw-panel" aria-label="Simulation controls">
+        <h2>Controls</h2>
+
+        <div class="rw-group">
+          <p class="rw-group-title">Wormhole</p>
+          <div class="rw-field">
+            <label for="wh-delta">Throat δ <output data-out="logDelta"></output></label>
+            <input id="wh-delta" type="range" min="-10" max="0" step="0.25" value="-4" data-param="logDelta">
+            <p class="rw-field-note" data-cavity-note></p>
+          </div>
+        </div>
+
+        <div class="rw-group">
+          <p class="rw-group-title">Wave</p>
+          <div class="rw-field">
+            <label>Field</label>
+            <div class="rw-seg rw-seg-wide" role="group" aria-label="Field">
+              <button type="button" data-s="0" aria-pressed="false">Scalar</button>
+              <button type="button" data-s="1" aria-pressed="false">EM</button>
+              <button type="button" data-s="2" aria-pressed="true">Grav.</button>
+            </div>
+          </div>
+          <div class="rw-field">
+            <label>Multipole <output data-out="l">ℓ = 2</output></label>
+            <div class="rw-seg" role="group" aria-label="Multipole">
+              <button type="button" data-l="0" aria-pressed="false">0</button>
+              <button type="button" data-l="1" aria-pressed="false">1</button>
+              <button type="button" data-l="2" aria-pressed="true">2</button>
+              <button type="button" data-l="3" aria-pressed="false">3</button>
+              <button type="button" data-l="4" aria-pressed="false">4</button>
+            </div>
+          </div>
+          <div class="rw-field">
+            <label for="wh-sigma">Width σ <output data-out="sigma"></output></label>
+            <input id="wh-sigma" type="range" min="2" max="15" step="0.5" value="8" data-param="sigma">
+          </div>
+          <div class="rw-field">
+            <label for="wh-nu">Carrier frequency ν <output data-out="nu"></output></label>
+            <input id="wh-nu" type="range" min="0.05" max="1" step="0.01" value="0.3" data-param="nu">
+          </div>
+          <div class="rw-field">
+            <label for="wh-x0">Starting position x₀ <output data-out="x0"></output></label>
+            <input id="wh-x0" type="range" min="40" max="150" step="5" value="70" data-param="x0">
+          </div>
+        </div>
+
+        <div class="rw-group">
+          <p class="rw-group-title">Observers</p>
+          <div class="rw-field">
+            <label for="wh-obs"><span>Position x<sub>obs</sub></span> <output data-out="xObs"></output></label>
+            <input id="wh-obs" type="range" min="40" max="200" step="5" value="100" data-param="xObs">
+          </div>
+        </div>
+
+        <div class="rw-group">
+          <p class="rw-group-title">Playback</p>
+          <div class="rw-buttons">
+            <button type="button" class="primary" data-action="play">Pause</button>
+            <button type="button" data-action="restart">Restart</button>
+            <button type="button" data-action="view">Reset view</button>
+          </div>
+          <div class="rw-field" style="margin-top:.8rem">
+            <label for="wh-speed">Speed <output data-out="speed"></output></label>
+            <input id="wh-speed" type="range" min="4" max="60" step="1" value="20" data-param="speed">
+          </div>
+          <label class="rw-check"><input type="checkbox" data-param="log" checked> Compressed heights (shows the faint echoes)</label>
+          <label class="rw-check"><input type="checkbox" data-param="cut" checked> Cut away the front quarter</label>
+        </div>
+      </aside>
+
+    </div>
+
+    <div class="rw-panels">
+
+      <figure class="rw-card" data-wh-potential>
+        <div class="rw-card-head">
+          <div>
+            <h3>The potential</h3>
+            <p>
+              V(x) through both universes. When the throat lies inside the
+              peak of the black-hole barrier, near r = 3M, the two peaks bound
+              a cavity. The dashed line is the carrier frequency squared, ν².
+            </p>
+          </div>
+        </div>
+        <canvas aria-label="Potential through both universes, with the cavity, the shell term, the carrier level and the positions of the pulse and the observers"></canvas>
+        <p class="rw-readout" data-readout></p>
+      </figure>
+
+      <figure class="rw-card" data-wh-transmission>
+        <div class="rw-card-head">
+          <div>
+            <h3>Transmission to the other universe</h3>
+            <p>
+              Fraction |T(ω)|² of the energy at each frequency that comes out
+              in universe 2. The rest, |R|² = 1 − |T|², is reflected.
+            </p>
+          </div>
+          <span class="rw-trace-scale" role="group" aria-label="Vertical scale">
+            <button type="button" data-tscale="log" aria-pressed="true">log</button>
+            <button type="button" data-tscale="lin" aria-pressed="false">linear</button>
+          </span>
+        </div>
+        <div class="rw-card-keys">
+          <span class="rw-key"><i></i>|T(ω)|²</span>
+          <span class="rw-key"><i class="pulse"></i>energy spectrum of the pulse (top strip)</span>
+          <span class="rw-key"><i class="dash"></i>barrier top</span>
+        </div>
+        <canvas aria-label="Transmission probability against frequency, with the energy spectrum of the pulse"></canvas>
+        <p class="rw-readout" data-readout></p>
+      </figure>
+
+    </div>
+
+    <p class="rw-note">
+      The surface is a slice through the wormhole that contains the symmetry
+      axis of the multipole. Universe 1 is the upper sheet and universe 2
+      the lower one; they meet at the throat. Distance along the surface away
+      from the throat is the tortoise coordinate |x|, so waves travel at
+      constant speed, and the slope follows the Flamm paraboloid of each
+      side. It is a picture, not an exact embedding. The wave pushes the
+      surface along its normal by ψ(t, x) P<sub>ℓ</sub>(cos θ). Both observers
+      sit on the axis. Units: G = c = M = 1.
+    </p>
+
+    <article class="rw-explain">
+      <h2>The theory behind this</h2>
+
+      <h3>A wormhole made of two black-hole exteriors</h3>
+      <p>
+        Take the Schwarzschild geometry of a black hole of mass $M$, keep only
+        the region outside a sphere of radius $a$ slightly larger than the
+        horizon, make a second copy, and glue the two along that sphere.
+        This is the thin-shell wormhole of Visser: the gluing surface is the
+        throat, and it needs a thin shell of exotic matter (negative energy
+        density) to hold it open. We write
+      </p>
+      <div class="paper-equation">
+        $$
+        a = 2M(1 + \delta),
+        $$
+      </div>
+      <p>
+        so that $\delta$ measures how close the throat is to the would-be
+        horizon. Seen from far away, each side looks exactly like a black
+        hole of mass $M$. The difference is that nothing is absorbed: what
+        falls in on one side comes out on the other.
+      </p>
+
+      <h3>The wave equation</h3>
+      <p>
+        A single coordinate $x$ runs through both universes: $x &gt; 0$ is
+        universe 1, $x &lt; 0$ universe 2 and $x = 0$ the throat. It is the
+        tortoise coordinate measured from the throat,
+      </p>
+      <div class="paper-equation">
+        $$
+        r_*(r(x)) = r_*(a) + |x|,
+        \qquad
+        r_* = r + 2M\ln\!\left(\frac{r}{2M} - 1\right),
+        $$
+      </div>
+      <p>
+        inverted with the Lambert W function, as in the
+        <a href="regge-wheeler.html">Regge–Wheeler simulator</a>. Scalar
+        ($s = 0$), electromagnetic ($s = 1$) and axial gravitational
+        ($s = 2$) waves of multipole $\ell$ all obey
+      </p>
+      <div class="paper-equation">
+        $$
+        \frac{\partial^2\psi}{\partial t^2} - \frac{\partial^2\psi}{\partial x^2} + V\psi = 0,
+        \qquad
+        V = \left(1 - \frac{2M}{r}\right)\left[\frac{\ell(\ell+1)}{r^2} + \frac{2M(1 - s^2)}{r^3}\right].
+        $$
+      </div>
+      <p>
+        Each universe has the potential barrier of a black hole, peaked near
+        $r = 3M$. If the throat is inside the peak, the two barriers face
+        each other across the throat at $x = \pm d$, with
+        $d = r_*(r_{\rm peak}) - r_*(a) \approx 2M\,|\ln\delta|$. Between them
+        lies a cavity. It only grows logarithmically: even
+        $\delta = 10^{-10}$ gives a cavity about $90M$ long.
+      </p>
+
+      <h3>The shell</h3>
+      <p>
+        At the throat the wave must be continuous, but its slope can jump,
+        because the shell is a sheet of matter and the radius $r(x)$ has a
+        kink there. The shell acts as a delta-function potential,
+      </p>
+      <div class="paper-equation">
+        $$
+        \psi'(0^+) - \psi'(0^-) = C\,\psi(0),
+        \qquad
+        C = \frac{2f(a)}{a}\times\{+1,\ 0,\ -1\}\ \ \text{for}\ \ s = \{0,\ 1,\ 2\},
+        $$
+      </div>
+      <p>
+        with $f = 1 - 2M/r$. For a scalar field it follows from the kink of
+        $r(x)$, for electromagnetic waves it vanishes, and for axial
+        gravitational waves it follows from the Israel junction conditions,
+        as for thin-shell gravastars. Since $|C| = \delta/(1+\delta)^2$, it
+        is small for throats close to the horizon. The arrow at the throat
+        in the potential panel shows its sign.
+      </p>
+
+      <h3>Echoes and transmission</h3>
+      <p>
+        A pulse sent from universe 1 first meets the outer barrier. What is
+        reflected there reaches observer A exactly as if the wormhole were a
+        black hole: the two cannot be told apart until the first echo. What
+        tunnels through enters the cavity and bounces between the two
+        barriers. Each time it hits one of them, a little leaks out: back to
+        universe 1 as an echo, or forward to universe 2. The echoes arrive
+        roughly once per round trip of the cavity.
+      </p>
+      <p>
+        In frequency, the cavity acts like a Fabry–Pérot interferometer
+        whose mirrors are the two barriers. Above the barrier top the
+        wormhole is almost transparent. Below it, waves only get through at
+        the resonances of the cavity, a comb of narrow lines spaced by
+        about $\pi/2d$, where the transmission reaches 1. The lines are the
+        quasinormal modes of the wormhole, and they get narrower, and
+        decay more slowly, the lower their frequency.
+      </p>
+
+      <h3>The numerical method</h3>
+      <p>
+        Both solvers run in background threads of your browser (Web Workers).
+      </p>
+      <ul>
+        <li>
+          Time domain: grid $x \in [-600,\,600]\,M$ with spacing
+          $\Delta x = 0.2\,M$ (6,001 points), fourth-order finite
+          differences and the classical fourth-order Runge–Kutta method with
+          $\Delta t = 0.25\,\Delta x$, up to $t = 800\,M$. The shell enters as a
+          discrete delta, $C/\Delta x$ added to the potential at the node
+          $x = 0$. The potential is switched off smoothly for
+          $|x| &gt; 450\,M$, and the grid is large enough that nothing
+          reflected at its ends comes back to the region shown.
+        </li>
+        <li>
+          The initial pulse is an oscillating Gaussian moving towards the
+          throat, $\psi = e^{-(x - x_0)^2/2\sigma^2}\cos\nu(x - x_0)$ and
+          $\partial_t\psi = \partial_x\psi$.
+        </li>
+        <li>
+          Energy. The energy density
+          $\tfrac12(\dot\psi^2 + \psi'^2 + V\psi^2)$ is conserved, with flux
+          $-\dot\psi\,\psi'$. The numbers under the traces are the energy
+          beyond each observer: what was there at $t = 0$ plus what has
+          crossed it since, as a fraction of the total.
+        </li>
+        <li>
+          Transmission: we write the solution that is purely outgoing in
+          universe 1 as $j = e^{i\omega x}A(x)$, start $A$ from its
+          asymptotic series in $1/r$ at $r \ge \max(250M, 25/\omega)$ and
+          integrate it in to the throat with fourth-order Runge–Kutta, with
+          fine steps around the cavity. With $q = j(0)$ and
+          $h = j'(0) - Cq/2$, continuity and the jump at the shell give
+          $|T|^2 = \omega^2/|qh|^2$. Lines narrower than the frequency grid
+          are located from jumps in the phase of $q$ or $h$ and refined to
+          their peak.
+        </li>
+        <li>
+          The percentage quoted under the transmission is
+          $\int |T|^2 E(\omega)\,d\omega / \int E(\omega)\,d\omega$, with
+          $E(\omega) \propto \omega^2|\tilde\psi_0(\omega)|^2$ the energy
+          spectrum of the pulse. It should agree with the energy beyond
+          observer B at the end of the run to about a per cent: some energy
+          may still be trapped in the cavity, and the pulse starts inside the
+          tail of the potential rather than infinitely far away.
+        </li>
+      </ul>
+
+      <h3>Things to try</h3>
+      <ul>
+        <li>
+          Raise the carrier frequency above the barrier top: the pulse
+          crosses almost untouched, and there are no echoes.
+        </li>
+        <li>
+          Lower it below the top and make the pulse wide (large σ), so that
+          its spectrum is narrow. Most of it is reflected, and what crosses
+          comes out as long ringing at the frequencies of the comb lines.
+        </li>
+        <li>
+          Move δ towards $10^{-10}$: the cavity, the tube in the 3D view
+          and the time between echoes all grow, and the comb lines move
+          closer together.
+        </li>
+        <li>
+          Set δ to 1: the throat is now outside the peak, there is a single
+          barrier and no cavity, and nothing comes back after the first
+          reflection.
+        </li>
+      </ul>
+
+      <p class="rw-refs">
+        References: M. Visser, Phys. Rev. D 39, 3182 (1989)
+        (<a href="https://arxiv.org/abs/0809.0907" rel="noopener">arXiv:0809.0907</a>);
+        E. Poisson and M. Visser, Phys. Rev. D 52, 7318 (1995)
+        (<a href="https://arxiv.org/abs/gr-qc/9506083" rel="noopener">arXiv:gr-qc/9506083</a>);
+        V. Cardoso, E. Franzin and P. Pani, Phys. Rev. Lett. 116, 171101 (2016)
+        (<a href="https://arxiv.org/abs/1602.07309" rel="noopener">arXiv:1602.07309</a>);
+        P. Pani et al., Phys. Rev. D 80, 124047 (2009)
+        (<a href="https://arxiv.org/abs/0909.0287" rel="noopener">arXiv:0909.0287</a>);
+        P. Bueno et al., Phys. Rev. D 97, 024040 (2018)
+        (<a href="https://arxiv.org/abs/1711.00391" rel="noopener">arXiv:1711.00391</a>).
+        See also the <a href="regge-wheeler.html">Regge–Wheeler simulator</a>,
+        with the same kind of pulse falling onto a black hole.
+      </p>
+    </article>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div>
+      <strong>Strong Gravity Group @ UIB</strong><br>
+      IAC3 – UIB, Parc BIT<br>
+      Carrer Blaise Pascal, 6, 07121 Palma, Spain
+    </div>
+    <div>
+      <a href="../contact.html">Contact</a><br>
+      <a href="https://www.uib.eu/" rel="noopener">UIB</a>
+    </div>
+  </div>
+
+  <div class="footer-funding">
+    <p class="footer-funding-title">Funding &amp; support</p>
+    <div class="footer-funding-logos">
+      <img
+        src="../assets/logos/funding-logos.png"
+        alt="Funded by the Ministerio de Ciencia, Innovación y Universidades, co-financed by the European Union, the Agencia Estatal de Investigación, the Conselleria d'Educació i Universitats of the Govern de les Illes Balears, and REDONGRA, the Spanish Network of Gravitational Wave Physics"
+        width="840"
+        height="388"
+        loading="lazy"
+      >
+      <img
+        class="footer-logo-cost"
+        src="../assets/logos/cost.jpg"
+        alt="COST, European Cooperation in Science and Technology"
+        width="700"
+        height="267"
+        loading="lazy"
+      >
+    </div>
+  </div>
+
+  <div class="footer-credit">
+    <span>© 2026 Strong Gravity Group @ UIB</span>
+    <span>
+      Website by
+      <a href="../people/alejandro-svyatkovskyy.html">Alejandro Svyatkovskyy Kholyavka</a>
+    </span>
+  </div>
+
+</footer>
+
+</body>
+</html>

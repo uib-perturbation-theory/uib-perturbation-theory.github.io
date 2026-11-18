@@ -285,3 +285,5 @@
 .rw-key i.dot { width: 9px; height: 9px; border: 0; border-radius: 50%; background: #2a78d6; }
 .rw-key i.dot.pick { background: #fff; box-shadow: inset 0 0 0 2px #f2762e; }
 .rw-key i.dots { border-top: 2px dotted #8a93a1; }
+.rw-key i.orbit { border-top: 2px dotted #d8611c; }
+[data-show][hidden] { display: none !important; }

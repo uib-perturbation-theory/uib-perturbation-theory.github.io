@@ -1,5 +1,7 @@
-/* Kerr background and the trajectory of a particle that falls from rest at
-   infinity (E = 1) along the symmetry axis. Units G = c = M = 1.
+/* Kerr background and the two trajectories of the simulator: a particle that
+   falls from rest at infinity (E = 1) along the symmetry axis, and the
+   equatorial plunge from the innermost stable circular orbit. Units
+   G = c = M = 1.
 
    Along the axis (L = 0, Carter constant Q = 0):
      dr/dtau = -sqrt(2 r (r^2 + a^2)) / (r^2 + a^2),   dt/dtau = (r^2 + a^2) / Delta.
@@ -111,6 +113,117 @@ export function infall(a, rMax = 60, N = 4000) {
     at(t) {
       const loc = locate(t);
       return { r: lerp(r, loc), rStar: lerp(rs, loc) };
+    },
+  };
+}
+
+/* Prograde innermost stable circular orbit (Bardeen, Press and Teukolsky
+   1972): radius, energy and angular momentum per unit mass, angular
+   frequency. */
+export function isco(a) {
+  const z1 = 1 + Math.cbrt(1 - a * a) * (Math.cbrt(1 + a) + Math.cbrt(1 - a));
+  const z2 = Math.sqrt(3 * a * a + z1 * z1);
+  const r = 3 + z2 - Math.sqrt((3 - z1) * (3 + z1 + 2 * z2));
+  const v = 1 / Math.sqrt(r);
+  const den = Math.sqrt(1 - 3 * v * v + 2 * a * v ** 3);
+  return {
+    r,
+    E: (1 - 2 * v * v + a * v ** 3) / den,
+    L: (r * v * (1 - 2 * a * v ** 3 + a * a * v ** 4)) / den,
+    omega: 1 / (r ** 1.5 + a),
+  };
+}
+
+// Radius of the prograde circular photon orbit in the equatorial plane.
+export function photonOrbit(a) {
+  return 2 * (1 + Math.cos((2 / 3) * Math.acos(-a)));
+}
+
+/* Equatorial plunge from the ISCO: the geodesic with the energy and angular
+   momentum of the ISCO, which leaves it at t = -infinity. With
+   P = E (r^2 + a^2) - a L and R = P^2 - Delta (r^2 + (L - a E)^2), which has a
+   triple root at the ISCO,
+     dr/dt   = -sqrt(R) / T,                       T = (r^2 + a^2) P / Delta - a (a E - L),
+     dphi/dt = (a P / Delta - (a E - L)) / T.
+   As in the waveforms, t = 0 and phi = 0 when the particle crosses the
+   prograde photon orbit. RK4 in t on y = ln(r - r+), backwards to tMin and
+   forwards until r* < rsMin, with the same step as the waveforms. */
+export function plunge(a, tMin = -220, rsMin = -16, dt = 0.1) {
+  const { rp } = kerr(a);
+  const { E, L, r: rIsco } = isco(a);
+  const rph = photonOrbit(a);
+  const c = a * E - L;
+
+  function f(y) {
+    const r = rp + Math.exp(y);
+    const D = r * r - 2 * r + a * a;
+    const P = E * (r * r + a * a) - a * L;
+    const R = P * P - D * (r * r + c * c);
+    const T = ((r * r + a * a) * P) / D - a * c;
+    return [-Math.sqrt(Math.max(R, 0)) / T / (r - rp), (a * P / D - c) / T];
+  }
+
+  function step([y, ph], h) {
+    const k1 = f(y);
+    const k2 = f(y + 0.5 * h * k1[0]);
+    const k3 = f(y + 0.5 * h * k2[0]);
+    const k4 = f(y + h * k3[0]);
+    return [
+      y + (h / 6) * (k1[0] + 2 * k2[0] + 2 * k3[0] + k4[0]),
+      ph + (h / 6) * (k1[1] + 2 * k2[1] + 2 * k3[1] + k4[1]),
+    ];
+  }
+
+  const back = [];
+  let s = [Math.log(rph - rp), 0];
+
+  for (let k = 1, n0 = Math.ceil(-tMin / dt); k <= n0; k += 1) {
+    s = step(s, -dt);
+    back.push(s);
+  }
+
+  const fwd = [];
+  s = [Math.log(rph - rp), 0];
+
+  for (let k = 1; k <= 4000; k += 1) {
+    s = step(s, dt);
+    fwd.push(s);
+
+    if (rstar(rp + Math.exp(s[0]), a) < rsMin) {
+      break;
+    }
+  }
+
+  const states = [...back.reverse(), [Math.log(rph - rp), 0], ...fwd];
+  const N = states.length;
+  const t0 = -back.length * dt;
+  const r = new Float64Array(N);
+  const rs = new Float64Array(N);
+  const phi = new Float64Array(N);
+
+  states.forEach(([y, ph], i) => {
+    r[i] = rp + Math.exp(y);
+    rs[i] = rstar(r[i], a);
+    phi[i] = ph;
+  });
+
+  return {
+    a,
+    rp,
+    rIsco,
+    rph,
+    tMin: t0,
+    tMax: t0 + (N - 1) * dt,
+    // { r, rStar, phi } at time t
+    at(t) {
+      const x = Math.min(N - 1, Math.max(0, (t - t0) / dt));
+      const i = Math.min(N - 2, Math.floor(x));
+      const w = x - i;
+      return {
+        r: r[i] + w * (r[i + 1] - r[i]),
+        rStar: rs[i] + w * (rs[i + 1] - rs[i]),
+        phi: phi[i] + w * (phi[i + 1] - phi[i]),
+      };
     },
   };
 }

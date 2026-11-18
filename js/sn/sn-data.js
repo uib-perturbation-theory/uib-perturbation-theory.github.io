@@ -1,9 +1,16 @@
-/* GSN waveforms of the on-axis plunge and the quasinormal-mode fit.
+/* Waveforms of the two trajectories and the quasinormal-mode fit.
 
-   sn-gsn.json holds, for a = 0, 0.1, ..., 0.9:
+   sn-gsn.json, the on-axis infall, holds for a = 0, 0.1, ..., 0.9:
      D[k]    Psi(u) for u = u0 + j du (float32, base64), l = 2, m = 0, s = -2,
      absX[k] |X(omega)| for omega = w0 + j dw (float32, base64).
-   Psi(u) = (1/pi) Re int_0^inf X(omega) e^{-i omega u} d omega. */
+   Psi(u) = (1/pi) Re int_0^inf X(omega) e^{-i omega u} d omega.
+
+   sn-plunge.json, the equatorial plunge from the ISCO, holds for the same
+   spins:
+     H[k]    r h_22(u) / mu, interleaved real and imaginary parts, for
+             u = u0 + j du,
+     absH[k] |h_22(omega)|, the modulus of its Fourier transform, for
+             omega = w0 + j dw. */
 
 function decode(b64) {
   const bin = atob(b64);
@@ -88,13 +95,118 @@ export function waveform(data, k) {
     at,
     uPeak: u0 + (iPeak + shift) * du,
     peak: Math.abs(y1 - 0.25 * (y0 - y2) * shift),
-    uMin: u0,
-    uMax: u0 + (n - 1) * du,
+    samples: D,
+    u0,
+    du,
+    n,
   };
 }
 
-/* Least-squares fit of the signal after the peak with
-     Psi(u) ~ sum_n 2 Re[C_n e^{-i w_n tau}] + sum_k b_k e^{-g_k tau},
+export async function loadPlunge(url) {
+  const res = await fetch(url);
+
+  if (!res.ok) {
+    throw new Error(`could not load ${url} (${res.status})`);
+  }
+
+  const j = await res.json();
+
+  return {
+    spins: j.spins,
+    u0: j.u0,
+    du: j.du,
+    n: j.n,
+    H: j.H.map(decode),
+    w0: j.w0,
+    dw: j.dw,
+    nw: j.nw,
+    absH: j.absH.map(decode),
+    tOn: j.tOn,
+  };
+}
+
+// h_+ on the equator: h = h_22 Y_22 + h_2,-2 Y_2,-2 with h_2,-2 = conj(h_22)
+// and -2Y_2,+-2(pi/2, phi) = sqrt(5 / 64 pi) e^{+-2 i phi}.
+export const H_PLUS = 2 * Math.sqrt(5 / (64 * Math.PI));
+
+/* Plunge waveform of one spin. atC(u, out) writes r h_22 / mu (real,
+   imaginary) into out; at(u) is r h_+ / mu at the azimuth phiObs of the
+   observer. The reference time uPeak is the peak of |dh_22/du|: for fast
+   spins |h_22| itself barely rises above its value on the ISCO. */
+export function plungeWave(data, k, phiObs) {
+  const H = data.H[k];
+  const { u0, du, n } = data;
+  const c2 = Math.cos(2 * phiObs);
+  const s2 = Math.sin(2 * phiObs);
+
+  function atC(u, out) {
+    const x = Math.min(n - 1, Math.max(0, (u - u0) / du));
+    const i = Math.min(n - 2, Math.floor(x));
+    const s = x - i;
+    const i0 = Math.max(0, i - 1);
+    const i3 = Math.min(n - 1, i + 2);
+
+    for (let c = 0; c < 2; c += 1) {
+      const p0 = H[2 * i0 + c];
+      const p1 = H[2 * i + c];
+      const p2 = H[2 * i + 2 + c];
+      const p3 = H[2 * i3 + c];
+      out[c] =
+        p1 +
+        0.5 * s * (p2 - p0 + s * (2 * p0 - 5 * p1 + 4 * p2 - p3 + s * (3 * (p1 - p2) + p3 - p0)));
+    }
+
+    return out;
+  }
+
+  let ampPeak = 0;
+  const samples = new Float64Array(n);
+
+  for (let i = 0; i < n; i += 1) {
+    const re = H[2 * i];
+    const im = H[2 * i + 1];
+    ampPeak = Math.max(ampPeak, Math.hypot(re, im));
+    samples[i] = H_PLUS * (re * c2 - im * s2);
+  }
+
+  // Peak of |dh/du| within 150 M of the light-ring crossing.
+  const news = (i) => Math.hypot(H[2 * i + 2] - H[2 * i - 2], H[2 * i + 3] - H[2 * i - 1]);
+  let iPeak = 1;
+
+  for (let i = 1; i < n - 1; i += 1) {
+    const u = u0 + i * du;
+
+    if (Math.abs(u) < 150 && (iPeak === 1 || news(i) > news(iPeak))) {
+      iPeak = i;
+    }
+  }
+
+  const y0 = news(iPeak - 1);
+  const y1 = news(iPeak);
+  const y2 = news(iPeak + 1);
+  const den = y0 - 2 * y1 + y2;
+  const shift = den !== 0 ? (0.5 * (y0 - y2)) / den : 0;
+  const tmp = new Float64Array(2);
+
+  return {
+    atC,
+    at(u) {
+      atC(u, tmp);
+      return H_PLUS * (tmp[0] * c2 - tmp[1] * s2);
+    },
+    uPeak: u0 + (iPeak + shift) * du,
+    ampPeak,
+    peak: H_PLUS * ampPeak,
+    samples,
+    u0,
+    du,
+    n,
+  };
+}
+
+/* Least-squares fit of the signal of a waveform (see waveform and
+   plungeWave) after its peak with
+     s(u) ~ sum_n 2 Re[C_n e^{-i w_n tau}] + sum_k b_k e^{-g_k tau},
    tau = u - uPeak, on the samples with tauA <= tau <= tauB. The quasinormal
    frequencies w_n are fixed (Kerr values); each mode contributes
    e^{Im w_n tau} [c_n cos(Re w_n tau) + s_n sin(Re w_n tau)]. The real
@@ -102,9 +214,8 @@ export function waveform(data, k) {
    integral (1/pi) int Im X(-i g) e^{-g u} dg is itself a superposition of
    such exponentials. Householder QR keeps the fit stable. Returns functions
    of tau: the tail plus the first modes of the fit, and the tail alone. */
-export function fitRingdown(data, k, wave, omegas, rates, tauA, tauB) {
-  const D = data.D[k];
-  const { u0, du, n } = data;
+export function fitRingdown(wave, omegas, rates, tauA, tauB) {
+  const { samples: D, u0, du, n } = wave;
   const iA = Math.max(0, Math.ceil((wave.uPeak + tauA - u0) / du));
   const iB = Math.min(n - 1, Math.floor((wave.uPeak + tauB - u0) / du));
   const rows = iB - iA + 1;

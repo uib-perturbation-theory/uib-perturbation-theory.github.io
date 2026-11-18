@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sasaki–Nakamura simulator — Strong Gravity Group @ UIB</title>
+  <meta name="description" content="Interactive view of a particle falling into a Kerr black hole along its rotation axis, with the gravitational waves computed with the generalized Sasaki–Nakamura equation.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Source+Sans+3:wght@400;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/sim.css">
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.min.js",
+        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+      }
+    }
+  </script>
+  <script type="module" src="../js/sn/sn-sim.js"></script>
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']]
+      },
+      svg: { fontCache: 'global' }
+    };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="brand" href="../index.html">Strong Gravity Group <span class="tilde">~</span> UIB</a>
+    <button class="nav-toggle" aria-label="Open menu" onclick="document.querySelector('.nav-links').classList.toggle('open')">☰</button>
+    <ul class="nav-links">
+      <li><a href="../research.html">Research</a></li>
+      <li><a href="../lab.html" aria-current="page">Lab</a></li>
+      <li><a href="../team.html">Team</a></li>
+      <li><a href="../publications.html">Publications</a></li>
+      <li><a href="../resources.html">Resources</a></li>
+      <li><a href="../news.html">News</a></li>
+      <li><a href="../contact.html">Contact</a></li>
+    </ul>
+  </div>
+</nav>
+
+<header class="page-head lab-head">
+  <div class="page-head-inner">
+    <p class="eyebrow">Black Hole Lab · Simulator</p>
+    <h1>Sasaki–Nakamura simulator</h1>
+    <p class="lede">
+      A small body falls from rest along the rotation axis of a Kerr black
+      hole. On its way in it sends out a burst of gravitational waves, and
+      the black hole then rings at its quasinormal frequencies. The waves
+      come from the generalized Sasaki–Nakamura equation; the trajectory is
+      computed in your browser.
+    </p>
+  </div>
+</header>
+
+<section class="section rw-section">
+  <div class="rw-wrap">
+    <a class="rw-back" href="../lab.html">← Black Hole Lab</a>
+
+    <div class="rw-app" data-sn>
+
+      <div class="rw-stage">
+        <canvas class="rw-canvas" aria-label="Three-dimensional view of the particle falling into the black hole and of the waves it emits"></canvas>
+        <div class="rw-labels" aria-hidden="true">
+          <span class="rw-label" data-label="bh" hidden>Black hole</span>
+          <span class="rw-label" data-label="ring" hidden>Light ring</span>
+          <span class="rw-label" data-label="particle" hidden>Particle</span>
+          <span class="rw-label" data-label="obs" hidden>Observer</span>
+        </div>
+        <div class="rw-time" aria-live="off">t = 0.0 M</div>
+        <div class="rw-status">Loading…</div>
+        <div class="rw-legend"><span>Ψ &lt; 0</span><span class="rw-legend-bar"></span><span>Ψ &gt; 0</span></div>
+        <div class="rw-hint">drag to rotate · scroll to zoom</div>
+      </div>
+
+      <div class="rw-trace">
+        <div class="rw-trace-head">
+          <span class="rw-trace-title">
+            <span>Ψ at the observer</span>
+            <span class="rw-key"><i></i>GSN waveform</span>
+            <span class="rw-key" data-qnm-key><i class="dash"></i>fit, n = 0 + tail</span>
+            <span class="rw-key" data-tail-key><i class="dots"></i>tail</span>
+          </span>
+          <span class="rw-trace-tools">
+            <span class="rw-trace-scale" role="group" aria-label="Quasinormal-mode fit">
+              <span class="rw-tool-label">QNM</span>
+              <button type="button" data-qnm="-1" aria-pressed="false">Off</button>
+              <button type="button" data-qnm="0" aria-pressed="true">n = 0</button>
+              <button type="button" data-qnm="3" aria-pressed="false">n ≤ 3</button>
+            </span>
+            <span class="rw-trace-scale" role="group" aria-label="Vertical scale">
+              <button type="button" data-scale="lin" aria-pressed="true">Linear</button>
+              <button type="button" data-scale="log" aria-pressed="false">log |Ψ|</button>
+            </span>
+          </span>
+        </div>
+        <canvas aria-label="Wave recorded by the observer; click to jump in time"></canvas>
+      </div>
+
+      <aside class="rw-panel" aria-label="Simulation controls">
+        <h2>Controls</h2>
+
+        <div class="rw-group">
+          <p class="rw-group-title">Black hole</p>
+          <div class="rw-field">
+            <label for="sn-spin">Spin <output data-out="spin"></output></label>
+            <input id="sn-spin" type="range" min="0" max="0.9" step="0.1" value="0" data-param="spin">
+          </div>
+        </div>
+
+        <div class="rw-group">
+          <p class="rw-group-title">Trajectory</p>
+          <div class="rw-seg rw-seg-wide" role="group" aria-label="Trajectory">
+            <button type="button" aria-pressed="true">Along the axis</button>
+            <button type="button" aria-pressed="false" disabled title="Coming soon">Equatorial plunge</button>
+          </div>
+          <p class="rw-field-note">
+            Falls from rest at infinity (E = 1) along the rotation axis. The
+            plunge from the innermost stable circular orbit is coming soon.
+          </p>
+        </div>
+
+        <div class="rw-group">
+          <p class="rw-group-title">Observer</p>
+          <div class="rw-field">
+            <label for="sn-obs"><span>Position r*<sub>obs</sub></span> <output data-out="sObs"></output></label>
+            <input id="sn-obs" type="range" min="20" max="100" step="5" value="60" data-param="sObs">
+          </div>
+        </div>
+
+        <div class="rw-group">
+          <p class="rw-group-title">Playback</p>
+          <div class="rw-buttons">
+            <button type="button" class="primary" data-action="play">Pause</button>
+            <button type="button" data-action="restart">Restart</button>
+            <button type="button" data-action="view">Reset view</button>
+          </div>
+          <div class="rw-field" style="margin-top:.8rem">
+            <label for="sn-speed">Speed <output data-out="speed"></output></label>
+            <input id="sn-speed" type="range" min="4" max="60" step="1" value="20" data-param="speed">
+          </div>
+          <label class="rw-check"><input type="checkbox" data-param="log" checked> Compressed heights (shows the faint ringing)</label>
+        </div>
+      </aside>
+
+    </div>
+
+    <div class="rw-panels">
+
+      <figure class="rw-card" data-sn-spectrum>
+        <div class="rw-card-head">
+          <div>
+            <h3>Spectrum</h3>
+            <p>
+              Frequency content |X(ω)| of the wave. It falls off steeply
+              above the quasinormal frequencies.
+            </p>
+          </div>
+        </div>
+        <div class="rw-card-keys">
+          <span class="rw-key"><i></i>this spin</span>
+          <span class="rw-key" data-ref-key hidden><i class="ref"></i>a = 0, for comparison</span>
+          <span class="rw-key"><i class="dash"></i>quasinormal frequencies</span>
+        </div>
+        <canvas aria-label="Spectrum of the wave with the quasinormal frequencies marked"></canvas>
+        <p class="rw-readout" data-readout></p>
+      </figure>
+
+      <figure class="rw-card" data-sn-qnm>
+        <div class="rw-card-head">
+          <div>
+            <h3>Quasinormal frequencies</h3>
+            <p>
+              The ℓ = 2, m = 0 modes from a = 0 to 0.99. Each dot is one of
+              the spins of the simulator; click one to use it.
+            </p>
+          </div>
+        </div>
+        <div class="rw-card-keys">
+          <span class="rw-key"><i class="dot"></i>a = 0, 0.1, …, 0.9</span>
+          <span class="rw-key"><i class="dot pick"></i>current spin</span>
+        </div>
+        <canvas aria-label="Quasinormal frequencies in the complex plane as the spin changes; click a dot to choose that spin"></canvas>
+        <p class="rw-readout" data-readout></p>
+      </figure>
+
+    </div>
+
+    <p class="rw-note">
+      The sheet is a slice through the black hole that contains the rotation
+      axis, along which the particle falls. Its height is the outgoing wave
+      Ψ(t − r*) times its angular pattern, roughly sin²θ, drawn against the
+      tortoise coordinate r*, so the waves travel at constant speed. The wave
+      vanishes along the axis, so the observer sits in the equatorial
+      direction. Units: G = c = M = 1.
+    </p>
+
+    <article class="rw-explain">
+      <h2>The theory behind this</h2>
+
+      <h3>The set-up</h3>
+      <p>
+        A body of mass $\mu \ll M$ starts at rest very far away, so its energy
+        per unit mass is $E = 1$, and falls along the rotation axis of a Kerr
+        black hole of mass $M$ and spin $a$. It moves on a geodesic. With
+        $\Delta = r^2 - 2Mr + a^2$, in Boyer–Lindquist coordinates,
+      </p>
+      <div class="paper-equation">
+        $$
+        \frac{dr}{d\tau} = -\frac{\sqrt{2Mr\,(r^2 + a^2)}}{r^2 + a^2},
+        \qquad
+        \frac{dt}{d\tau} = \frac{r^2 + a^2}{\Delta}.
+        $$
+      </div>
+      <p>
+        Because the motion is along the axis, the problem is axisymmetric and
+        only modes with $m = 0$ are excited. The simulator shows the
+        strongest one, $\ell = 2$. Since $\mu \ll M$, the body is a small
+        perturbation and its waves can be computed on the fixed Kerr
+        background.
+      </p>
+
+      <h3>The Sasaki–Nakamura equation</h3>
+      <p>
+        Gravitational waves on Kerr are described by the Teukolsky equation
+        for the Weyl scalar $\psi_4$. After separating variables, its radial
+        part has a long-range potential, and for a body that comes in from
+        infinity the source grows without bound at large $r$, which makes it
+        hard to integrate. Sasaki and Nakamura found a change of variables
+        to a function $X$ that obeys an equation with short-range
+        potentials,
+      </p>
+      <div class="paper-equation">
+        $$
+        \frac{d^2 X}{dr_*^2} - \mathcal F(r)\,\frac{dX}{dr_*} - \mathcal U(r)\,X = \mathcal S,
+        \qquad
+        \frac{dr_*}{dr} = \frac{r^2 + a^2}{\Delta}.
+        $$
+      </div>
+      <p>
+        The functions $\mathcal F$ and $\mathcal U$ depend on the frequency
+        $\omega$, on $a$ and on the eigenvalue of the spheroidal harmonics.
+        Far from the hole the solutions behave as $e^{\pm i\omega r_*}$, like
+        free waves. For $a = 0$ the equation becomes the Regge–Wheeler
+        equation of our other simulator. We use its generalized form (GSN)
+        due to Lo, which works for any spin weight of the field.
+      </p>
+      <p>
+        For each frequency, the outgoing amplitude $X(\omega)$ at infinity is
+        an integral of the solution that is purely ingoing at the horizon
+        against the source of the falling body, divided by a Wronskian. The
+        source carries a factor $e^{i\omega v(r)}$ that follows the body,
+        with $v = t + r_*$ its advanced time.
+      </p>
+
+      <h3>From frequencies to the waveform</h3>
+      <p>
+        The signal at the observer is
+      </p>
+      <div class="paper-equation">
+        $$
+        \Psi(u) = \frac{1}{\pi}\,\mathrm{Re}\int_0^\infty X(\omega)\,e^{-i\omega u}\,d\omega,
+        \qquad u = t - r_*.
+        $$
+      </div>
+      <p>
+        Far from the hole, $\Psi$ differs from the strain of the
+        gravitational wave only by a known factor at each frequency, so it
+        carries the same information.
+      </p>
+      <p>
+        The waveforms were computed by the group for
+        $a = 0, 0.1, \dots, 0.9$, following the set-up of the GSN plunge
+        paper and the <code>GeneralizedSasakiNakamura.jl</code> code. As a
+        check, the frequency of the ringing read off from them agrees with
+        that of Kerr's fundamental mode to better than one per cent.
+      </p>
+
+      <h3>The trajectory in the animation</h3>
+      <p>
+        The time origin is the one of the waveforms: the body crosses the
+        horizon at advanced time $v = 0$. Along its path,
+      </p>
+      <div class="paper-equation">
+        $$
+        \frac{dv}{dr} = -\frac{r^2 + a^2}{2r\,(1 + s)},
+        \qquad
+        s = \sqrt{\frac{r^2 + a^2}{2r}},
+        \qquad
+        t_{\rm p}(r) = v(r) - r_*(r),
+        $$
+      </div>
+      <p>
+        which your browser integrates from the horizon outwards. The
+        animation starts when the body is at $r = 40\,M$. The sheet shows
+        $\Psi(t - r_*)$, the wave that will reach a distant observer, only
+        where it already exists: outside the body, since the waves move
+        outwards faster than it falls, and outside the light ring, the
+        unstable photon orbit near $r = 3M$ from which the ringing leaks
+        out. In the tortoise coordinate the body reaches the edge of the
+        drawn hole in a finite time. In the coordinate time $t$ it never
+        quite crosses the horizon, but its light becomes exponentially
+        redshifted.
+      </p>
+
+      <h3>The ringdown and the tail</h3>
+      <p>
+        After the peak, the wave contains damped oscillations at the
+        quasinormal frequencies $\omega_n$ of the Kerr black hole. The
+        frequencies are those tabulated by Berti, Cardoso and Starinets. For
+        $m = 0$ they depend only mildly on the spin, as the panel of
+        quasinormal frequencies above shows.
+      </p>
+      <p>
+        On top of the ringing there is a tail that does not oscillate. It
+        comes from the branch cut of $X(\omega)$ along the negative imaginary
+        frequency axis,
+        $\Psi_{\rm tail}(u) = \frac{1}{\pi}\int_0^\infty \mathrm{Im}\,X(-i\gamma)\,e^{-\gamma u}\,d\gamma$.
+        For a body that falls from infinity it is large, about 15% of the
+        peak $10\,M$ after it, and it decays only as a power of $u$. It is
+        the source of the uneven zero crossings of the wave, and at late
+        times it is all that is left.
+      </p>
+      <p>
+        The dashed blue curve on the observer panel is a least-squares fit,
+        done in your browser, of
+      </p>
+      <div class="paper-equation">
+        $$
+        \Psi(u) \simeq \sum_n 2\,\mathrm{Re}\!\left[C_n\, e^{-i\omega_n \tau}\right] + \sum_{k=1}^{5} b_k\, e^{-\gamma_k \tau},
+        \qquad \tau = u - u_{\rm peak},
+        $$
+      </div>
+      <p>
+        with $n = 0, \dots, 3$, the frequencies $\omega_n$ fixed to the Kerr
+        values and only the amplitudes $C_n$ and $b_k$ free. The fit starts
+        $5\,M$ after the peak and runs up to $110\,M$ after it. The
+        exponentials, with fixed rates $\gamma_k$ between $0.005$ and $0.25$,
+        stand in for the tail integral, which is itself a sum of decaying
+        exponentials; their sum is the dotted grey curve. With all four modes
+        the fit matches the wave to better than $10^{-3}$ of the peak. The
+        $n = 0$ button keeps only the fundamental mode and the tail: close to
+        the peak this misses the overtones, which decay faster, so it is only
+        drawn from $25\,M$ after the peak, once they have died out.
+      </p>
+
+      <h3>The spectrum</h3>
+      <p>
+        At low frequencies $|X(\omega)|$ grows roughly as $\omega^{-1/3}$, the
+        imprint of the slow, Newtonian part of the fall. Above the
+        quasinormal frequencies it drops exponentially, as Davis, Ruffini,
+        Press and Price first found in 1971 for a body falling into a
+        Schwarzschild black hole. A faster spin raises the quasinormal
+        frequencies and makes the hole ring for longer.
+      </p>
+
+      <p class="rw-refs">
+        M. Sasaki and T. Nakamura, Prog. Theor. Phys. 67, 1788 (1982) ·
+        R. K. L. Lo, generalized Sasaki–Nakamura formalism and
+        <code>GeneralizedSasakiNakamura.jl</code>
+        (<a href="https://arxiv.org/abs/2306.16469" rel="noopener">arXiv:2306.16469</a>) ·
+        plunge waveforms with the GSN method
+        (<a href="https://arxiv.org/abs/2511.08673" rel="noopener">arXiv:2511.08673</a>) ·
+        E. Berti, V. Cardoso and A. O. Starinets, Class. Quantum Grav. 26,
+        163001 (2009) · M. Davis, R. Ruffini, W. H. Press and R. H. Price,
+        Phys. Rev. Lett. 27, 1466 (1971). See also the
+        <a href="regge-wheeler.html">Regge–Wheeler simulator</a>.
+      </p>
+    </article>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div>
+      <strong>Strong Gravity Group @ UIB</strong><br>
+      IAC3 – UIB, Parc BIT<br>
+      Carrer Blaise Pascal, 6, 07121 Palma, Spain
+    </div>
+    <div>
+      <a href="../contact.html">Contact</a><br>
+      <a href="https://www.uib.eu/" rel="noopener">UIB</a>
+    </div>
+  </div>
+
+  <div class="footer-funding">
+    <p class="footer-funding-title">Funding &amp; support</p>
+    <div class="footer-funding-logos">
+      <img
+        src="../assets/logos/funding-logos.png"
+        alt="Funded by the Ministerio de Ciencia, Innovación y Universidades, co-financed by the European Union, the Agencia Estatal de Investigación, the Conselleria d'Educació i Universitats of the Govern de les Illes Balears, and REDONGRA, the Spanish Network of Gravitational Wave Physics"
+        width="840"
+        height="388"
+        loading="lazy"
+      >
+      <img
+        class="footer-logo-cost"
+        src="../assets/logos/cost.jpg"
+        alt="COST, European Cooperation in Science and Technology"
+        width="700"
+        height="267"
+        loading="lazy"
+      >
+    </div>
+  </div>
+
+  <div class="footer-credit">
+    <span>© 2026 Strong Gravity Group @ UIB</span>
+    <span>
+      Website by
+      <a href="../people/alejandro-svyatkovskyy.html">Alejandro Svyatkovskyy Kholyavka</a>
+    </span>
+  </div>
+
+</footer>
+
+</body>
+</html>

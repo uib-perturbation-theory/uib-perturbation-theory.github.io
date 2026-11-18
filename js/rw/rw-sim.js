@@ -931,6 +931,10 @@ function init() {
   }
 
   function drawTrace() {
+    if (traceCache.width === 0 || traceCache.height === 0) {
+      return; // not laid out yet
+    }
+
     if (traceDirty) {
       drawTraceCache();
       traceDirty = false;

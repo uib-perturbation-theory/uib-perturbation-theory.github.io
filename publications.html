@@ -20,44 +20,511 @@
 
   <link rel="stylesheet" href="css/style.css">
 
+  <script
+    defer
+    src="https://cdn.jsdelivr.net/npm/page-flip@2.0.7/dist/js/page-flip.browser.js"
+    integrity="sha384-L4eWrYFdqQ+LoGA0MMuqLqzV13x7SKkQaqacy4MED8e815dS37tTKlO/6xBEUpZW"
+    crossorigin="anonymous"
+  ></script>
+  <script defer src="js/library-reader.js"></script>
+
   <style>
-    .pub {
-      scroll-margin-top: 100px;
-      transition:
-        border-color 0.25s ease,
-        background-color 0.25s ease,
-        box-shadow 0.25s ease,
-        transform 0.25s ease;
+    /* ---------- Library view ---------- */
+
+    .shelf-nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+      margin-bottom: 3rem;
     }
 
-    .pub:target {
-      border-color: var(--accent);
-      background:
-        linear-gradient(
-          90deg,
-          rgba(242, 118, 46, 0.1),
-          transparent 48%
-        ),
-        #fff;
-      box-shadow: 0 18px 42px rgba(11, 18, 32, 0.13);
-      transform: translateY(-2px);
-    }
-
-    .pub:target::before {
-      background: var(--accent);
-    }
-
-    .pub .arxiv-only {
+    .shelf-nav a {
+      display: inline-flex;
+      gap: 0.5rem;
+      align-items: center;
+      padding: 0.45rem 0.9rem;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: #fff;
       font-family: var(--font-mono);
-      font-size: 0.82rem;
+      color: var(--text);
+      font-size: 0.78rem;
+      letter-spacing: 0.04em;
+      transition: border-color 0.2s ease, color 0.2s ease;
+    }
+
+    .shelf-nav a:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    .shelf-nav .count {
+      color: var(--muted);
+    }
+
+    .shelf {
+      scroll-margin-top: 90px;
+    }
+
+    .shelf + .shelf {
+      margin-top: 4.5rem;
+    }
+
+    .shelf-head {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem 1.5rem;
+      align-items: flex-end;
+      justify-content: space-between;
+      margin-bottom: 2.2rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .section .shelf-head h2 {
+      margin-bottom: 0;
+    }
+
+    .shelf-count {
+      font-family: var(--font-mono);
+      color: var(--muted);
+      font-size: 0.8rem;
+      white-space: nowrap;
+    }
+
+    .shelf-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+      gap: 2.8rem 2.2rem;
+      align-items: start;
+    }
+
+    .book {
+      scroll-margin-top: 100px;
+    }
+
+    .book-cover {
+      position: relative;
+      display: block;
+      overflow: hidden;
+      border-radius: 3px 6px 6px 3px;
+      background: #fff;
+      box-shadow:
+        0 1px 2px rgba(11, 18, 32, 0.14),
+        0 12px 28px rgba(11, 18, 32, 0.16);
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    /* Spine shading on the left edge */
+    .book-cover::after {
+      content: "";
+      position: absolute;
+      inset: 0 auto 0 0;
+      width: 7%;
+      background: linear-gradient(
+        90deg,
+        rgba(11, 18, 32, 0.16),
+        rgba(11, 18, 32, 0.04) 45%,
+        transparent
+      );
+      pointer-events: none;
+    }
+
+    .book-cover img {
+      width: 100%;
+      height: auto;
+      aspect-ratio: 612 / 792;
+      object-fit: cover;
+      object-position: top;
+    }
+
+    .book-cover:hover,
+    .book-cover:focus-visible {
+      transform: translateY(-5px);
+      box-shadow:
+        0 2px 4px rgba(11, 18, 32, 0.14),
+        0 20px 40px rgba(11, 18, 32, 0.22);
+    }
+
+    .book:target .book-cover {
+      outline: 3px solid var(--accent);
+      outline-offset: 5px;
+    }
+
+    .book-info {
+      margin-top: 1rem;
+    }
+
+    .book-status {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.35rem 0.6rem;
+      align-items: center;
+      margin-bottom: 0.45rem;
+      font-family: var(--font-mono);
+      color: var(--muted);
+      font-size: 0.72rem;
+      line-height: 1.4;
+    }
+
+    .book-badge {
+      padding: 0.12rem 0.5rem;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      color: var(--muted);
+      font-size: 0.66rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .book-badge.published {
+      border-color: var(--accent-2);
+      background: var(--accent-2);
+      color: #fff;
+    }
+
+    .section .book-title {
+      margin: 0;
+      font-family: var(--font-display);
+      font-size: 1rem;
+      font-weight: 600;
+      line-height: 1.35;
+    }
+
+    .book-title a {
+      color: inherit;
+    }
+
+    .book-title a:hover {
+      color: var(--accent-2);
+      text-decoration: none;
+    }
+
+    .book-authors {
+      margin-top: 0.4rem;
+      color: var(--muted);
+      font-size: 0.86rem;
+      line-height: 1.45;
+    }
+
+    .book-links {
+      margin-top: 0.55rem;
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+    }
+
+    .inspire-note {
+      margin-top: 4.5rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--line);
+    }
+
+
+    /* ---------- Open-book hint on covers ---------- */
+
+    .book-open {
+      position: absolute;
+      left: 50%;
+      bottom: 14px;
+      z-index: 1;
+      padding: 0.35rem 0.85rem;
+      border-radius: 999px;
+      background: rgba(11, 18, 32, 0.88);
+      font-family: var(--font-mono);
+      color: #fff;
+      font-size: 0.7rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      opacity: 0;
+      transform: translate(-50%, 6px);
+      transition: opacity 0.2s ease, transform 0.2s ease;
+    }
+
+    .book-cover:hover .book-open,
+    .book-cover:focus-visible .book-open {
+      opacity: 1;
+      transform: translate(-50%, 0);
+    }
+
+    @media (hover: none) {
+      .book-open {
+        opacity: 1;
+        transform: translate(-50%, 0);
+      }
+    }
+
+    /* ---------- Flip-book reader ---------- */
+
+    html.reader-open {
+      overflow: hidden;
+    }
+
+    .reader {
+      position: fixed;
+      inset: 0;
+      z-index: 1000;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+      grid-template-rows: auto minmax(0, 1fr) auto;
+      background:
+        radial-gradient(
+          1100px 720px at 50% 46%,
+          #223049,
+          #0b1220 72%
+        );
+      color: #e6ebf2;
+    }
+
+    .reader[hidden] {
+      display: none;
+    }
+
+    .reader-bar {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.75rem clamp(1rem, 3vw, 2rem);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .reader-heading {
+      min-width: 0;
+    }
+
+    .reader-venue {
+      display: block;
+      font-family: var(--font-mono);
+      color: var(--accent);
+      font-size: 0.7rem;
+      letter-spacing: 0.06em;
+    }
+
+    .reader-title {
+      overflow: hidden;
+      font-family: var(--font-display);
+      font-size: clamp(0.92rem, 1.5vw, 1.08rem);
+      font-weight: 700;
+      line-height: 1.35;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .reader-actions {
+      display: flex;
+      flex-shrink: 0;
+      gap: 0.5rem;
+      align-items: center;
+    }
+
+    .reader-link {
+      padding: 0.4rem 0.8rem;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 999px;
+      font-family: var(--font-mono);
+      color: #d4dbe6;
+      font-size: 0.74rem;
+      transition: border-color 0.2s ease, color 0.2s ease;
+    }
+
+    .reader-link:hover {
+      border-color: var(--accent);
+      color: #fff;
+      text-decoration: none;
+    }
+
+    .reader-close,
+    .reader-nav,
+    .reader-step {
+      display: inline-grid;
+      place-items: center;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.04);
+      color: #fff;
+      line-height: 1;
+      cursor: pointer;
+      transition: background-color 0.2s ease, border-color 0.2s ease, opacity 0.2s ease;
+    }
+
+    .reader-close:hover,
+    .reader-nav:hover:not(:disabled),
+    .reader-step:hover:not(:disabled) {
+      border-color: var(--accent);
+      background: rgba(242, 118, 46, 0.16);
+    }
+
+    .reader-close {
+      width: 40px;
+      height: 40px;
+      font-size: 1.5rem;
+    }
+
+    .reader-nav:disabled,
+    .reader-step:disabled {
+      opacity: 0.3;
+      cursor: default;
+    }
+
+    .reader-stage {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 0;
+      padding: clamp(0.75rem, 3vh, 2rem) clamp(0.75rem, 6vw, 5rem);
+    }
+
+    .reader-book-slot {
+      flex: none;
+    }
+
+    .reader-page {
+      overflow: hidden;
+      background: #fff;
+    }
+
+    .reader-page img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      pointer-events: none;
+      user-select: none;
+    }
+
+    /* Gutter shading, as in a bound book */
+    .reader-page::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+    }
+
+    .reader-page.--left::after {
+      background: linear-gradient(
+        270deg,
+        rgba(11, 18, 32, 0.18),
+        rgba(11, 18, 32, 0.05) 4%,
+        transparent 10%
+      );
+    }
+
+    .reader-page.--right::after {
+      background: linear-gradient(
+        90deg,
+        rgba(11, 18, 32, 0.18),
+        rgba(11, 18, 32, 0.05) 4%,
+        transparent 10%
+      );
+    }
+
+    .reader-page.--hard::after {
+      background: none;
+    }
+
+    .reader-book .stf__block {
+      filter: drop-shadow(0 18px 32px rgba(0, 0, 0, 0.45));
+    }
+
+    .reader-fallback {
+      display: grid;
+      gap: 1rem;
+      max-height: 100%;
+      overflow-y: auto;
+    }
+
+    .reader-nav {
+      position: absolute;
+      top: 50%;
+      width: 48px;
+      height: 48px;
+      font-size: 1.8rem;
+      transform: translateY(-50%);
+    }
+
+    .reader-nav-prev {
+      left: clamp(0.5rem, 1.6vw, 1.5rem);
+    }
+
+    .reader-nav-next {
+      right: clamp(0.5rem, 1.6vw, 1.5rem);
+    }
+
+    .reader-footer {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem 1rem;
+      align-items: center;
+      justify-content: center;
+      padding: 0.6rem 1rem 1rem;
+      font-family: var(--font-mono);
+      color: #aab4c4;
+      font-size: 0.76rem;
+    }
+
+    .reader-step {
+      width: 34px;
+      height: 34px;
+      font-size: 1.25rem;
+    }
+
+    .reader-counter {
+      min-width: 7.5ch;
+      text-align: center;
+      color: #e6ebf2;
+    }
+
+    .reader-hint {
+      flex-basis: 100%;
+      text-align: center;
+      opacity: 0.65;
+    }
+
+    @media (min-width: 901px) {
+      .reader-step {
+        display: none;
+      }
+    }
+
+    @media (max-width: 900px) {
+      .reader-nav {
+        display: none;
+      }
+
+      .reader-hint {
+        display: none;
+      }
+    }
+
+    @media (max-width: 560px) {
+      .reader-link#reader-overview {
+        display: none;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .shelf-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 2rem 1.1rem;
+      }
+
+      .section .book-title {
+        font-size: 0.95rem;
+      }
+
+      .book-authors {
+        font-size: 0.8rem;
+      }
     }
 
     @media (prefers-reduced-motion: reduce) {
-      .pub {
+      .book-cover {
         transition: none;
       }
 
-      .pub:target {
+      .book-cover:hover,
+      .book-cover:focus-visible {
         transform: none;
       }
     }
@@ -117,268 +584,347 @@
     <section class="section">
       <div class="section-inner">
 
-        <h2>2026</h2>
+        <nav class="shelf-nav" aria-label="Research lines">
+          <a href="#black-hole-spectroscopy">Ringdown <span class="count">3</span></a>
+          <a href="#astrophysical-environments">Environments <span class="count">3</span></a>
+          <a href="#neutron-stars">Neutron stars <span class="count">1</span></a>
+        </nav>
 
 
-        <div
-          class="pub pub-clickable"
-          id="shaping-black-hole-resonances-ii"
-        >
-          <p class="title">
-            <a href="papers/shaping-black-hole-resonances-ii.html">
-              Shaping black hole resonances II. Spectroscopic landscapes and
-              interference in black hole ringdown
-            </a>
-          </p>
+        <section class="shelf" id="black-hole-spectroscopy" aria-labelledby="black-hole-spectroscopy-title">
+          <div class="shelf-head">
+            <div>
+              <span class="kicker">Ringdown</span>
+              <h2 id="black-hole-spectroscopy-title">Black hole spectroscopy</h2>
+            </div>
+            <span class="shelf-count">3 papers</span>
+          </div>
 
-          <p class="meta">
-            Alejandro Svyatkovskyy Kholyavka, Sayak Datta,
-            Jose Antonio León Vega, Xisco Jiménez Forteza
-          </p>
+          <div class="shelf-grid">
 
-          <p class="summary">
-            A map of quasinormal-mode excitation across the width and carrier
-            frequency of oscillatory perturbations, showing that resonance
-            matching is optimal only for narrowband sources and that the phase
-            is an independent observable.
-          </p>
-
-          <p class="links">
-            <a href="papers/shaping-black-hole-resonances-ii.html">overview</a> ·
+          <article
+            class="book"
+            id="shaping-black-hole-resonances-ii"
+            data-book="shaping-black-hole-resonances-ii"
+            data-pages="16"
+            data-page-size="612x792"
+          >
             <a
-              href="https://arxiv.org/abs/2611.13075"
-              target="_blank"
-              rel="noopener noreferrer"
+              class="book-cover"
+              href="?read=shaping-black-hole-resonances-ii"
+              data-read
+              aria-label="Read the paper: Shaping black hole resonances II. Spectroscopic landscapes and interference in black hole ringdown"
             >
-              arXiv
+              <img
+                src="assets/covers/shaping-black-hole-resonances-ii.jpg"
+                alt=""
+                width="541"
+                height="700"
+                loading="lazy"
+              >
+              <span class="book-open" aria-hidden="true">Read</span>
             </a>
-          </p>
-        </div>
 
+            <div class="book-info">
+              <p class="book-status">
+                <span class="book-badge">Preprint</span>
+                <span>arXiv:2611.13075 · 2026</span>
+              </p>
 
-        <div
-          class="pub pub-clickable"
-          id="bosenovae-galactic-dark-matter"
-        >
-          <p class="title">
-            <a href="papers/bosenovae-galactic-dark-matter.html">
-              Can bosenovae deplete the galactic dark matter?
-            </a>
-          </p>
+              <h3 class="book-title">
+                <a href="papers/shaping-black-hole-resonances-ii.html">Shaping black hole resonances II. Spectroscopic landscapes and interference in black hole ringdown</a>
+              </h3>
 
-          <p class="meta">
-            Samuel Gómez Gómez, Joshua Eby
-          </p>
+              <p class="book-authors">Alejandro Svyatkovskyy Kholyavka, Sayak Datta, Jose Antonio León Vega, Xisco Jiménez Forteza</p>
 
-          <p class="summary">
-            A study of whether bosenovae of gravitational atoms and boson stars
-            made of self-interacting ultralight dark matter can deplete galactic
-            dark-matter halos, showing that the effect is negligible.
-          </p>
+              <p class="book-links">
+                <a href="?read=shaping-black-hole-resonances-ii" data-read>read</a> · <a href="papers/shaping-black-hole-resonances-ii.html">overview</a> · <a href="https://arxiv.org/abs/2611.13075" data-kind="arxiv" target="_blank" rel="noopener noreferrer">arXiv</a>
+              </p>
+            </div>
+          </article>
 
-          <p class="links">
-            <a href="papers/bosenovae-galactic-dark-matter.html">overview</a> ·
+          <article
+            class="book"
+            id="spectral-suppression-ringdown-tails"
+            data-book="spectral-suppression-tails"
+            data-pages="8"
+            data-page-size="612x792"
+          >
             <a
-              href="https://arxiv.org/abs/2610.20507"
-              target="_blank"
-              rel="noopener noreferrer"
+              class="book-cover"
+              href="?read=spectral-suppression-tails"
+              data-read
+              aria-label="Read the paper: Spectral suppression of black hole ringdown tails"
             >
-              arXiv
+              <img
+                src="assets/covers/spectral-suppression-tails.jpg"
+                alt=""
+                width="541"
+                height="700"
+                loading="lazy"
+              >
+              <span class="book-open" aria-hidden="true">Read</span>
             </a>
-          </p>
-        </div>
 
+            <div class="book-info">
+              <p class="book-status">
+                <span class="book-badge">Preprint</span>
+                <span>arXiv:2606.02146 · 2026</span>
+              </p>
 
-        <div
-          class="pub pub-clickable"
-          id="little-red-dots-lisa"
-        >
-          <p class="title">
-            <a href="papers/little-red-dots-lisa.html">
-              Can LISA See Inside the Little Red Dots?
-            </a>
-          </p>
+              <h3 class="book-title">
+                <a href="papers/spectral-suppression-tails.html">Spectral suppression of black hole ringdown tails</a>
+              </h3>
 
-          <p class="meta">
-            Samuel Gómez Gómez, Xisco Jiménez Forteza, Carlos Palenzuela Luque,
-            Rosalba Perna
-          </p>
+              <p class="book-authors">Jose Antonio León Vega, Alejandro Svyatkovskyy Kholyavka, Sayak Datta, Xisco Jiménez Forteza</p>
 
-          <p class="summary">
-            A study of whether extreme-mass-ratio inspirals observed by LISA
-            could distinguish the proposed gas-rich interiors of the Little Red
-            Dots discovered by JWST.
-          </p>
+              <p class="book-links">
+                <a href="?read=spectral-suppression-tails" data-read>read</a> · <a href="papers/spectral-suppression-tails.html">overview</a> · <a href="https://arxiv.org/abs/2606.02146" data-kind="arxiv" target="_blank" rel="noopener noreferrer">arXiv</a>
+              </p>
+            </div>
+          </article>
 
-          <p class="links">
-            <a href="papers/little-red-dots-lisa.html">overview</a> ·
+          <article
+            class="book"
+            id="shaping-black-hole-resonances"
+            data-book="shaping-black-hole-resonances"
+            data-pages="20"
+            data-page-size="612x792"
+          >
             <a
-              href="https://arxiv.org/abs/2610.08964"
-              target="_blank"
-              rel="noopener noreferrer"
+              class="book-cover"
+              href="?read=shaping-black-hole-resonances"
+              data-read
+              aria-label="Read the paper: Shaping black hole resonances I. Black hole ringdown as a spectral filtering process"
             >
-              arXiv
+              <img
+                src="assets/covers/shaping-black-hole-resonances.jpg"
+                alt=""
+                width="541"
+                height="700"
+                loading="lazy"
+              >
+              <span class="book-open" aria-hidden="true">Read</span>
             </a>
-          </p>
-        </div>
+
+            <div class="book-info">
+              <p class="book-status">
+                <span class="book-badge published">Published</span>
+                <span>Phys. Rev. D 114, 064078 (2026)</span>
+              </p>
+
+              <h3 class="book-title">
+                <a href="papers/shaping-black-hole-resonances.html">Shaping black hole resonances I. Black hole ringdown as a spectral filtering process</a>
+              </h3>
+
+              <p class="book-authors">Alejandro Svyatkovskyy Kholyavka, Jose Antonio León Vega, Samuel Gómez Gómez, Xisco Jiménez Forteza, Sayak Datta</p>
+
+              <p class="book-links">
+                <a href="?read=shaping-black-hole-resonances" data-read>read</a> · <a href="papers/shaping-black-hole-resonances.html">overview</a> · <a href="https://arxiv.org/abs/2605.24704" data-kind="arxiv" target="_blank" rel="noopener noreferrer">arXiv</a> · <a href="https://doi.org/10.1103/gptl-zzcn" data-kind="journal" target="_blank" rel="noopener noreferrer" title="Phys. Rev. D 114, 064078 (2026)">journal</a>
+              </p>
+            </div>
+          </article>
+          </div>
+        </section>
 
 
-        <div
-          class="pub pub-clickable"
-          id="spectral-suppression-ringdown-tails"
-        >
-          <p class="title">
-            <a href="papers/spectral-suppression-tails.html">
-              Spectral suppression of black hole ringdown tails
-            </a>
-          </p>
+        <section class="shelf" id="astrophysical-environments" aria-labelledby="astrophysical-environments-title">
+          <div class="shelf-head">
+            <div>
+              <span class="kicker">Environments</span>
+              <h2 id="astrophysical-environments-title">Black holes in astrophysical environments</h2>
+            </div>
+            <span class="shelf-count">3 papers</span>
+          </div>
 
-          <p class="meta">
-            Jose Antonio León Vega, Alejandro Svyatkovskyy Kholyavka,
-            Sayak Datta, Xisco Jiménez Forteza
-          </p>
+          <div class="shelf-grid">
 
-          <p class="summary">
-            A short overview of how the frequency content of the initial
-            perturbation can suppress late-time power-law tails in black-hole
-            ringdown signals.
-          </p>
-
-          <p class="links">
-            <a href="papers/spectral-suppression-tails.html">overview</a> ·
+          <article
+            class="book"
+            id="bosenovae-galactic-dark-matter"
+            data-book="bosenovae-galactic-dark-matter"
+            data-pages="16"
+            data-page-size="612x792"
+          >
             <a
-              href="https://arxiv.org/abs/2606.02146"
-              target="_blank"
-              rel="noopener noreferrer"
+              class="book-cover"
+              href="?read=bosenovae-galactic-dark-matter"
+              data-read
+              aria-label="Read the paper: Can bosenovae deplete the galactic dark matter?"
             >
-              arXiv
+              <img
+                src="assets/covers/bosenovae-galactic-dark-matter.jpg"
+                alt=""
+                width="541"
+                height="700"
+                loading="lazy"
+              >
+              <span class="book-open" aria-hidden="true">Read</span>
             </a>
-          </p>
-        </div>
 
+            <div class="book-info">
+              <p class="book-status">
+                <span class="book-badge">Preprint</span>
+                <span>arXiv:2610.20507 · 2026</span>
+              </p>
 
-        <div
-          class="pub pub-clickable"
-          id="shaping-black-hole-resonances"
-        >
-          <p class="title">
-            <a href="papers/shaping-black-hole-resonances.html">
-              Shaping black hole resonances I. Black hole ringdown as a
-              spectral filtering process
-            </a>
-          </p>
+              <h3 class="book-title">
+                <a href="papers/bosenovae-galactic-dark-matter.html">Can bosenovae deplete the galactic dark matter?</a>
+              </h3>
 
-          <p class="meta">
-            Alejandro Svyatkovskyy Kholyavka, Jose Antonio León Vega,
-            Samuel Gómez Gómez, Xisco Jiménez Forteza, Sayak Datta
-          </p>
+              <p class="book-authors">Samuel Gómez Gómez, Joshua Eby</p>
 
-          <p class="summary">
-            A study of black-hole ringdown as a spectral filtering process,
-            showing how the initial perturbation controls the excitation of
-            quasinormal modes.
-          </p>
+              <p class="book-links">
+                <a href="?read=bosenovae-galactic-dark-matter" data-read>read</a> · <a href="papers/bosenovae-galactic-dark-matter.html">overview</a> · <a href="https://arxiv.org/abs/2610.20507" data-kind="arxiv" target="_blank" rel="noopener noreferrer">arXiv</a>
+              </p>
+            </div>
+          </article>
 
-          <p class="links">
-            <a href="papers/shaping-black-hole-resonances.html">overview</a> ·
+          <article
+            class="book"
+            id="little-red-dots-lisa"
+            data-book="little-red-dots-lisa"
+            data-pages="8"
+            data-page-size="612x792"
+          >
             <a
-              href="https://arxiv.org/abs/2605.24704"
-              target="_blank"
-              rel="noopener noreferrer"
+              class="book-cover"
+              href="?read=little-red-dots-lisa"
+              data-read
+              aria-label="Read the paper: Can LISA See Inside the Little Red Dots?"
             >
-              arXiv
-            </a> ·
+              <img
+                src="assets/covers/little-red-dots-lisa.jpg"
+                alt=""
+                width="541"
+                height="700"
+                loading="lazy"
+              >
+              <span class="book-open" aria-hidden="true">Read</span>
+            </a>
+
+            <div class="book-info">
+              <p class="book-status">
+                <span class="book-badge">Preprint</span>
+                <span>arXiv:2610.08964 · 2026</span>
+              </p>
+
+              <h3 class="book-title">
+                <a href="papers/little-red-dots-lisa.html">Can LISA See Inside the Little Red Dots?</a>
+              </h3>
+
+              <p class="book-authors">Samuel Gómez Gómez, Xisco Jiménez Forteza, Carlos Palenzuela Luque, Rosalba Perna</p>
+
+              <p class="book-links">
+                <a href="?read=little-red-dots-lisa" data-read>read</a> · <a href="papers/little-red-dots-lisa.html">overview</a> · <a href="https://arxiv.org/abs/2610.08964" data-kind="arxiv" target="_blank" rel="noopener noreferrer">arXiv</a>
+              </p>
+            </div>
+          </article>
+
+          <article
+            class="book"
+            id="gravitational-atoms-lisa"
+            data-book="gravitational-atoms-lisa"
+            data-pages="19"
+            data-page-size="595x842"
+          >
             <a
-              href="https://doi.org/10.1103/gptl-zzcn"
-              target="_blank"
-              rel="noopener noreferrer"
-              title="Phys. Rev. D 114, 064078 (2026)"
+              class="book-cover"
+              href="?read=gravitational-atoms-lisa"
+              data-read
+              aria-label="Read the paper: Impact of the axion-like self-interactions in gravitational atoms for LISA"
             >
-              journal
+              <img
+                src="assets/covers/gravitational-atoms-lisa.jpg"
+                alt=""
+                width="541"
+                height="700"
+                loading="lazy"
+              >
+              <span class="book-open" aria-hidden="true">Read</span>
             </a>
-          </p>
-        </div>
+
+            <div class="book-info">
+              <p class="book-status">
+                <span class="book-badge">Preprint</span>
+                <span>arXiv:2605.17589 · 2026</span>
+              </p>
+
+              <h3 class="book-title">
+                <a href="papers/gravitational-atoms-lisa.html">Impact of the axion-like self-interactions in gravitational atoms for LISA</a>
+              </h3>
+
+              <p class="book-authors">Samuel Gómez Gómez, Xisco Jiménez Forteza, Carlos Palenzuela Luque</p>
+
+              <p class="book-links">
+                <a href="?read=gravitational-atoms-lisa" data-read>read</a> · <a href="papers/gravitational-atoms-lisa.html">overview</a> · <a href="https://arxiv.org/abs/2605.17589" data-kind="arxiv" target="_blank" rel="noopener noreferrer">arXiv</a>
+              </p>
+            </div>
+          </article>
+          </div>
+        </section>
 
 
-        <div
-          class="pub pub-clickable"
-          id="gravitational-atoms-lisa"
-        >
-          <p class="title">
-            <a href="papers/gravitational-atoms-lisa.html">
-              Impact of the axion-like self-interactions in gravitational
-              atoms for LISA
-            </a>
-          </p>
+        <section class="shelf" id="neutron-stars" aria-labelledby="neutron-stars-title">
+          <div class="shelf-head">
+            <div>
+              <span class="kicker">Neutron stars</span>
+              <h2 id="neutron-stars-title">Neutron stars and relativistic fluids</h2>
+            </div>
+            <span class="shelf-count">1 paper</span>
+          </div>
 
-          <p class="meta">
-            Samuel Gómez Gómez, Xisco Jiménez Forteza, Carlos Palenzuela Luque
-          </p>
+          <div class="shelf-grid">
 
-          <p class="summary">
-            A study of how axion-like self-interactions affect gravitational
-            atoms and their possible observational signatures for LISA.
-          </p>
-
-          <p class="links">
-            <a href="papers/gravitational-atoms-lisa.html">overview</a> ·
+          <article
+            class="book"
+            id="axial-oscillations-viscous-neutron-stars"
+            data-book="axial-oscillations-viscous-neutron-stars"
+            data-pages="13"
+            data-page-size="612x792"
+          >
             <a
-              href="https://arxiv.org/abs/2605.17589"
-              target="_blank"
-              rel="noopener noreferrer"
+              class="book-cover"
+              href="?read=axial-oscillations-viscous-neutron-stars"
+              data-read
+              aria-label="Read the paper: Axial Oscillations of Viscous Neutron Stars"
             >
-              arXiv
+              <img
+                src="assets/covers/axial-oscillations-viscous-neutron-stars.jpg"
+                alt=""
+                width="541"
+                height="700"
+                loading="lazy"
+              >
+              <span class="book-open" aria-hidden="true">Read</span>
             </a>
-          </p>
-        </div>
 
+            <div class="book-info">
+              <p class="book-status">
+                <span class="book-badge published">Published</span>
+                <span>Phys. Rev. D 114, 044012 (2026)</span>
+              </p>
 
-        <div
-          class="pub pub-clickable"
-          id="axial-oscillations-viscous-neutron-stars"
-        >
-          <p class="title">
-            <a href="papers/axial-oscillations-viscous-neutron-stars.html">
-              Axial Oscillations of Viscous Neutron Stars
-            </a>
-          </p>
+              <h3 class="book-title">
+                <a href="papers/axial-oscillations-viscous-neutron-stars.html">Axial Oscillations of Viscous Neutron Stars</a>
+              </h3>
 
-          <p class="meta">
-            Sofía Bussières, Jaime Redondo-Yuste, José Javier Ortega Gómez,
-            Vitor Cardoso
-          </p>
+              <p class="book-authors">Sofía Bussières, Jaime Redondo-Yuste, José Javier Ortega Gómez, Vitor Cardoso</p>
 
-          <p class="summary">
-            A study of axial oscillations of viscous neutron stars within a
-            causal and stable framework for relativistic hydrodynamics.
-          </p>
-
-          <p class="links">
-            <a href="papers/axial-oscillations-viscous-neutron-stars.html">overview</a> ·
-            <a
-              href="https://arxiv.org/abs/2604.13208"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              arXiv
-            </a> ·
-            <a
-              href="https://doi.org/10.1103/w9nm-ygnf"
-              target="_blank"
-              rel="noopener noreferrer"
-              title="Phys. Rev. D 114, 044012 (2026)"
-            >
-              journal
-            </a>
-          </p>
-        </div>
+              <p class="book-links">
+                <a href="?read=axial-oscillations-viscous-neutron-stars" data-read>read</a> · <a href="papers/axial-oscillations-viscous-neutron-stars.html">overview</a> · <a href="https://arxiv.org/abs/2604.13208" data-kind="arxiv" target="_blank" rel="noopener noreferrer">arXiv</a> · <a href="https://doi.org/10.1103/w9nm-ygnf" data-kind="journal" target="_blank" rel="noopener noreferrer" title="Phys. Rev. D 114, 044012 (2026)">journal</a>
+              </p>
+            </div>
+          </article>
+          </div>
+        </section>
 
 
         <!-- INSPIRE search over the author profiles (BAI) of the group's
              students, restricted to papers first released in 2026 or later
              (de >= 2026). Add new members as "or a <BAI>" inside the
              parentheses. -->
-        <p style="margin-top: 2.5rem;">
+        <p class="inspire-note">
           Full list of publications by group members on
           <a
             href="https://inspirehep.net/literature?sort=mostrecent&amp;size=25&amp;q=%28a%20Sofia.Bussieres.1%20or%20a%20S.G.Gomez.1%20or%20a%20A.Svyatkovskyy.Kholyavka.1%20or%20a%20Jose.A.Leon.1%29%20and%20de%20%3E%3D%202026"
@@ -390,6 +936,71 @@
       </div>
     </section>
   </main>
+
+  <!-- Flip-book reader, opened from the library covers -->
+  <div
+    class="reader"
+    id="reader"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="reader-title"
+    hidden
+  >
+    <div class="reader-bar">
+      <div class="reader-heading">
+        <span class="reader-venue" id="reader-venue"></span>
+        <p class="reader-title" id="reader-title"></p>
+      </div>
+
+      <div class="reader-actions">
+        <a class="reader-link" id="reader-overview" href="publications.html">Overview</a>
+        <a
+          class="reader-link"
+          id="reader-source"
+          href="publications.html"
+          target="_blank"
+          rel="noopener noreferrer"
+        >arXiv</a>
+        <button class="reader-close" type="button" aria-label="Close the reader">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="reader-stage">
+      <button
+        class="reader-nav reader-nav-prev"
+        type="button"
+        aria-label="Previous page"
+        data-reader-prev
+      >
+        <span aria-hidden="true">‹</span>
+      </button>
+
+      <div class="reader-book-slot"></div>
+
+      <button
+        class="reader-nav reader-nav-next"
+        type="button"
+        aria-label="Next page"
+        data-reader-next
+      >
+        <span aria-hidden="true">›</span>
+      </button>
+    </div>
+
+    <div class="reader-footer">
+      <button class="reader-step" type="button" aria-label="Previous page" data-reader-prev>
+        <span aria-hidden="true">‹</span>
+      </button>
+      <span class="reader-counter" id="reader-counter" aria-live="polite"></span>
+      <button class="reader-step" type="button" aria-label="Next page" data-reader-next>
+        <span aria-hidden="true">›</span>
+      </button>
+      <span class="reader-hint">Drag a page corner or use ← → to turn pages</span>
+    </div>
+  </div>
+
 
 
   <footer class="footer">

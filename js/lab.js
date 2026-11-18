@@ -440,65 +440,119 @@ register('demo-shader', holder => {
 });
 
 /* =====================================================================
-   5) Inspiral -> merger -> ringdown, with the live chirping waveform.
+   5) Inspiral -> merger -> ringdown of the numerical-relativity simulation
+      SXS:BBH:0305 (js/lab-imr-data.js). The two holes sit at the centres
+      of the simulation's apparent horizons; after the first common horizon
+      the remnant rings with the quadrupolar pattern of the l = m = 2 strain,
+      which the strip shows as seen face-on (h_+ ~ Re h_22). Playback is
+      faster early in the inspiral and slows down through the merger.
    ===================================================================== */
 register('demo-imr', holder => {
   const H = 380, c = makeCanvas(holder, H), ctx = c.getContext('2d');
-  const T1 = 7.5, TRING = 3, TPAUSE = 1.2, CYCLE = T1 + TRING + TPAUSE;
-  const wR2 = 2 * Math.PI / .55, wI2 = wR2 / RATIO;
-  let phi = 0, lastT = 0, wave = [], trail = [];
+  const D = window.LAB_IMR;
+  if (!D) return makeLoop(() => {});
+  const PAUSE = 1.4, TRAIL = 160;                 // s, M
+  const TPLAY = (D.play.length - 1) * D.dtPlay, CYCLE = TPLAY + PAUSE;
+  const M = D.mA + D.mB;
+  const horizon = (m, chi) => m * (1 + Math.sqrt(1 - chi * chi));   // r_+
+  const rA = horizon(D.mA, D.chiA), rB = horizon(D.mB, D.chiB), rC = horizon(D.Mf, D.chif);
+  const nD = D.d.length / 2, nH = D.h.length / 2;
+
+  function simTime(tau) {                         // screen seconds -> M
+    const x = Math.min(D.play.length - 1, Math.max(0, tau / D.dtPlay));
+    const i = Math.min(D.play.length - 2, Math.floor(x));
+    return D.play[i] + (x - i) * (D.play[i + 1] - D.play[i]);
+  }
+  function sep(t, out) {                          // Catmull-Rom on d(t)
+    const x = Math.min(nD - 1, Math.max(0, (t - D.t0) / D.dtD));
+    const i = Math.min(nD - 2, Math.floor(x)), u = x - i;
+    for (let k = 0; k < 2; k++) {
+      const p0 = D.d[2 * Math.max(0, i - 1) + k], p1 = D.d[2 * i + k];
+      const p2 = D.d[2 * (i + 1) + k], p3 = D.d[2 * Math.min(nD - 1, i + 2) + k];
+      out[k] = p1 + .5 * u * (p2 - p0 + u * (2 * p0 - 5 * p1 + 4 * p2 - p3 + u * (3 * (p1 - p2) + p3 - p0)));
+    }
+    return out;
+  }
+  function strain(t, out) {                       // r h_22 / M
+    const x = Math.min(nH - 1, Math.max(0, (t - D.th0) / D.dtH));
+    const i = Math.min(nH - 2, Math.floor(x)), u = x - i;
+    out[0] = ((1 - u) * D.h[2 * i] + u * D.h[2 * i + 2]) * 1e-4;
+    out[1] = ((1 - u) * D.h[2 * i + 1] + u * D.h[2 * i + 3]) * 1e-4;
+    return out;
+  }
+  let hPeak = 0;
+  for (let i = 0; i < nH; i++) hPeak = Math.max(hPeak, Math.hypot(D.h[2 * i], D.h[2 * i + 1]) * 1e-4);
+  // Screen time of the first common horizon, and the phase offset between
+  // the orbit and h_22 there, so that the remnant's bulge continues the line
+  // joining the two holes (h_22 ~ e^{-2 i phi_orb}).
+  let tauC = 0;
+  while (tauC < TPLAY && simTime(tauC) < D.tC) tauC += 1 / 240;
+  const v2 = [0, 0], hv = [0, 0];
+  sep(D.tC - 1e-6, v2); strain(D.tC, hv);
+  const phase0 = Math.atan2(hv[1], hv[0]) + 2 * Math.atan2(v2[1], v2[0]);
+
+  function bhDot(x, y, R) {
+    ctx.beginPath(); ctx.arc(x, y, R * 1.15, 0, 7);
+    ctx.strokeStyle = 'rgba(255,196,130,.7)'; ctx.lineWidth = 1.2; ctx.stroke();
+    ctx.beginPath(); ctx.arc(x, y, R, 0, 7); ctx.fillStyle = '#04060c'; ctx.fill();
+  }
+
   function tick(t) {
-    const w = c.clientWidth, oy = 150, wy = H - 70;
-    const tc = t % CYCLE;
-    if (tc < lastT) { phi = 0; wave = []; trail = []; }
-    const dt = Math.max(tc - lastT, 0); lastT = tc;
+    const w = c.clientWidth, cx = w / 2, oy = 150, wy = H - 66;
+    const tau = t % CYCLE, ts = simTime(Math.min(tau, TPLAY));
+    const S = Math.min(17, (w / 2 - 24) / 7.2);   // px per M
+    const X = x => cx + S * x, Y = y => oy - S * y;
     ctx.fillStyle = '#070d1a'; ctx.fillRect(0, 0, w, H);
-    let h = 0;
-    if (tc < T1) {                                   // -------- inspiral
-      const r = 16 + 88 * Math.pow(1 - tc / T1, .25);
-      phi += 230 / Math.pow(r, 1.5) * dt * 60;
-      const m1 = .58, m2 = .42;
-      const x1 = w/2 + Math.cos(phi) * r * m2, y1 = oy + Math.sin(phi) * r * m2 * .96;
-      const x2 = w/2 - Math.cos(phi) * r * m1, y2 = oy - Math.sin(phi) * r * m1 * .96;
-      trail.push([x1, y1, x2, y2]); if (trail.length > 90) trail.shift();
-      trail.forEach((p, i) => {
-        const a = i / trail.length * .35;
-        ctx.fillStyle = `rgba(242,118,46,${a})`; ctx.fillRect(p[0], p[1], 1.6, 1.6);
-        ctx.fillStyle = `rgba(122,175,222,${a})`; ctx.fillRect(p[2], p[3], 1.6, 1.6);
-      });
-      bhDot(x1, y1, 13); bhDot(x2, y2, 10);
-      h = (26 / r) * Math.cos(2 * phi);
-    } else if (tc < T1 + TRING) {                    // -------- ringdown
-      const tr = tc - T1;
-      const eps = .22 * Math.exp(-wI2 * tr) * Math.cos(wR2 * tr);
-      shadow(ctx, w/2, oy, 30, 1 + eps, 1 - eps, phi);
-      if (tr < .3) {                                 // merger flash
-        ctx.beginPath(); ctx.arc(w/2, oy, 36 + tr * 280, 0, 7);
-        ctx.strokeStyle = `rgba(255,255,255,${.9 * (1 - tr / .3)})`;
+
+    if (ts < D.tC) {                               // -------- inspiral
+      for (const [f, rgb] of [[D.mB / M, '242,118,46'], [-D.mA / M, '122,175,222']]) {
+        ctx.lineWidth = 1.3;
+        for (let tt = Math.max(D.t0, ts - TRAIL); tt < ts; tt += 2) {
+          const a = sep(tt, [0, 0]), b = sep(Math.min(ts, tt + 2), [0, 0]);
+          ctx.strokeStyle = `rgba(${rgb},${.4 * (1 - (ts - tt) / TRAIL)})`;
+          ctx.beginPath(); ctx.moveTo(X(f * a[0]), Y(f * a[1])); ctx.lineTo(X(f * b[0]), Y(f * b[1])); ctx.stroke();
+        }
+      }
+      sep(ts, v2);
+      bhDot(X(D.mB / M * v2[0]), Y(D.mB / M * v2[1]), S * rA);
+      bhDot(X(-D.mA / M * v2[0]), Y(-D.mA / M * v2[1]), S * rB);
+    } else {                                       // -------- remnant
+      strain(ts, hv);
+      const grow = Math.min(1, (ts - D.tC) / 4);
+      const eps = .16 * grow * Math.hypot(hv[0], hv[1]) / hPeak;
+      const phi = -(Math.atan2(hv[1], hv[0]) - phase0) / 2;          // orbital-like angle
+      shadow(ctx, cx, oy, S * rC, 1 + eps, 1 - eps, -phi);
+      const dt = tau - tauC;
+      if (dt < .35) {                              // merger flash
+        ctx.beginPath(); ctx.arc(cx, oy, S * rC * 1.2 + dt * 300, 0, 7);
+        ctx.strokeStyle = `rgba(255,255,255,${.85 * (1 - dt / .35)})`;
         ctx.lineWidth = 3; ctx.stroke();
       }
-      h = 1.55 * Math.exp(-wI2 * tr) * Math.cos(wR2 * tr + 2 * phi);
-    } else {                                         // -------- pause
-      shadow(ctx, w/2, oy, 30, 1, 1, 0);
     }
-    function bhDot(x, y, R) {
-      ctx.beginPath(); ctx.arc(x, y, R * 1.15, 0, 7);
-      ctx.strokeStyle = 'rgba(255,196,130,.7)'; ctx.lineWidth = 1.2; ctx.stroke();
-      ctx.beginPath(); ctx.arc(x, y, R, 0, 7); ctx.fillStyle = '#04060c'; ctx.fill();
-    }
-    // -------- strain strip --------
-    wave.push(h); const MAXW = Math.floor(w / 1.25);
-    if (wave.length > MAXW) wave.shift();
-    ctx.strokeStyle = 'rgba(228,225,218,.25)';
+
+    // -------- strain strip: the last D.window M of h_+ (face-on) --------
+    const xHead = w * .86, ppm = w / D.window, A = 30 / hPeak;
+    ctx.strokeStyle = 'rgba(228,225,218,.18)'; ctx.lineWidth = 1;
     ctx.beginPath(); ctx.moveTo(0, wy); ctx.lineTo(w, wy); ctx.stroke();
     ctx.beginPath();
-    wave.forEach((v, i) => {
-      const X = i * 1.25, Y = wy - v * 28;
-      i ? ctx.lineTo(X, Y) : ctx.moveTo(X, Y);
-    });
+    for (let tt = Math.max(D.th0, ts - xHead / ppm), first = true; tt <= ts + 1e-9; tt += .5) {
+      strain(tt, hv);
+      const px = xHead - (ts - tt) * ppm, py = wy - hv[0] * A;
+      first ? ctx.moveTo(px, py) : ctx.lineTo(px, py); first = false;
+    }
     ctx.strokeStyle = ACCENT; ctx.lineWidth = 1.6; ctx.stroke();
+    strain(ts, hv);
+    ctx.beginPath(); ctx.arc(xHead, wy - hv[0] * A, 3, 0, 7); ctx.fillStyle = ACCENT; ctx.fill();
+
     ctx.fillStyle = 'rgba(228,225,218,.5)'; ctx.font = '11px monospace';
-    ctx.fillText('h(t)', 8, wy - 38);
+    ctx.textAlign = 'left';
+    ctx.fillText('h₊ (face-on)', 8, wy - 40);
+    const stage = ts < D.tC - 40 ? 'inspiral' : ts < D.tC + 12 ? 'merger' : 'ringdown';
+    ctx.fillText(stage, 14, 22);
+    ctx.textAlign = 'right';
+    ctx.fillStyle = 'rgba(228,225,218,.38)';
+    ctx.fillText(`${D.name} · numerical relativity`, w - 10, H - 12);
+    ctx.textAlign = 'left';
   }
   return makeLoop(tick);
 });

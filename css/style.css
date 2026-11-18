@@ -1879,5 +1879,6 @@ a:focus-visible, button:focus-visible {
 .lab-card-actions { display: flex; flex-wrap: wrap; align-items: center; gap: .8rem 1.4rem; padding: 1.2rem 1.45rem 1.45rem; }
 .lab-card-actions .btn { margin-top: 0; }
 .lab-soon { font-family: var(--font-mono); font-size: .8rem; color: var(--muted); }
+.lab-card-text p.lab-credit { font-family: var(--font-mono); font-size: .78rem; margin-top: .55rem; }
 .mono { font-family: var(--font-mono); font-size: .92em; }
 @media (max-width: 900px) { .lab-grid { grid-template-columns: 1fr; } .lab-card-wide { grid-column: auto; } }

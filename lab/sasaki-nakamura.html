@@ -287,10 +287,12 @@
       <h2>The theory behind this</h2>
 
       <p>
-        The simulator follows a body of mass $\mu \ll M$ on one of two
+        The simulator follows a body of mass $\mu \ll M$ on one of three
         geodesics of a Kerr black hole of mass $M$ and spin $a$: a fall from
-        rest along the rotation axis, and a plunge from the innermost stable
-        circular orbit in the equatorial plane. Since $\mu \ll M$, the body
+        rest along the rotation axis, a plunge from the innermost stable
+        circular orbit in the equatorial plane, and a plunge from the
+        innermost stable spherical orbit, tilted from that plane. Since
+        $\mu \ll M$, the body
         is a small perturbation and its waves can be computed on the fixed
         Kerr background.
       </p>
@@ -336,7 +338,8 @@
         $\omega$, on $a$ and on the eigenvalue of the spheroidal harmonics.
         Far from the hole the solutions behave as $e^{\pm i\omega r_*}$, like
         free waves. For $a = 0$ the equation becomes the Regge–Wheeler
-        equation of our other simulator. We use its generalized form (GSN)
+        equation, which our <a href="regge-wheeler.html">Regge–Wheeler
+        simulator</a> solves. We use its generalized form (GSN)
         due to Lo, which works for any spin weight of the field.
       </p>
       <p>
@@ -641,14 +644,22 @@
       </p>
       <p>
         As checks, for $\iota = 0^\circ$ the amplitudes agree with those of the
-        equatorial plunge to $10^{-9}$; the source reproduces the amplitudes
-        of the spherical-orbit routine of
+        equatorial plunge to $10^{-9}$ (the waves differ by up to $0.5\%$ at
+        high spin, because the equatorial plunge takes the spheroidal mode
+        $\ell = m = 2$ as if it were a spherical one); the source reproduces
+        the amplitudes of the spherical-orbit routine of
         <code>GeneralizedSasakiNakamura.jl</code>, including $m \le 0$ and the
-        harmonics of the polar motion; at $a = 0$ the
-        power in each $\ell$ does not depend on the inclination, to $10^{-8}$,
-        as it must for a rotated orbit; and the mirror symmetry holds to
+        harmonics of the polar motion; at $a = 0$ the power in each $\ell$
+        does not depend on the inclination, as it must for a rotated orbit,
+        to a few parts in $10^{6}$ of its peak ($6 \times 10^{-5}$ for the
+        polar orbit that crosses a pole during the plunge, where the source
+        is taken just off the axis); and the mirror symmetry holds to
         $10^{-13}$. The ISSO and the orbital frequencies agree with
-        <code>KerrGeodesics.jl</code> to twelve digits or better.
+        <code>KerrGeodesics.jl</code> to twelve digits or better. At $a = 0$
+        exactly, the radial solver returns no incidence amplitude for
+        $\ell = 4$ below $|\omega| \approx 0.15/M$; there we use its solutions
+        at $a = 10^{-5} M$, which agree with those at $a = 0$, where both
+        exist, to $2 \times 10^{-6}$.
       </p>
       <p>
         The ringing now mixes many modes. The counter-rotating ones, with
@@ -705,7 +716,8 @@
         S. Drasco and S. A. Hughes, Phys. Rev. D 73, 024027 (2006); erratum
         Phys. Rev. D 90, 109905 (2014) · L. C. Stein and N. Warburton,
         Phys. Rev. D 101, 064007 (2020). See also the
-        <a href="regge-wheeler.html">Regge–Wheeler simulator</a>.
+        <a href="regge-wheeler.html">Regge–Wheeler simulator</a> and the
+        <a href="wormhole.html">wormhole simulator</a>.
       </p>
     </article>
   </div>

@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Talking through a wormhole — Strong Gravity Group @ UIB</title>
+  <meta name="description" content="Send a digital message, an SOS in Morse, a sound or a picture through a thin-shell wormhole and see what a receiver in the other universe gets. Computed in your browser from the exact transmission of the throat.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Source+Sans+3:wght@400;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/sim.css">
+  <script type="module" src="../js/whm/whm-app.js"></script>
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']]
+      },
+      svg: { fontCache: 'global' }
+    };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="brand" href="../index.html">Strong Gravity Group <span class="tilde">~</span> UIB</a>
+    <button class="nav-toggle" aria-label="Open menu" onclick="document.querySelector('.nav-links').classList.toggle('open')">☰</button>
+    <ul class="nav-links">
+      <li><a href="../research.html">Research</a></li>
+      <li><a href="../lab.html" aria-current="page">Lab</a></li>
+      <li><a href="../team.html">Team</a></li>
+      <li><a href="../publications.html">Publications</a></li>
+      <li><a href="../resources.html">Resources</a></li>
+      <li><a href="../news.html">News</a></li>
+      <li><a href="../contact.html">Contact</a></li>
+    </ul>
+  </div>
+</nav>
+
+<header class="page-head lab-head">
+  <div class="page-head-inner">
+    <p class="eyebrow">Black Hole Lab · Simulator</p>
+    <h1>Talking through a wormhole</h1>
+    <p class="lede">
+      Someone far away in one universe sends a message towards the throat of
+      a wormhole. A receiver far away in the other universe records what
+      comes out. Send a digital message, an SOS in Morse, a sound or a
+      picture, and see what arrives. The throat filters every signal the
+      same way: it is transparent above the top of the potential barrier
+      and, below it, lets signals through only on a comb of narrow lines.
+      Everything is computed in your browser from the exact transmission of
+      the throat.
+    </p>
+  </div>
+</header>
+
+<section class="section rw-section">
+  <div class="rw-wrap">
+    <a class="rw-back" href="../lab.html">← Black Hole Lab</a>
+
+    <div class="whm-app" data-whm>
+
+      <div class="whm-main">
+        <div class="whm-tabs" role="tablist" aria-label="What to send">
+          <button type="button" role="tab" id="tab-msg" aria-selected="true" aria-controls="pane-msg" data-tab="msg">Digital message</button>
+          <button type="button" role="tab" id="tab-sos" aria-selected="false" aria-controls="pane-sos" data-tab="sos">SOS in Morse</button>
+          <button type="button" role="tab" id="tab-snd" aria-selected="false" aria-controls="pane-snd" data-tab="snd">Sound</button>
+          <button type="button" role="tab" id="tab-img" aria-selected="false" aria-controls="pane-img" data-tab="img">Picture</button>
+        </div>
+
+        <!-- Digital message -->
+        <section class="whm-pane" id="pane-msg" role="tabpanel" aria-labelledby="tab-msg">
+          <div class="whm-stats">
+            <div class="whm-stat"><b data-o="msgOk">–</b><span>bits received correctly</span></div>
+            <div class="whm-stat"><b data-o="msgText">–</b><span>text decoded</span></div>
+            <div class="whm-stat"><b data-o="msgE">–</b><span>energy that crosses</span></div>
+            <div class="whm-stat"><b data-o="msgFid">–</b><span>fidelity</span></div>
+            <div class="whm-stat"><b data-o="msgLag">–</b><span>delay</span></div>
+          </div>
+
+          <figure class="rw-card">
+            <div class="rw-card-head">
+              <div>
+                <h3>The bits</h3>
+                <p>The first bit is a preamble that sets the phase reference. Bits decoded wrongly are marked.</p>
+              </div>
+            </div>
+            <div class="whm-bits" data-o="msgBits"></div>
+          </figure>
+
+          <figure class="rw-card">
+            <div class="rw-card-head">
+              <div>
+                <h3>The wave in universe 2</h3>
+                <p>
+                  What the receiver gets (colour) against the same message
+                  with the wormhole replaced by empty space (grey), on the
+                  same time axis.
+                </p>
+              </div>
+            </div>
+            <div class="rw-card-keys">
+              <span class="rw-key"><i class="ref"></i>sent, no wormhole</span>
+              <span class="rw-key"><i class="pulse"></i>received in universe 2</span>
+              <span class="rw-key"><i class="dots"></i>bit boundaries</span>
+            </div>
+            <canvas class="whm-canvas" data-c="msgWave" style="height:250px" aria-label="Received and reference waveforms of the message"></canvas>
+          </figure>
+
+          <figure class="rw-card">
+            <div class="rw-card-head">
+              <div>
+                <h3>Transmission and the spectrum of the message</h3>
+                <p>Fraction |T|² of the energy at each frequency that reaches universe 2, and the energy spectrum of the message (shaded).</p>
+              </div>
+              <span class="whm-tip" data-tip="msgT"></span>
+            </div>
+            <div class="rw-card-keys">
+              <span class="rw-key"><i></i>|T(ω)|²</span>
+              <span class="rw-key"><i class="whm-fill"></i>message spectrum</span>
+              <span class="rw-key"><i class="dash"></i>barrier top</span>
+            </div>
+            <canvas class="whm-canvas" data-c="msgT" style="height:230px" aria-label="Transmission against M omega with the energy spectrum of the message"></canvas>
+          </figure>
+        </section>
+
+        <!-- SOS -->
+        <section class="whm-pane" id="pane-sos" role="tabpanel" aria-labelledby="tab-sos" hidden>
+          <div class="whm-stats">
+            <div class="whm-stat"><b data-o="sosDec">–</b><span>what the receiver reads</span></div>
+            <div class="whm-stat"><b data-o="sosTone">–</b><span>tone</span></div>
+            <div class="whm-stat"><b data-o="sosT2">–</b><span>|T|² at the tone</span></div>
+            <div class="whm-stat"><b data-o="sosE">–</b><span>energy that crosses</span></div>
+            <div class="whm-stat"><b data-o="sosRing">–</b><span>line rings for 1/Γ</span></div>
+          </div>
+          <p class="whm-busy" data-busy="sos"></p>
+
+          <figure class="rw-card">
+            <div class="rw-card-head">
+              <div>
+                <h3>What the receiver hears</h3>
+                <p>
+                  Envelope of the sent call (blue) and of what arrives in a
+                  120 Hz band around the tone (orange), each on its own
+                  scale. The decoder reads dots and dashes where the
+                  envelope crosses half its maximum (dotted).
+                </p>
+              </div>
+            </div>
+            <div class="rw-card-keys">
+              <span class="rw-key"><i class="blue"></i>sent envelope</span>
+              <span class="rw-key"><i class="pulse"></i>received envelope, with noise</span>
+              <span class="rw-key"><i class="dots"></i>decision threshold</span>
+            </div>
+            <canvas class="whm-canvas" data-c="sosEnv" style="height:240px" aria-label="Sent and received envelopes of the Morse call"></canvas>
+          </figure>
+
+          <figure class="rw-card">
+            <div class="rw-card-head">
+              <div>
+                <h3>Transmission in hertz</h3>
+                <p>For the mass chosen. The orange line is the tone, the dashed line the barrier top.</p>
+              </div>
+              <span class="whm-tip" data-tip="sosT"></span>
+            </div>
+            <canvas class="whm-canvas" data-c="sosT" style="height:210px" aria-label="Transmission against frequency in hertz with the tone"></canvas>
+          </figure>
+        </section>
+
+        <!-- Sound -->
+        <section class="whm-pane" id="pane-snd" role="tabpanel" aria-labelledby="tab-snd" hidden>
+          <div class="whm-stats">
+            <div class="whm-stat"><b data-o="sndE">–</b><span>energy that crosses</span></div>
+            <div class="whm-stat"><b data-o="sndTop">–</b><span>barrier top</span></div>
+            <div class="whm-stat"><b data-o="sndEcho">–</b><span>light round trip of the cavity</span></div>
+            <div class="whm-stat"><b data-o="sndLines">–</b><span>comb lines</span></div>
+          </div>
+          <p class="whm-busy" data-busy="snd"></p>
+
+          <figure class="rw-card">
+            <div class="rw-card-head">
+              <div>
+                <h3>Transmission in hertz</h3>
+                <p>For the mass chosen. Move the mass and the whole comb slides along the audio band.</p>
+              </div>
+              <span class="whm-tip" data-tip="sndT"></span>
+            </div>
+            <canvas class="whm-canvas" data-c="sndT" style="height:210px" aria-label="Transmission against frequency in hertz"></canvas>
+          </figure>
+
+          <div class="rw-panels whm-two">
+            <figure class="rw-card">
+              <div class="rw-card-head"><div><h3>Spectrum</h3></div></div>
+              <div class="rw-card-keys">
+                <span class="rw-key"><i class="blue"></i>sent</span>
+                <span class="rw-key"><i class="pulse"></i>received</span>
+              </div>
+              <canvas class="whm-canvas" data-c="sndSpec" style="height:210px" aria-label="Sent and received spectra"></canvas>
+            </figure>
+            <figure class="rw-card">
+              <div class="rw-card-head"><div><h3>Waveform</h3></div></div>
+              <div class="rw-card-keys">
+                <span class="rw-key"><i class="blue"></i>sent</span>
+                <span class="rw-key"><i class="pulse"></i>received</span>
+                <span class="rw-key" data-o="sndGain"></span>
+              </div>
+              <canvas class="whm-canvas" data-c="sndWave" style="height:210px" aria-label="Sent and received waveforms"></canvas>
+            </figure>
+          </div>
+        </section>
+
+        <!-- Picture -->
+        <section class="whm-pane" id="pane-img" role="tabpanel" aria-labelledby="tab-img" hidden>
+          <div class="whm-stats">
+            <div class="whm-stat"><b data-o="imgE">–</b><span>energy that crosses</span></div>
+            <div class="whm-stat"><b data-o="imgEcho">–</b><span>light round trip of the cavity</span></div>
+            <div class="whm-stat"><b data-o="imgLag">–</b><span>delay of the picture</span></div>
+          </div>
+          <p class="whm-busy" data-busy="img"></p>
+
+          <div class="whm-imgs">
+            <figure><canvas data-im="sent" width="96" height="96" aria-label="Picture sent"></canvas><figcaption>Sent from universe 1</figcaption></figure>
+            <figure><canvas data-im="raw" width="96" height="96" aria-label="Picture received at its true brightness"></canvas><figcaption>Received, true brightness</figcaption></figure>
+            <figure><canvas data-im="agc" width="96" height="96" aria-label="Picture received with automatic gain"></canvas><figcaption>Received, automatic gain</figcaption></figure>
+          </div>
+
+          <figure class="rw-card">
+            <div class="rw-card-head">
+              <div>
+                <h3>Transmission and the band of the picture</h3>
+                <p>The shaded band, the carrier ± π/τ with τ the pixel duration, is where a picture with detail in every pixel would spread. The test card, with few edges per line, keeps most of its energy much closer to the carrier.</p>
+              </div>
+              <span class="whm-tip" data-tip="imgT"></span>
+            </div>
+            <canvas class="whm-canvas" data-c="imgT" style="height:210px" aria-label="Transmission against M omega with the band of the picture"></canvas>
+          </figure>
+        </section>
+      </div>
+
+      <aside class="rw-panel whm-panel" aria-label="Controls">
+        <h2>Controls</h2>
+
+        <div class="rw-group">
+          <p class="rw-group-title">Channel</p>
+          <div class="rw-field">
+            <label>Wave</label>
+            <div class="rw-seg rw-seg-wide" data-seg="field">
+              <button type="button" data-v="1" aria-pressed="true">EM dipole</button>
+              <button type="button" data-v="2" aria-pressed="false">GW quadrupole</button>
+            </div>
+          </div>
+          <div class="rw-field">
+            <label>Throat</label>
+            <div class="rw-seg rw-seg-wide" data-seg="thr">
+              <button type="button" data-v="1e-06" aria-pressed="true">δ = 10⁻⁶</button>
+              <button type="button" data-v="0.01" aria-pressed="false">δ = 10⁻²</button>
+              <button type="button" data-v="0.85" aria-pressed="false">δ = 0.85</button>
+            </div>
+            <p class="rw-field-note" data-o="thrNote"></p>
+          </div>
+        </div>
+
+        <div class="rw-group" data-show="msg">
+          <p class="rw-group-title">Message</p>
+          <div class="rw-field">
+            <label for="whm-text">Text <output>up to 5 characters</output></label>
+            <input id="whm-text" class="whm-input" type="text" maxlength="5" value="SOS" spellcheck="false" autocomplete="off">
+          </div>
+          <div class="rw-field">
+            <label>Bits</label>
+            <div class="rw-seg rw-seg-wide" data-seg="bits">
+              <button type="button" data-v="smooth" aria-pressed="true">100M, smooth</button>
+              <button type="button" data-v="sharp" aria-pressed="false">40M, sharp</button>
+            </div>
+          </div>
+          <div class="rw-field">
+            <label for="whm-nu">Carrier Mν <output data-o="nuMsg"></output></label>
+            <input id="whm-nu" type="range" min="0.04" max="0.8" step="0.005" value="0.2">
+          </div>
+          <label class="rw-check"><input type="checkbox" data-k="noise"> Add receiver noise</label>
+          <div class="rw-field" data-show-noise hidden>
+            <label for="whm-ebn0">E<sub>b</sub>/N<sub>0</sub> <output data-o="ebn0"></output></label>
+            <input id="whm-ebn0" type="range" min="0" max="40" step="0.5" value="15">
+            <div class="rw-buttons" style="margin-top:.5rem"><button type="button" data-action="reseed">New noise</button></div>
+          </div>
+        </div>
+
+        <div class="rw-group" data-show="sos" hidden>
+          <p class="rw-group-title">Morse tone</p>
+          <div class="rw-seg rw-seg-wide" data-seg="tone">
+            <button type="button" data-v="700" aria-pressed="false">700 Hz</button>
+            <button type="button" data-v="line" aria-pressed="true">Comb line</button>
+            <button type="button" data-v="top" aria-pressed="false">Above top</button>
+          </div>
+          <div class="rw-field" data-show-line>
+            <label for="whm-line">Line</label>
+            <select id="whm-line" class="whm-select"></select>
+          </div>
+        </div>
+
+        <div class="rw-group" data-show="snd" hidden>
+          <p class="rw-group-title">Sound</p>
+          <div class="rw-seg rw-seg-wide" data-seg="src">
+            <button type="button" data-v="melody" aria-pressed="true">Melody</button>
+            <button type="button" data-v="chirp" aria-pressed="false">Sweep</button>
+            <button type="button" data-v="upload" aria-pressed="false">Your file</button>
+          </div>
+          <label class="whm-file" data-show-upload hidden>Audio file, up to 12 s<input type="file" accept="audio/*" data-k="upload"></label>
+        </div>
+
+        <div class="rw-group" data-show="sos snd" hidden>
+          <p class="rw-group-title">Mass and playback</p>
+          <div class="rw-field">
+            <label for="whm-mass">Mass <output data-o="mass"></output></label>
+            <input id="whm-mass" type="range" min="-1" max="2" step="0.01" value="0">
+          </div>
+          <div class="rw-buttons" style="margin-top:.7rem">
+            <button type="button" data-action="play-sent">▶ Sent</button>
+            <button type="button" class="primary" data-action="play-recv">▶ Received</button>
+            <button type="button" data-action="stop">Stop</button>
+          </div>
+          <label class="rw-check"><input type="checkbox" data-k="norm" checked> Same loudness (otherwise the true level)</label>
+        </div>
+
+        <div class="rw-group" data-show="img" hidden>
+          <p class="rw-group-title">Picture</p>
+          <div class="rw-seg rw-seg-wide" data-seg="img">
+            <button type="button" data-v="test" aria-pressed="true">Test card</button>
+            <button type="button" data-v="upload" aria-pressed="false">Your picture</button>
+          </div>
+          <label class="whm-file" data-show-iupload hidden>Image, shrunk to 96 × 96<input type="file" accept="image/*" data-k="iupload"></label>
+          <div class="rw-field" style="margin-top:.75rem">
+            <label for="whm-inu">Carrier Mν <output data-o="nuImg"></output></label>
+            <input id="whm-inu" type="range" min="0.06" max="0.8" step="0.005" value="0.5">
+          </div>
+          <div class="rw-field">
+            <label for="whm-tau">Pixel duration <output data-o="tau"></output></label>
+            <input id="whm-tau" type="range" min="4" max="24" step="1" value="8">
+          </div>
+        </div>
+      </aside>
+    </div>
+
+    <p class="rw-note">
+      The receiver is far away in universe 2 and the sender far away in
+      universe 1. The received wave is the sent one multiplied, frequency by
+      frequency, by the transmission amplitude T(ω) of the throat, computed
+      once with the code of the paper and stored in a table. Only one
+      multipole is followed and the wormhole does not rotate. Units:
+      G = c = 1; times and frequencies are in units of the mass M, except in
+      the sound tabs, where the mass slider converts them to seconds and
+      hertz.
+    </p>
+
+    <article class="rw-explain">
+      <h2>The physics behind this</h2>
+
+      <h3>The wormhole</h3>
+      <p>
+        Take the outside of a Schwarzschild black hole of mass $M$ down to a
+        radius $a$ just outside where the horizon would be, make a second
+        copy and glue the two along that sphere. This is the thin-shell
+        wormhole of Visser, held open by a shell of exotic matter at the
+        throat. We write
+      </p>
+      <div class="paper-equation">
+        $$ a = 2M(1+\delta). $$
+      </div>
+      <p>
+        Each universe has the potential barrier of a black hole, peaked near
+        $r = 3M$. When the throat lies inside the peak, the two barriers face
+        each other and form a cavity, the cavity that produces the echoes of
+        the <a href="wormhole.html">wormhole simulator</a>. The three throats
+        offered here are an ultracompact one ($\delta = 10^{-6}$), a short
+        one ($\delta = 10^{-2}$) and one outside the peak ($\delta = 0.85$,
+        $a = 3.7M$), with a single barrier and no cavity.
+      </p>
+
+      <h3>The throat is a filter</h3>
+      <p>
+        Since the wormhole does not change with time, a signal sent from one
+        universe arrives in the other filtered by a fixed transmission
+        amplitude $T(\omega)$: if the sender emits the waveform $x(t)$, the
+        receiver records
+      </p>
+      <div class="paper-equation">
+        $$ y = \mathcal F^{-1}\!\left[\,T(\omega)\,\mathcal F x\,\right],
+        \qquad T(\omega) = \frac{i\omega}{q\,h}, $$
+      </div>
+      <p>
+        where $q$ and $h$ are the value and slope (corrected by the jump at
+        the shell) of the purely outgoing solution at the throat. The
+        transmission depends only on $M\omega$, so the mass just slides
+        the whole picture in frequency. For the electromagnetic dipole the
+        barrier top is at $M\omega = 0.272$: about $8.8$ kHz for a wormhole of
+        one solar mass, in the audible band, and $2.9$ GHz for one of the
+        mass of the Earth.
+      </p>
+      <p>
+        Above the barrier top the throat is almost transparent. Below it the
+        cavity acts as a Fabry–Pérot interferometer whose mirrors are the two
+        black-hole barriers: waves get through only on a comb of narrow
+        lines, the quasinormal modes of the throat, where $|T|^2$ reaches 1.
+        The widths of the lines are not free. They are fixed by the
+        absorption $T_{\rm BH}$ of the black hole of the same mass,
+      </p>
+      <div class="paper-equation">
+        $$ \frac{\pi\Gamma_n}{\Delta\omega_n} \simeq \frac{T_{\rm BH}}{2 - T_{\rm BH}}, $$
+      </div>
+      <p>
+        with $\Gamma_n$ the width of line $n$ and $\Delta\omega_n$ the spacing
+        of the comb, so that, averaged over the comb and where $T_{\rm BH}$ is
+        small, the wormhole lets through half of what the black hole would
+        absorb. In the paper this
+        law is checked on 835 lines of scalar, electromagnetic and
+        gravitational waves.
+      </p>
+
+      <h3>What happens to a message</h3>
+      <ul>
+        <li>
+          <strong>Above the barrier a message arrives intact</strong>, through
+          any throat. With smooth bits, every bit of “SOS” is decoded for
+          $M\nu \ge 0.28$, and in noise the wormhole costs at most $0.1$ dB for
+          $M\nu \ge 0.42$.
+        </li>
+        <li>
+          <strong>Below the barrier an ultracompact throat smears the
+          bits.</strong> At $M\nu = 0.2$ and $\delta = 10^{-6}$ the received wave
+          carries 20% of the energy and keeps ringing after the message has
+          ended, and even without noise a receiver that decides bit by bit
+          gets only 22 of the 24 bits. In noise this leaves an error floor
+          that no transmitted power removes. A receiver that knows $T$ and
+          decodes a whole frame at once removes it, at the cost of 10–30 dB
+          more energy per bit.
+        </li>
+        <li>
+          <strong>An SOS in Morse gets through only on a comb line that
+          rings down in about a dot or less.</strong> On a 700 Hz tone a solar-mass
+          ultracompact throat passes $|T|^2 \sim 10^{-12}$ and only noise is
+          heard. On the line at 5.86 kHz, which rings for 8 ms, less than a
+          dot, the call is read. On the line at 4.02 kHz, which rings for 79 ms,
+          the dots blur but the call is still read. On the lowest line, at
+          2.05 kHz, which rings for 2.4 s, the energy crosses but the call
+          merges into one slowly rising tone.
+        </li>
+        <li>
+          <strong>Pictures arrive with ghosts.</strong> Below the barrier
+          each echo of the cavity leaves a shifted copy of the picture, one
+          round trip of the cavity later (slightly more than the light round
+          trip $4d$ between the two peaks).
+        </li>
+      </ul>
+
+      <h3>How long the channel lasts</h3>
+      <p>
+        No thin-shell wormhole of this kind that is symmetric under the exchange of the two universes
+        is stable: polar gravitational perturbations that are odd under that
+        exchange grow, for every throat radius. Near the black-hole limit,
+        however, they grow slowly, by a factor $e$ in about $7M/\delta$:
+        35 s for a solar mass at $\delta = 10^{-6}$, the time to send about
+        $7\times10^4$ of the smooth bits used here. Electromagnetic waves do not
+        excite this mode at linear order. Throats outside the photon sphere,
+        like the $\delta = 0.85$ one, grow in about $60M$, less than one bit,
+        so they would need something outside the model to hold them.
+      </p>
+
+      <h3>How this page computes</h3>
+      <ul>
+        <li>
+          $T(M\omega)$ was computed with the solver of the paper on a grid that
+          is dense on every comb line, for $10^{-4} \le M\omega \le 2$. Outside
+          that range the page uses $T \propto \omega^{\ell+1}$ below and
+          $|T| = 1$ above, checked against the solver.
+        </li>
+        <li>
+          The received wave is $\mathcal F^{-1}[T\,\mathcal F x]$ with a fast
+          Fourier transform. For the digital message it reproduces the waves
+          of the paper to better than 1% of the peak, the energy to 2% or
+          better, and the fidelity and delay exactly. The decoded bits agree,
+          except in borderline cases where a single bit can differ.
+        </li>
+        <li>
+          Digital message: binary phase-shift keying (each bit flips the sign
+          of the carrier), with 100M bits and raised-cosine edges half a bit
+          long, or 40M bits with 10M edges. The receiver finds the delay from
+          the cross-correlation with the sent wave, correlates each bit window
+          with the carrier and takes the preamble as the phase reference.
+          $E_b$ is the sent energy per bit, so the loss in the throat appears
+          as a lower signal-to-noise ratio. With noise the page shows one
+          random draw. The bit-error rates of the paper are computed exactly
+          instead.
+        </li>
+        <li>
+          Morse: “SOS SOS” at 20 words per minute (60 ms dots) with 5 ms
+          edges. The receiver adds fixed white noise of 2% of the tone
+          amplitude, keeps a 120 Hz band around the tone and thresholds its
+          envelope at half height.
+        </li>
+        <li>
+          Pictures travel as in analogue television: line by line, one
+          sample per $M$, each pixel's brightness modulating the amplitude of
+          the carrier. The receiver detects the envelope and aligns it with
+          the sent one.
+        </li>
+      </ul>
+
+      <h3>Things to try</h3>
+      <ul>
+        <li>
+          Digital message: move the carrier from $0.5$ down to $0.1$ with the
+          ultracompact throat, then with $\delta = 0.85$. The throat without a
+          cavity loses energy but keeps the bits; the ultracompact one rings.
+        </li>
+        <li>
+          Switch to 40M sharp bits at $M\nu = 0.2$: the sharp edges spread the
+          spectrum above the barrier, and the message gets through again.
+        </li>
+        <li>
+          SOS: step through the comb lines and compare how long each one
+          rings with the 60 ms of a dot.
+        </li>
+        <li>
+          Sound: play the sweep through the ultracompact throat. Below the
+          barrier top you hear only the comb lines, and the lowest one keeps
+          ringing for seconds after the sweep has passed it.
+        </li>
+      </ul>
+
+      <p class="rw-refs">
+        Based on: A. Svyatkovskyy Kholyavka, J. A. León Vega and
+        X. Jiménez Forteza, <em>Talking through a wormhole: signal
+        transmission across a thin-shell throat</em> (in preparation).
+        References: M. Visser, Phys. Rev. D 39, 3182 (1989)
+        (<a href="https://arxiv.org/abs/0809.0907" rel="noopener">arXiv:0809.0907</a>);
+        E. Poisson and M. Visser, Phys. Rev. D 52, 7318 (1995)
+        (<a href="https://arxiv.org/abs/gr-qc/9506083" rel="noopener">arXiv:gr-qc/9506083</a>);
+        V. Cardoso, E. Franzin and P. Pani, Phys. Rev. Lett. 116, 171101 (2016)
+        (<a href="https://arxiv.org/abs/1602.07309" rel="noopener">arXiv:1602.07309</a>).
+        See also the <a href="wormhole.html">wormhole simulator</a>, which
+        follows a single wave packet through the same throats in time.
+      </p>
+    </article>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div>
+      <strong>Strong Gravity Group @ UIB</strong><br>
+      IAC3 – UIB, Parc BIT<br>
+      Carrer Blaise Pascal, 6, 07121 Palma, Spain
+    </div>
+    <div>
+      <a href="../contact.html">Contact</a><br>
+      <a href="https://www.uib.eu/" rel="noopener">UIB</a>
+    </div>
+  </div>
+
+  <div class="footer-funding">
+    <p class="footer-funding-title">Funding &amp; support</p>
+    <div class="footer-funding-logos">
+      <img
+        src="../assets/logos/funding-logos.png"
+        alt="Funded by the Ministerio de Ciencia, Innovación y Universidades, co-financed by the European Union, the Agencia Estatal de Investigación, the Conselleria d'Educació i Universitats of the Govern de les Illes Balears, and REDONGRA, the Spanish Network of Gravitational Wave Physics"
+        width="840"
+        height="388"
+        loading="lazy"
+      >
+      <img
+        class="footer-logo-cost"
+        src="../assets/logos/cost.jpg"
+        alt="COST, European Cooperation in Science and Technology"
+        width="700"
+        height="267"
+        loading="lazy"
+      >
+    </div>
+  </div>
+
+  <div class="footer-credit">
+    <span>© 2026 Strong Gravity Group @ UIB</span>
+    <span>
+      Website by
+      <a href="../people/alejandro-svyatkovskyy.html">Alejandro Svyatkovskyy Kholyavka</a>
+    </span>
+  </div>
+
+</footer>
+
+</body>
+</html>
